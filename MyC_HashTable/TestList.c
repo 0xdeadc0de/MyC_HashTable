@@ -298,7 +298,6 @@ static void List_Insert_ShouldInsertItemAtGivenIndex()
 	$List.Destructor(&list);
 }
 
-
 static void RunAll()
 {
 	List_Initialize_ShouldHaveZeroItems();

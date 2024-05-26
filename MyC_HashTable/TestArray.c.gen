@@ -5,6 +5,8 @@ _NamespaceTestArray const $TestArray =
 {
 	.Array_SetsItem_AbleToRetrieveByAtMethod = &Array_SetsItem_AbleToRetrieveByAtMethod,
 	.Array_SetsAllItems_AbleToRetrieveAllItems = &Array_SetsAllItems_AbleToRetrieveAllItems,
+	.Array_AsStringType_WorksAsExpected = &Array_AsStringType_WorksAsExpected,
+	.Array_AsCustomType_WorksAsExpected = &Array_AsCustomType_WorksAsExpected,
 	.RunAll = &RunAll
 };
 // Auto-generate end. Do not modify!

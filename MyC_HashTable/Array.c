@@ -18,6 +18,7 @@ static Array* Constructor(Array* self, size_t sizeOfItem, size_t length)
 
 	return self;
 }
+// Frees the resources held, and returns reference to self
 static void* Destructor(Array* self)
 {
 	free(self->Items);
