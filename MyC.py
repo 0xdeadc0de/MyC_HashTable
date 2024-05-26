@@ -24,6 +24,7 @@ extern _Namespace{structName} const ${structName};
 
 #endif
 // Auto-generate end. Do not modify!"""
+
 def GenerateMacroFile() -> str:
     return """// Auto-generate begin. Do not modify!
 #ifndef H_MyC
@@ -36,6 +37,7 @@ def GenerateMacroFile() -> str:
 
 #endif
 // Auto-generate end. Do not modify!"""
+
 def GenerateCFile(structName: str, signatures: list[Signature]) -> str:
     members = []
     for _, methodName, _ in signatures:
@@ -51,6 +53,7 @@ _Namespace{structName} const ${structName} =
 {members}
 }};
 // Auto-generate end. Do not modify!"""
+
 def FindHeaders(directory: str) -> Generator[FilePathName, None, None]:
     """
     Finds all the header files with #include "MyObject.h.gen" line
@@ -71,6 +74,7 @@ def FindHeaders(directory: str) -> Generator[FilePathName, None, None]:
                 if f'#include "{fileName}.gen"' in line:
                     yield (path, fileName[:-2])
                     break
+
 def ParseSignatures(path: str) -> Generator[Signature, None, None]:
     """
     Parses the .c file and extracts all the function signatures
@@ -86,6 +90,7 @@ def ParseSignatures(path: str) -> Generator[Signature, None, None]:
             found = re.match(r"(\w+\s*\*?)\s+(\w+)\(((?:,?\s*(?:\w+\s*\*?)\s+\w+)*)\)", line)
             if (found):
                 yield Signature(found.group(1), found.group(2), found.group(3))
+
 def MakeFunctionPointers(matches: list[Signature]) -> Generator[str, None, None]:
     """
     Transforms each Signature into function pointer string
