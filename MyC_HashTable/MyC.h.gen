@@ -1,0 +1,11 @@
+// Auto-generate begin. Do not modify!
+#ifndef H_MyC
+#define H_MyC
+
+#define new(x) $##x.Constructor(malloc(sizeof(x)))
+#define delete(x,y) free($##x.Destructor(y))
+
+#define	$(x) if (x) return NULL
+
+#endif
+// Auto-generate end. Do not modify!

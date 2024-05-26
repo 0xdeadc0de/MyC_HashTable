@@ -1,0 +1,27 @@
+// Auto-generate begin. Do not modify!
+#ifndef H_Gen_List
+#define H_Gen_List
+
+#include "MyC.h.gen"
+#include "List.h"
+
+typedef struct
+{
+	List* (*Constructor)(List*, size_t);
+	void (*Destructor)(List*);
+	void* (*At)(List*, size_t);
+	void* (*Front)(List*);
+	void* (*Back)(List*);
+	void* (*Insert)(List*, size_t, void*);
+	void* (*PushFront)(List*, void*);
+	void* (*PushBack)(List*, void*);
+	void* (*Remove)(List*, size_t);
+	void* (*RemoveFront)(List*);
+	void* (*RemoveBack)(List*);
+}
+_NamespaceList;
+
+extern _NamespaceList const $List;
+
+#endif
+// Auto-generate end. Do not modify!

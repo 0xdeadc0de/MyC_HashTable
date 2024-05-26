@@ -1,0 +1,17 @@
+// Auto-generate begin. Do not modify!
+#ifndef H_Gen_TestList
+#define H_Gen_TestList
+
+#include "MyC.h.gen"
+#include "TestList.h"
+
+typedef struct
+{
+	void (*RunAll)();
+}
+_NamespaceTestList;
+
+extern _NamespaceTestList const $TestList;
+
+#endif
+// Auto-generate end. Do not modify!

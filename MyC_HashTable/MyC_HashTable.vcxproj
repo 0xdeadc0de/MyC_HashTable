@@ -133,6 +133,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="HashTable.h" />
+    <ClInclude Include="HashTableItem.h" />
+    <ClInclude Include="List.h" />
+    <ClInclude Include="TestList.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="HashTable.c" />
+    <ClCompile Include="List.c" />
+    <ClCompile Include="main.c" />
+    <ClCompile Include="TestList.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

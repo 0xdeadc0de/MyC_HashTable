@@ -1,0 +1,18 @@
+// Auto-generate begin. Do not modify!
+#include "List.h"
+
+_NamespaceList const $List =
+{
+	.Constructor = &Constructor,
+	.Destructor = &Destructor,
+	.At = &At,
+	.Front = &Front,
+	.Back = &Back,
+	.Insert = &Insert,
+	.PushFront = &PushFront,
+	.PushBack = &PushBack,
+	.Remove = &Remove,
+	.RemoveFront = &RemoveFront,
+	.RemoveBack = &RemoveBack
+};
+// Auto-generate end. Do not modify!
