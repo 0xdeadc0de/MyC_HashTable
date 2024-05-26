@@ -1,10 +1,12 @@
+#include <stddef.h>
+
 #include "HashTableItem.h"
 
 typedef struct
 {
-	int count;
+	size_t Count;
 
-	int _size;
+	size_t _size;
 	HashTableItem** _items;
 }
 HashTable;

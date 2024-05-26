@@ -2,7 +2,7 @@
 
 typedef struct
 {
-	void* key;
+	void* Key;
 	void* value;
 }
 HashTableItem;
