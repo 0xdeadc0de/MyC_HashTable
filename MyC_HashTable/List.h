@@ -2,12 +2,13 @@
 
 #include <stddef.h>
 
+#include "Array.h"
+
 typedef struct
 {
 	size_t Count;
 	
-	void** _items;
-	size_t _size;
+	Array* _array;
 }
 List;
 

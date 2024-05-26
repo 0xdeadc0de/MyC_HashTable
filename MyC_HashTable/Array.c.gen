@@ -1,0 +1,11 @@
+// Auto-generate begin. Do not modify!
+#include "Array.h"
+
+_NamespaceArray const $Array =
+{
+	.Constructor = &Constructor,
+	.Destructor = &Destructor,
+	.At = &At,
+	.Set = &Set
+};
+// Auto-generate end. Do not modify!

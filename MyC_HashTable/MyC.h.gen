@@ -3,6 +3,9 @@
 #define H_MyC
 
 #define new(x) $##x.Constructor(malloc(sizeof(x)))
+#define new1(x,y) $##x.Constructor(malloc(sizeof(x)),y)
+#define new2(x,y,z) $##x.Constructor(malloc(sizeof(x)),y,z)
+#define new3(x,y,z,a) $##x.Constructor(malloc(sizeof(x)),y,z,a)
 #define delete(x,y) free($##x.Destructor(y))
 
 #define	$(x) if (x) return NULL

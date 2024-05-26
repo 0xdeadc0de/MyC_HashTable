@@ -31,6 +31,9 @@ def GenerateMacroFile() -> str:
 #define H_MyC
 
 #define new(x) $##x.Constructor(malloc(sizeof(x)))
+#define new1(x,y) $##x.Constructor(malloc(sizeof(x)),y)
+#define new2(x,y,z) $##x.Constructor(malloc(sizeof(x)),y,z)
+#define new3(x,y,z,a) $##x.Constructor(malloc(sizeof(x)),y,z,a)
 #define delete(x,y) free($##x.Destructor(y))
 
 #define	$(x) if (x) return NULL
@@ -87,7 +90,7 @@ def ParseSignatures(path: str) -> Generator[Signature, None, None]:
     with open(path) as file:
         for line in file:
             # match form 'void MethodName(type1 name1, type2 name2)'
-            found = re.match(r"(\w+\s*\*?)\s+(\w+)\(((?:,?\s*(?:\w+\s*\*?)\s+\w+)*)\)", line)
+            found = re.search(r"(\w+\s*\*?)\s+([A-Z]\w*)\(((?:,?\s*(?:\w+\s*\*?)\s+\w+)*)\)", line)
             if (found):
                 yield Signature(found.group(1), found.group(2), found.group(3))
 

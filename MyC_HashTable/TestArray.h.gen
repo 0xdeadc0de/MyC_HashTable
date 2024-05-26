@@ -1,0 +1,19 @@
+// Auto-generate begin. Do not modify!
+#ifndef H_Gen_TestArray
+#define H_Gen_TestArray
+
+#include "MyC.h.gen"
+#include "TestArray.h"
+
+typedef struct
+{
+	void (*Array_SetsItem_AbleToRetrieveByAtMethod)();
+	void (*Array_SetsAllItems_AbleToRetrieveAllItems)();
+	void (*RunAll)();
+}
+_NamespaceTestArray;
+
+extern _NamespaceTestArray const $TestArray;
+
+#endif
+// Auto-generate end. Do not modify!

@@ -4,7 +4,7 @@
 
 static List* resize(List* self, size_t size)
 {
-	void** oldItems = self->_items;
+	Array* oldArray = self->_array;
 	size_t oldCount = self->Count;
 	
 	$(!$List.Constructor(self, size));
@@ -13,10 +13,11 @@ static List* resize(List* self, size_t size)
 
 	for (size_t i = 0; i < oldCount; i++)
 	{
-		self->_items[i] = oldItems[i];
+		void* oldItem = *(void**)$Array.At(oldArray, i);
+		$Array.Set(self->_array, i, &oldItem);
 	}
 
-	free(oldItems);
+	delete(Array, oldArray);
 
 	return self;
 }
@@ -29,23 +30,22 @@ List* Constructor(List* self, size_t size)
 	*self = (List)
 	{
 		.Count = 0,
-		._size = size,
-		._items = calloc(sizeof(void*), size)
+		._array = new2(Array, sizeof(void*), size)
 	};
-
-	$(!self->_items);
+	
+	$(!self->_array);
 
 	return self;
 }
 void Destructor(List* self)
 {
-	free(self->_items);
+	$Array.Destructor(self->_array);
 }
 // Returns the Item at given index; or NULL if out of bounds
 void* At(List* self, size_t index)
 {
 	$(index < 0 || self->Count <= index);
-	return self->_items[index];
+	return *(void**)$Array.At(self->_array, index);
 }
 // Returns the first Item, or NULL if out of bounds
 void* Front(List* self)
@@ -62,21 +62,22 @@ void* Insert(List* self, size_t index, void* item)
 {
 	$(index < 0 || self->Count < index);
 
-	if (self->Count == self->_size)
+	if (self->Count == self->_array->Length)
 	{
-		$(!resize(self, self->_size * 2));
+		$(!resize(self, self->_array->Length * 2));
 	}
 
 	for (size_t i = self->Count; i > index; i--)
 	{
-		self->_items[i] = self->_items[i - 1];
+		void* previous = $List.At(self, i - 1);
+		$Array.Set(self->_array, i, &previous);
 	}
-	
-	self->_items[index] = item;
+
+	$Array.Set(self->_array, index, &item);
 
 	self->Count++;
 
-	return self->_items[index];
+	return *(void**)$Array.At(self->_array, index);
 }
 // Inserts the Item at front, or NULL if any error
 void* PushFront(List* self, void* item)
@@ -93,18 +94,19 @@ void* Remove(List* self, size_t index)
 {
 	$(!$List.At(self, index));
 
-	void* removed = self->_items[index];
+	void* removed = $List.At(self, index);
 
 	for (size_t i = index; i < self->Count - 1; i++)
 	{
-		self->_items[i] = self->_items[i + 1];
+		void* next = $List.At(self, i + 1);
+		$Array.Set(self->_array, i, &next);
 	}
 
 	self->Count--;
 	
-	if (self->Count == self->_size / 4)
+	if (self->Count == self->_array->Length / 4)
 	{
-		$(!resize(self, self->_size / 2));
+		$(!resize(self, self->_array->Length / 2));
 	}
 
 	return removed;

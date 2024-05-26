@@ -1,0 +1,20 @@
+// Auto-generate begin. Do not modify!
+#ifndef H_Gen_Array
+#define H_Gen_Array
+
+#include "MyC.h.gen"
+#include "Array.h"
+
+typedef struct
+{
+	Array* (*Constructor)(Array*, size_t, size_t);
+	void* (*Destructor)(Array*);
+	void* (*At)(Array*, size_t);
+	void* (*Set)(Array*, size_t, void*);
+}
+_NamespaceArray;
+
+extern _NamespaceArray const $Array;
+
+#endif
+// Auto-generate end. Do not modify!

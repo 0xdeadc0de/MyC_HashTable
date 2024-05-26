@@ -3,6 +3,18 @@
 
 _NamespaceTestList const $TestList =
 {
+	.List_Initialize_ShouldHaveZeroItems = &List_Initialize_ShouldHaveZeroItems,
+	.List_At_ShouldReturnItemAtLocation = &List_At_ShouldReturnItemAtLocation,
+	.List_CapacityReached_ShouldDoubleSize = &List_CapacityReached_ShouldDoubleSize,
+	.List_WhenHasLessItems_ShouldReduceSize = &List_WhenHasLessItems_ShouldReduceSize,
+	.List_Front_ShouldReturnItemAtFront = &List_Front_ShouldReturnItemAtFront,
+	.List_Back_ShouldReturnItemAtEnd = &List_Back_ShouldReturnItemAtEnd,
+	.List_PushBack_ShouldAddItemToEnd = &List_PushBack_ShouldAddItemToEnd,
+	.List_PushFront_ShouldAddItemToFront = &List_PushFront_ShouldAddItemToFront,
+	.List_RemoveFront_ShouldRemoveItemAtFront = &List_RemoveFront_ShouldRemoveItemAtFront,
+	.List_RemoveBack_ShouldRemoveItemAtBack = &List_RemoveBack_ShouldRemoveItemAtBack,
+	.List_Remove_ShouldRemoveItemAtGivenIndex = &List_Remove_ShouldRemoveItemAtGivenIndex,
+	.List_Insert_ShouldInsertItemAtGivenIndex = &List_Insert_ShouldInsertItemAtGivenIndex,
 	.RunAll = &RunAll
 };
 // Auto-generate end. Do not modify!
