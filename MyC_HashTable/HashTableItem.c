@@ -6,7 +6,16 @@
 // Constructs an HashTableItem with cloned key and returns the pointer, or NULL if any error
 static HashTableItem* Constructor(HashTableItem* self, const Array* key, const void* value)
 {
-	(Array*)memcpy(malloc(sizeof(Array)), key, sizeof(Array));
+	self->Key = $Array.Clone(key);
+	self->Value = value;
+
+	return self;
+}
+// Frees the resources held, and returns reference to self
+static void* Destructor(HashTableItem* self)
+{
+	delete(Array, self->Key);
+	return self;
 }
 
 #include "HashTableItem.c.gen"

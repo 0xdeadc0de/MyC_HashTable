@@ -65,58 +65,6 @@ static int doubleHash(const char* key, size_t n, size_t size, int attempt)
 
 	return finalHash;
 }
-/*
-// Constructs a HashTable and returns the pointer, or NULL if any error
-static HashTable* Constructor(HashTable* self, size_t size)
-{
-	size = findNextPrime(size);
-
-	*self = (HashTable)
-	{
-		.Count = 0,
-		
-		._size = size,
-		._list = new1(List, size)
-	};
-	
-	for (size_t i = 0; i < size; i++)
-	{
-		$List.PushBack(self->_list, NULL);
-	}
-
-	return self;
-}
-// Frees the resources held, and returns reference to self
-static void* Destructor(HashTable* self)
-{
-	delete(List, self->_list);
-	return self;
-}
-
-static Item* allocItem(const char* key, const char* value)
-{
-	Item* item = malloc(sizeof(Item));
-	if (NULL == item)
-	{
-		return NULL;
-	}
-
-	item->key   = _strdup(key);
-	item->value = _strdup(value);
-	
-	return item;
-}
-static void freeItem(Item* item)
-{
-	if (item == NULL || item == DELETED)
-	{
-		return;
-	}
-	free(item->key);
-	free(item->value);
-	free(item);
-}
-
 static size_t search(HashTable* self, const Array* key, bool findInsertLocation)
 {
 	int attempt = 0;
@@ -157,6 +105,7 @@ static size_t search(HashTable* self, const Array* key, bool findInsertLocation)
 		}
 	}
 }
+extern void Insert(HashTable* self, const Array* key, const void* value);
 static void resize(HashTable* self, size_t newSize)
 {
 	if (newSize < 50)
@@ -168,7 +117,7 @@ static void resize(HashTable* self, size_t newSize)
 	HashTable* newTable = new1(HashTable, newSize);
 	for (size_t i = 0; i < self->_size; i++)
 	{
-		Item* item = table->items[i];
+		HashTableItem* item = $List.At(self->_list, i);
 		
 		// If an item is deleted or null, skip it
 		if (NULL == item || DELETED == item)
@@ -176,89 +125,92 @@ static void resize(HashTable* self, size_t newSize)
 			continue;
 		}
 
-		Insert(newTable, item->key, item->value);
+		Insert(newTable, item->Key, item->Value);
 	}
 
-	// Copy the final amount of count to new table
-	table->count = newTable->count;
-
 	// Swap tables so we can free memory on new table pointer
-	int tempSize = table->size; 
-	table->size = newTable->size;
-	newTable->size = tempSize;
+	size_t tempSize = self->_size; 
+	self->_size = newTable->_size;
+	newTable->_size = tempSize;
 
-	Item** tempItems = table->items;
-	table->items = newTable->items;
-	newTable->items = tempItems;
+	List* tempList = self->_list;
+	self->_list = newTable->_list;
+	newTable->_list = tempList;
 
 	// The strategy is we modify the table passed as argument
 	// And free the new table with swapped memory locations
-	FreeTable(newTable);
+	delete(HashTable, newTable);
 }
 
-// Public methods
-Table* AllocTable()
+// Constructs a HashTable and returns the pointer, or NULL if any error
+static HashTable* Constructor(HashTable* self, size_t size)
 {
-	return allocTable(50);
-}
-void FreeTable(Table* table)
-{
-	for (int i = 0; i < table->size; i++)
+	size = findNextPrime(size);
+
+	*self = (HashTable)
 	{
-		Item* item = table->items[i];
-		freeItem(item);
+		.Count = 0,
+		
+		._size = size,
+		._list = new1(List, size)
+	};
+	
+	for (size_t i = 0; i < size; i++)
+	{
+		$List.PushBack(self->_list, NULL);
 	}
 
-	free(table->items);
-	free(table);
+	return self;
 }
-void Insert(HashTable* self, const Array* key, const void* value)
+// Frees the resources held, and returns reference to self
+static void* Destructor(HashTable* self)
+{
+	delete(List, self->_list);
+	return self;
+}
+static void Insert(HashTable* self, const Array* key, const void* value)
 {
 	if (70 < self->Count * 100 / self->_size)
 	{
-		resize(table, table->size * 2);
+		resize(self, self->_size * 2);
  	}
 
 	// Search an empty slot location to insert the new item
 	size_t index = search(self, key, true);
-	$List.Set(self->_list, index, )
+	$List.Set(self->_list, index, new2(HashTableItem, key, value));
 
 	// Increase the count of items in the table
 	self->Count++;
 }
-void Delete(Table* table, const char* key)
+static void Delete(HashTable* self, const Array* key)
 {
-	Item** itemLocation = search(table, key, false);
-	Item*  item = *itemLocation;
-
+	size_t index = search(self, key, false);
+	HashTableItem* item = $List.At(self->_list, index);
 	// If search returned an empty slot location, we do nothing, this item doesn't exist in table already
 	if (NULL == item)
 	{
 		return;
 	}
 
-	*itemLocation = DELETED;
+	$List.Set(self->_list, index, DELETED);
+	delete(HashTableItem, item);
 
-	table->count--;
+	self->Count--;
 
-	if (10 > table->count * 100 / table->size)
+	if (10 > self->Count * 100 / self->_size)
 	{
-		resize(table, table->size / 2);
+		resize(self, self->_size / 2);
 	}
 }
-char* Search(Table* table, const char* key)
+static void* Search(HashTable* self, const Array* key)
 {
 	// Search for the item with the given key
-	Item** itemLocation = search(table, key, false);
-	Item*  item = *itemLocation;
-	if (NULL == item)
-	{
-		return NULL;
-	}
+	size_t index = search(self, key, false);
+	HashTableItem* item = $List.At(self->_list, index);
+	$(!item);
 
 	// Return the value of the item found
-	return item->value;
+	return item->Value;
 }
 
 #include "HashTable.c.gen"
-*/

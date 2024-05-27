@@ -6,6 +6,8 @@
 
 typedef struct
 {
+	// Run all tests in this module
+
 	void (*RunAll)();
 }
 _NamespaceTestArray;

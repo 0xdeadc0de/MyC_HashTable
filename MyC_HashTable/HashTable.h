@@ -13,4 +13,4 @@ typedef struct
 }
 HashTable;
 
-//#include "HashTable.h.gen"
+#include "HashTable.h.gen"

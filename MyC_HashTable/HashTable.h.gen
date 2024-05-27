@@ -7,13 +7,10 @@
 
 typedef struct
 {
+	// Constructs a HashTable and returns the pointer, or NULL if any error
 	HashTable* (*Constructor)(HashTable* self, size_t size);
+	// Frees the resources held, and returns reference to self
 	void* (*Destructor)(HashTable* self);
-	Table* (*AllocTable)();
-	void (*FreeTable)(Table* table);
-	void (*Insert)(HashTable* self, const Array* key, const void* value);
-	void (*Delete)(Table* table, const char* key);
-	char* (*Search)(Table* table, const char* key);
 }
 _NamespaceHashTable;
 

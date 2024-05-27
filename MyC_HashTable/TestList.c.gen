@@ -2,19 +2,7 @@
 #include "TestList.h.gen"
 static void RunAll()
 {
-	List_Initialize_ShouldHaveZeroItems();
-	List_At_ShouldReturnItemAtLocation();
-	List_Set_ShouldSetItemAtLocation();
-	List_CapacityReached_ShouldDoubleSize();
-	List_WhenHasLessItems_ShouldReduceSize();
-	List_Front_ShouldReturnItemAtFront();
-	List_Back_ShouldReturnItemAtEnd();
-	List_PushBack_ShouldAddItemToEnd();
-	List_PushFront_ShouldAddItemToFront();
-	List_RemoveFront_ShouldRemoveItemAtFront();
-	List_RemoveBack_ShouldRemoveItemAtBack();
-	List_Remove_ShouldRemoveItemAtGivenIndex();
-	List_Insert_ShouldInsertItemAtGivenIndex();
+
 }
 
 _NamespaceTestList const $TestList =

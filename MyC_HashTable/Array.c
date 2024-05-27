@@ -27,7 +27,7 @@ static void* Destructor(Array* self)
 	return self;
 }
 // Creates an exact copy and returns the pointer, or NULL if any error
-static Array* Clone(Array* self)
+static Array* Clone(const Array* self)
 {
 	Array* clone = malloc(sizeof(Array));
 	$(!clone);
@@ -43,7 +43,7 @@ static Array* Clone(Array* self)
 	return clone;
 }
 // Returns the location of the item at index to read from, or NULL if any error
-static void* At(Array* self, size_t index)
+static void* At(const Array* self, size_t index)
 {
 	$(index < 0 || self->Length <= index);
 

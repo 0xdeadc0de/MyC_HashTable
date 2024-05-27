@@ -2,15 +2,7 @@
 #include "TestArray.h.gen"
 static void RunAll()
 {
-	Array_SetsItem_AbleToRetrieveByAtMethod();
-	Array_SetsAllItems_AbleToRetrieveAllItems();
-	Array_AsStringType_WorksAsExpected();
-	Array_AsCustomType_WorksAsExpected();
-	ArrayEquals_DifferentSizeOfItems_ReturnsFalse();
-	ArrayEquals_DifferentLength_ReturnsFalse();
-	ArrayEquals_SameLengthAndSizeOfButDifferentData_ReturnsFalse();
-	ArrayEquals_SameLengthAndSizeOfAndData_ReturnsTrue();
-	Array_Clone_CreatesExactCopy();
+
 }
 
 _NamespaceTestArray const $TestArray =

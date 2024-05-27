@@ -3,10 +3,10 @@ from collections import namedtuple
 from typing import Generator
 
 # Define named tuples
-Signature = namedtuple('Signature', ['returnType', 'name', 'parameters'])
+Signature = namedtuple('Signature', ['returnType', 'name', 'parameters', 'comment'])
 FilePathName = namedtuple('FilePathName', ['path', 'nameWithoutExtension', 'headerExists', 'testing'])
 
-signatureRunAll = Signature("void", "RunAll", "")
+signatureRunAll = Signature("void", "RunAll", "", "// Run all tests in this module\n")
 
 def SignatureToString(signature: Signature) -> str:
     return f"{signature.returnType} {signature.name}({signature.parameters})"
@@ -63,7 +63,7 @@ def GenerateCFile(structName: str, signatures: list[Signature], headerExists: bo
         signatures = [signatureRunAll]
     
     members = []
-    for _, methodName, _ in signatures:
+    for _, methodName, _, _ in signatures:
         members.append(f"\t.{methodName} = &{methodName}")
         
     members = ",\n".join(members)
@@ -108,12 +108,13 @@ def ParseSignatures(path: str) -> Generator[Signature, None, None]:
     Matches format: `void method(int param1, int param2)` with
         indefinite number of parameters
     """
-    with open(path) as file:
-        for line in file:
-            # match form 'void MethodName(type1 name1, type2 name2)'
-            found = re.search(r"(\w+\s*\*?)\s+([A-Z]\w*)\(((?:,?\s*(?:\w+\s*\*?)\s+\w+)*)\)", line)
-            if (found):
-                yield Signature(found.group(1), found.group(2), found.group(3))
+    
+    lines = "".join(x for x in open(path))
+    # match form '// comment\n void MethodName(type1 name1, type2 name2)'
+    r = "(//.+?)\\r?\\nstatic (\w+\s*\*?)\s+([A-Z]\w*)\(((?:,?\s*(?:\w+\s*\*?)\s+\w+)*)\)"
+    for found in re.finditer(r, lines, flags=re.MULTILINE):
+        print(found.group(0))
+        yield Signature(found.group(2), found.group(3), found.group(4), found.group(1))
 
 def MakeFunctionPointers(matches: list[Signature]) -> Generator[str, None, None]:
     """
@@ -124,9 +125,11 @@ def MakeFunctionPointers(matches: list[Signature]) -> Generator[str, None, None]
         arguments = match[2]
         methodName = match[1]
         returnType = match[0]
+        comment = match[3]
         #if (len(arguments) == 0):
         #    arguments = "void"
-        yield f"{returnType} (*{methodName})({arguments})"
+        yield comment
+        yield f"{returnType} (*{methodName})({arguments});"
 
 def main():
     print("\nMyC Python Pre-Build script begin.\n")
@@ -138,7 +141,7 @@ def main():
         signatures = list(ParseSignatures(path))
 
         # Generate header
-        methods = "\n".join(f"\t{x};" for x in MakeFunctionPointers([signatureRunAll] if testing else signatures))
+        methods = "\n".join(f"\t{x}" for x in MakeFunctionPointers([signatureRunAll] if testing else signatures))
         headerFileName = f"{structName}.h.gen"
         with open(headerFileName, "w") as file:
             print(f"Generating file {headerFileName}")
