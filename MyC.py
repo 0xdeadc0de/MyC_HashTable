@@ -55,7 +55,7 @@ def GenerateCFile(structName: str, signatures: list[Signature], headerExists: bo
     runAll = ""
     if generateRunAll:
         calls = "\n".join(f"\t{methodName}();" for _, methodName, _ in signatures)
-        runAll = f"""{SignatureToString(signatureRunAll)}
+        runAll = f"""static {SignatureToString(signatureRunAll)}
 {{
 {calls}
 }}

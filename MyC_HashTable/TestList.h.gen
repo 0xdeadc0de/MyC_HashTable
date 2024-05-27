@@ -6,19 +6,6 @@
 
 typedef struct
 {
-	void (*List_Initialize_ShouldHaveZeroItems)();
-	void (*List_At_ShouldReturnItemAtLocation)();
-	void (*List_Set_ShouldSetItemAtLocation)();
-	void (*List_CapacityReached_ShouldDoubleSize)();
-	void (*List_WhenHasLessItems_ShouldReduceSize)();
-	void (*List_Front_ShouldReturnItemAtFront)();
-	void (*List_Back_ShouldReturnItemAtEnd)();
-	void (*List_PushBack_ShouldAddItemToEnd)();
-	void (*List_PushFront_ShouldAddItemToFront)();
-	void (*List_RemoveFront_ShouldRemoveItemAtFront)();
-	void (*List_RemoveBack_ShouldRemoveItemAtBack)();
-	void (*List_Remove_ShouldRemoveItemAtGivenIndex)();
-	void (*List_Insert_ShouldInsertItemAtGivenIndex)();
 	void (*RunAll)();
 }
 _NamespaceTestList;

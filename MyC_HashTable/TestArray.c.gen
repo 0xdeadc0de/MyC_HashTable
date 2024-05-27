@@ -1,6 +1,6 @@
 // Auto-generate begin. Do not modify!
 #include "TestArray.h.gen"
-void RunAll()
+static void RunAll()
 {
 	Array_SetsItem_AbleToRetrieveByAtMethod();
 	Array_SetsAllItems_AbleToRetrieveAllItems();
