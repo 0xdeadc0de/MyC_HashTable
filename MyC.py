@@ -32,6 +32,8 @@ def GenerateMacroFile() -> str:
 #ifndef H_MyC
 #define H_MyC
 
+#include <stdlib.h>
+
 #define new(typename) $##typename.Constructor(malloc(sizeof(typename)))
 #define new1(typename,a1) $##typename.Constructor(malloc(sizeof(typename)),a1)
 #define new2(typename,a1,a2) $##typename.Constructor(malloc(sizeof(typename)),a1,a2)
@@ -104,8 +106,8 @@ def MakeFunctionPointers(matches: list[Signature]) -> Generator[str, None, None]
         arguments = match[2]
         methodName = match[1]
         returnType = match[0]
-        if (len(arguments) == 0):
-            arguments = "void"
+        #if (len(arguments) == 0):
+        #    arguments = "void"
         yield f"{returnType} (*{methodName})({arguments})"
 
 def main():
