@@ -4,16 +4,18 @@ from typing import Generator
 
 # Define named tuples
 Signature = namedtuple('Signature', ['returnType', 'name', 'parameters'])
-FilePathName = namedtuple('FilePathName', ['path', 'nameWithoutExtension'])
+FilePathName = namedtuple('FilePathName', ['path', 'nameWithoutExtension', 'headerExists'])
 
-def GenerateHeader(structName: str, methods: str) -> str:
+def GenerateHeader(structName: str, methods: str, headerExists: bool) -> str:
+
+    includeHeader = f"""#include "{structName}.h"\n""" if headerExists else ""
+
     return f"""// Auto-generate begin. Do not modify!
 #ifndef H_Gen_{structName}
 #define H_Gen_{structName}
 
 #include "MyC.h.gen"
-#include "{structName}.h"
-
+{includeHeader}
 typedef struct
 {{
 {methods}
@@ -41,15 +43,15 @@ def GenerateMacroFile() -> str:
 #endif
 // Auto-generate end. Do not modify!"""
 
-def GenerateCFile(structName: str, signatures: list[Signature]) -> str:
+def GenerateCFile(structName: str, signatures: list[Signature], headerExists: bool) -> str:
     members = []
     for _, methodName, _ in signatures:
         members.append(f"\t.{methodName} = &{methodName}")
-
+        
     members = ",\n".join(members)
 
     return f"""// Auto-generate begin. Do not modify!
-#include "{structName}.h"
+#include "{structName}.h{"" if headerExists else ".gen"}"
 
 _Namespace{structName} const ${structName} =
 {{
@@ -75,7 +77,7 @@ def FindCFiles(directory: str) -> Generator[FilePathName, None, None]:
 
             for line in lines[::-1]:
                 if f'#include "{fileName}.gen"' in line:
-                    yield (path, fileName[:-2])
+                    yield (path, fileName[:-2], os.path.exists(path[:-2]+".h"))
                     break
 
 def ParseSignatures(path: str) -> Generator[Signature, None, None]:
@@ -111,7 +113,7 @@ def main():
     generatedFilesCount = 0
 
     # Generate all the namespace headers and c files
-    for path, structName in FindCFiles("."):
+    for path, structName, headerExists in FindCFiles("."):
 
         signatures = list(ParseSignatures(path))
 
@@ -120,14 +122,14 @@ def main():
         headerFileName = f"{structName}.h.gen"
         with open(headerFileName, "w") as file:
             print(f"Generating file {headerFileName}")
-            file.write(GenerateHeader(structName, methods))
+            file.write(GenerateHeader(structName, methods, headerExists))
             generatedFilesCount += 1
 
         # Generate C file
         cFileName = f"{structName}.c.gen"
         with open(cFileName, "w") as file:
             print(f"Generating file {cFileName}")
-            file.write(GenerateCFile(structName, signatures))
+            file.write(GenerateCFile(structName, signatures, headerExists))
             generatedFilesCount += 1
 
     if generatedFilesCount > 0:
