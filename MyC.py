@@ -100,13 +100,11 @@ def MakeFunctionPointers(matches: list[Signature]) -> Generator[str, None, None]
     """
     for match in matches:
         arguments = match[2]
-        # match form 'type1 name1' or ', type2 name2'
-        parameters = ", ".join(re.findall(r"(?:,?\s*((?:const\s+)?\w+\s*\*?)\s+\w+)", arguments))
         methodName = match[1]
         returnType = match[0]
-        if (len(parameters) == 0):
-            parameters = "void"
-        yield f"{returnType} (*{methodName})({parameters})"
+        if (len(arguments) == 0):
+            arguments = "void"
+        yield f"{returnType} (*{methodName})({arguments})"
 
 def main():
     print("\nMyC Python Pre-Build script begin.\n")
