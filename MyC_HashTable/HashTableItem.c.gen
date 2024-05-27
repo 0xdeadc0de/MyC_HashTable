@@ -1,0 +1,8 @@
+// Auto-generate begin. Do not modify!
+#include "HashTableItem.h"
+
+_NamespaceHashTableItem const $HashTableItem =
+{
+	.Constructor = &Constructor
+};
+// Auto-generate end. Do not modify!

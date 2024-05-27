@@ -1,0 +1,9 @@
+// Auto-generate begin. Do not modify!
+#include "TestHashTableItem.h.gen"
+
+_NamespaceTestHashTableItem const $TestHashTableItem =
+{
+	.HashTableItem_Constructor_CreatesExactCopyOfKeys = &HashTableItem_Constructor_CreatesExactCopyOfKeys,
+	.RunAll = &RunAll
+};
+// Auto-generate end. Do not modify!

@@ -38,9 +38,9 @@ static List* Constructor(List* self, size_t size)
 	return self;
 }
 // Frees the resources held, and returns reference to self
-static void Destructor(List* self)
+static void* Destructor(List* self)
 {
-	$Array.Destructor(self->_array);
+	delete(Array, self->_array);
 	return self;
 }
 // Returns the Item at given index; or NULL if out of bounds
@@ -48,6 +48,12 @@ static void* At(List* self, size_t index)
 {
 	$(index < 0 || self->Count <= index);
 	return *(void**)$Array.At(self->_array, index);
+}
+// Sets the Item at given index; or NULL if out of bounds
+static void* Set(List* self, size_t index, const void* item)
+{
+	$(index < 0 || self->Count <= index);
+	return $Array.Set(self->_array, index, item);
 }
 // Returns the first Item, or NULL if out of bounds
 static void* Front(List* self)
@@ -60,7 +66,7 @@ static void* Back(List* self)
 	return $List.At(self, self->Count - 1);
 }
 // Inserts the Item at given index. Returns NULL if out of bounds, or any error
-static void* Insert(List* self, size_t index, void* item)
+static void* Insert(List* self, size_t index, const void* item)
 {
 	$(index < 0 || self->Count < index);
 
@@ -82,12 +88,12 @@ static void* Insert(List* self, size_t index, void* item)
 	return *(void**)$Array.At(self->_array, index);
 }
 // Inserts the Item at front, or NULL if any error
-static void* PushFront(List* self, void* item)
+static void* PushFront(List* self, const void* item)
 {
 	return Insert(self, 0, item);
 }
 // Inserts the Item at end, or NULL if any error
-static void* PushBack(List* self, void* item)
+static void* PushBack(List* self, const void* item)
 {
 	return Insert(self, self->Count, item);
 }

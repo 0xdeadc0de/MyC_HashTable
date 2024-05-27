@@ -5,7 +5,9 @@ _NamespaceArray const $Array =
 {
 	.Constructor = &Constructor,
 	.Destructor = &Destructor,
+	.Clone = &Clone,
 	.At = &At,
-	.Set = &Set
+	.Set = &Set,
+	.Equals = &Equals
 };
 // Auto-generate end. Do not modify!

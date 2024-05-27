@@ -6,6 +6,7 @@ _NamespaceList const $List =
 	.Constructor = &Constructor,
 	.Destructor = &Destructor,
 	.At = &At,
+	.Set = &Set,
 	.Front = &Front,
 	.Back = &Back,
 	.Insert = &Insert,

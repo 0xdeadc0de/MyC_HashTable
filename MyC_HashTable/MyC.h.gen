@@ -2,11 +2,13 @@
 #ifndef H_MyC
 #define H_MyC
 
-#define new(x) $##x.Constructor(malloc(sizeof(x)))
-#define new1(x,y) $##x.Constructor(malloc(sizeof(x)),y)
-#define new2(x,y,z) $##x.Constructor(malloc(sizeof(x)),y,z)
-#define new3(x,y,z,a) $##x.Constructor(malloc(sizeof(x)),y,z,a)
-#define delete(x,y) free($##x.Destructor(y))
+#include <stdlib.h>
+
+#define new(typename) $##typename.Constructor(malloc(sizeof(typename)))
+#define new1(typename,a1) $##typename.Constructor(malloc(sizeof(typename)),a1)
+#define new2(typename,a1,a2) $##typename.Constructor(malloc(sizeof(typename)),a1,a2)
+#define new3(typename,a1,a2,a3) $##typename.Constructor(malloc(sizeof(typename)),a1,a2,a3)
+#define delete(typename,self) free($##typename.Destructor(self))
 
 #define	$(x) if (x) return NULL
 

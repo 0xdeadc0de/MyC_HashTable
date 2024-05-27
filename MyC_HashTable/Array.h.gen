@@ -7,10 +7,12 @@
 
 typedef struct
 {
-	Array* (*Constructor)(Array*, size_t, size_t);
-	void* (*Destructor)(Array*);
-	void* (*At)(Array*, size_t);
-	void* (*Set)(Array*, size_t, void*);
+	Array* (*Constructor)(Array* self, size_t sizeOfItem, size_t length);
+	void* (*Destructor)(Array* self);
+	Array* (*Clone)(Array* self);
+	void* (*At)(Array* self, size_t index);
+	void* (*Set)(Array* self, size_t index, const void* itemLocation);
+	bool (*Equals)(Array* self, Array* other);
 }
 _NamespaceArray;
 

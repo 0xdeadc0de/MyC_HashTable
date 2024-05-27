@@ -1,0 +1,17 @@
+// Auto-generate begin. Do not modify!
+#ifndef H_Gen_TestHashTableItem
+#define H_Gen_TestHashTableItem
+
+#include "MyC.h.gen"
+
+typedef struct
+{
+	void (*HashTableItem_Constructor_CreatesExactCopyOfKeys)();
+	void (*RunAll)();
+}
+_NamespaceTestHashTableItem;
+
+extern _NamespaceTestHashTableItem const $TestHashTableItem;
+
+#endif
+// Auto-generate end. Do not modify!

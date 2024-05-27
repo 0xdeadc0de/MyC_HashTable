@@ -1,0 +1,14 @@
+// Auto-generate begin. Do not modify!
+#include "HashTable.h"
+
+_NamespaceHashTable const $HashTable =
+{
+	.Constructor = &Constructor,
+	.Destructor = &Destructor,
+	.AllocTable = &AllocTable,
+	.FreeTable = &FreeTable,
+	.Insert = &Insert,
+	.Delete = &Delete,
+	.Search = &Search
+};
+// Auto-generate end. Do not modify!

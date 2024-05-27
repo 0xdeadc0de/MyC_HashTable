@@ -1,8 +1,12 @@
 #pragma once
 
+#include "Array.h"
+
 typedef struct
 {
-	void* Key;
-	void* value;
+	Array* Key;
+	void* Value;
 }
 HashTableItem;
+
+#include "HashTableItem.h.gen"

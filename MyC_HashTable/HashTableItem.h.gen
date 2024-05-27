@@ -1,0 +1,17 @@
+// Auto-generate begin. Do not modify!
+#ifndef H_Gen_HashTableItem
+#define H_Gen_HashTableItem
+
+#include "MyC.h.gen"
+#include "HashTableItem.h"
+
+typedef struct
+{
+	HashTableItem* (*Constructor)(HashTableItem* self, const Array* key, const void* value);
+}
+_NamespaceHashTableItem;
+
+extern _NamespaceHashTableItem const $HashTableItem;
+
+#endif
+// Auto-generate end. Do not modify!
