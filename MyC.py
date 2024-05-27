@@ -57,14 +57,14 @@ _Namespace{structName} const ${structName} =
 }};
 // Auto-generate end. Do not modify!"""
 
-def FindHeaders(directory: str) -> Generator[FilePathName, None, None]:
+def FindCFiles(directory: str) -> Generator[FilePathName, None, None]:
     """
-    Finds all the header files with #include "MyObject.h.gen" line
+    Finds all the C files with #include "MyObject.c.gen" line
     that will be used for namespace generation.
     """
     for root, _, files in os.walk(directory):
         for fileName in files:
-            if not fileName.endswith(".h"):
+            if not fileName.endswith(".c"):
                 continue
 
             path = os.path.join(root, fileName)
@@ -73,7 +73,7 @@ def FindHeaders(directory: str) -> Generator[FilePathName, None, None]:
             lines = file.readlines()
             file.close()
 
-            for line in lines:
+            for line in lines[::-1]:
                 if f'#include "{fileName}.gen"' in line:
                     yield (path, fileName[:-2])
                     break
@@ -86,7 +86,6 @@ def ParseSignatures(path: str) -> Generator[Signature, None, None]:
     Matches format: `void method(int param1, int param2)` with
         indefinite number of parameters
     """
-    path = path[:-1] + "c"
     with open(path) as file:
         for line in file:
             # match form 'void MethodName(type1 name1, type2 name2)'
@@ -102,9 +101,11 @@ def MakeFunctionPointers(matches: list[Signature]) -> Generator[str, None, None]
     for match in matches:
         arguments = match[2]
         # match form 'type1 name1' or ', type2 name2'
-        parameters = ", ".join(re.findall(r"(?:,?\s*(\w+\s*\*?)\s+\w+)", arguments))
+        parameters = ", ".join(re.findall(r"(?:,?\s*((?:const\s+)?\w+\s*\*?)\s+\w+)", arguments))
         methodName = match[1]
         returnType = match[0]
+        if (len(parameters) == 0):
+            parameters = "void"
         yield f"{returnType} (*{methodName})({parameters})"
 
 def main():
@@ -112,7 +113,7 @@ def main():
     generatedFilesCount = 0
 
     # Generate all the namespace headers and c files
-    for path, structName in FindHeaders("."):
+    for path, structName in FindCFiles("."):
 
         signatures = list(ParseSignatures(path))
 
