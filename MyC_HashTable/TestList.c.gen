@@ -1,10 +1,11 @@
 // Auto-generate begin. Do not modify!
-#include "TestList.h"
+#include "TestList.h.gen"
 
 _NamespaceTestList const $TestList =
 {
 	.List_Initialize_ShouldHaveZeroItems = &List_Initialize_ShouldHaveZeroItems,
 	.List_At_ShouldReturnItemAtLocation = &List_At_ShouldReturnItemAtLocation,
+	.List_Set_ShouldSetItemAtLocation = &List_Set_ShouldSetItemAtLocation,
 	.List_CapacityReached_ShouldDoubleSize = &List_CapacityReached_ShouldDoubleSize,
 	.List_WhenHasLessItems_ShouldReduceSize = &List_WhenHasLessItems_ShouldReduceSize,
 	.List_Front_ShouldReturnItemAtFront = &List_Front_ShouldReturnItemAtFront,

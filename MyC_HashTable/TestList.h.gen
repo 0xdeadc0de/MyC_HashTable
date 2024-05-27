@@ -3,12 +3,12 @@
 #define H_Gen_TestList
 
 #include "MyC.h.gen"
-#include "TestList.h"
 
 typedef struct
 {
 	void (*List_Initialize_ShouldHaveZeroItems)();
 	void (*List_At_ShouldReturnItemAtLocation)();
+	void (*List_Set_ShouldSetItemAtLocation)();
 	void (*List_CapacityReached_ShouldDoubleSize)();
 	void (*List_WhenHasLessItems_ShouldReduceSize)();
 	void (*List_Front_ShouldReturnItemAtFront)();

@@ -1,3 +1,5 @@
+#undef MyC_Test
+
 #include <assert.h>
 
 #include "List.h"
@@ -18,6 +20,30 @@ static void List_Initialize_ShouldHaveZeroItems()
 	$List.Destructor(&list);
 }
 static void List_At_ShouldReturnItemAtLocation()
+{
+	// Arrange
+	List list;
+	assert($List.Constructor(&list, 1));
+	
+	int item = 42;
+	int* itemLocation = &item;
+	// Act
+	assert($List.PushBack(&list, itemLocation));
+	
+	// Assert
+	assert(list._array->Length == 1);
+	assert(list.Count == 1);
+	assert($List.At(&list, 0) == *(void**)$Array.At(list._array, 0));
+
+	void* location = $List.At(&list, 0);
+	int* intLocation = location;
+	int value = *intLocation;
+	assert(42 == value);
+
+	// Annihilate
+	$List.Destructor(&list);
+}
+static void List_Set_ShouldSetItemAtLocation()
 {
 	// Arrange
 	List list;
@@ -296,24 +322,6 @@ static void List_Insert_ShouldInsertItemAtGivenIndex()
 
 	// Annihilate
 	$List.Destructor(&list);
-}
-
-static void RunAll()
-{
-	List_Initialize_ShouldHaveZeroItems();
-	List_At_ShouldReturnItemAtLocation();
-
-	List_CapacityReached_ShouldDoubleSize();
-	List_WhenHasLessItems_ShouldReduceSize();
-
-	List_Front_ShouldReturnItemAtFront();
-	List_Back_ShouldReturnItemAtEnd();
-	List_PushBack_ShouldAddItemToEnd();
-	List_PushFront_ShouldAddItemToFront();
-	List_RemoveFront_ShouldRemoveItemAtFront();
-	List_RemoveBack_ShouldRemoveItemAtBack();
-	List_Remove_ShouldRemoveItemAtGivenIndex();
-	List_Insert_ShouldInsertItemAtGivenIndex();
 }
 
 #include "TestList.c.gen"

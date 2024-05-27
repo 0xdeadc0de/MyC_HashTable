@@ -1,12 +1,20 @@
 // Auto-generate begin. Do not modify!
-#include "TestArray.h"
+#include "TestArray.h.gen"
+void RunAll()
+{
+	Array_SetsItem_AbleToRetrieveByAtMethod();
+	Array_SetsAllItems_AbleToRetrieveAllItems();
+	Array_AsStringType_WorksAsExpected();
+	Array_AsCustomType_WorksAsExpected();
+	ArrayEquals_DifferentSizeOfItems_ReturnsFalse();
+	ArrayEquals_DifferentLength_ReturnsFalse();
+	ArrayEquals_SameLengthAndSizeOfButDifferentData_ReturnsFalse();
+	ArrayEquals_SameLengthAndSizeOfAndData_ReturnsTrue();
+	Array_Clone_CreatesExactCopy();
+}
 
 _NamespaceTestArray const $TestArray =
 {
-	.Array_SetsItem_AbleToRetrieveByAtMethod = &Array_SetsItem_AbleToRetrieveByAtMethod,
-	.Array_SetsAllItems_AbleToRetrieveAllItems = &Array_SetsAllItems_AbleToRetrieveAllItems,
-	.Array_AsStringType_WorksAsExpected = &Array_AsStringType_WorksAsExpected,
-	.Array_AsCustomType_WorksAsExpected = &Array_AsCustomType_WorksAsExpected,
 	.RunAll = &RunAll
 };
 // Auto-generate end. Do not modify!

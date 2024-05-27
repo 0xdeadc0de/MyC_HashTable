@@ -3,14 +3,9 @@
 #define H_Gen_TestArray
 
 #include "MyC.h.gen"
-#include "TestArray.h"
 
 typedef struct
 {
-	void (*Array_SetsItem_AbleToRetrieveByAtMethod)();
-	void (*Array_SetsAllItems_AbleToRetrieveAllItems)();
-	void (*Array_AsStringType_WorksAsExpected)();
-	void (*Array_AsCustomType_WorksAsExpected)();
 	void (*RunAll)();
 }
 _NamespaceTestArray;

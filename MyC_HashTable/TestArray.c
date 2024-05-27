@@ -1,5 +1,8 @@
+#undef MyC_Test
+
 #include <assert.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "Array.h"
 
@@ -7,12 +10,12 @@ static void Array_SetsItem_AbleToRetrieveByAtMethod()
 {
 	// Arrange
 	Array array;
-	$Array.Constructor(&array, sizeof(int), 1);
+	assert($Array.Constructor(&array, sizeof(int), 1));
 
 	// Act
 	int item = 42;
 	int* itemLocation = &item;
-	$Array.Set(&array, 0, itemLocation);
+	assert($Array.Set(&array, 0, itemLocation));
 	
 	// Assert
 	void* location = $Array.At(&array, 0);
@@ -28,7 +31,7 @@ static void Array_SetsAllItems_AbleToRetrieveAllItems()
 	// Arrange
 	Array array;
 	const length = 42;
-	$Array.Constructor(&array, sizeof(int), length);
+	assert($Array.Constructor(&array, sizeof(int), length));
 
 	// Act
 	for (int i = 0; i < length; i++)
@@ -131,12 +134,69 @@ static void Array_AsCustomType_WorksAsExpected()
 	$Array.Destructor(&array);
 }
 
-static void RunAll()
+static void ArrayEquals_DifferentSizeOfItems_ReturnsFalse()
 {
-	Array_SetsItem_AbleToRetrieveByAtMethod();
-	Array_SetsAllItems_AbleToRetrieveAllItems();
-	Array_AsStringType_WorksAsExpected();
-	Array_AsCustomType_WorksAsExpected();
+	// Arrange
+	Array a1, a2;
+	$Array.Constructor(&a1, 2, 2);
+	$Array.Constructor(&a1, 1, 2);
+
+	// Act & Assert
+	assert(false == $Array.Equals(&a1, &a2));
+}
+static void ArrayEquals_DifferentLength_ReturnsFalse()
+{
+	// Arrange
+	Array a1, a2;
+	$Array.Constructor(&a1, 2, 1);
+	$Array.Constructor(&a2, 2, 2);
+
+	// Act & Assert
+	assert(false == $Array.Equals(&a1, &a2));
+}
+static void ArrayEquals_SameLengthAndSizeOfButDifferentData_ReturnsFalse()
+{
+	// Arrange
+	Array a1, a2;
+	$Array.Constructor(&a1, 2, 2);
+	$Array.Constructor(&a2, 2, 2);
+	
+	int x = 1, y = 2;
+	$Array.Set(&a1, 0, &x);
+	$Array.Set(&a2, 0, &y);
+
+	// Act & Assert
+	assert(false == $Array.Equals(&a1, &a2));
+}
+static void ArrayEquals_SameLengthAndSizeOfAndData_ReturnsTrue()
+{
+	// Arrange
+	Array a1, a2;
+	$Array.Constructor(&a1, 2, 2);
+	$Array.Constructor(&a2, 2, 2);
+	
+	int x = 2, y = 2;
+	$Array.Set(&a1, 0, &x);
+	$Array.Set(&a2, 0, &y);
+
+	// Act & Assert
+	assert(true == $Array.Equals(&a1, &a2));
+}
+
+static void Array_Clone_CreatesExactCopy()
+{
+	// Arrange
+	Array* a1 = new2(Array, sizeof(int), 5);
+	for (size_t i = 0; i < 5; i++)
+	{
+		$Array.Set(a1, i, &i);
+	}
+
+	// Act
+	Array* cloned = $Array.Clone(a1);
+
+	// Assert
+	assert($Array.Equals(a1, cloned));
 }
 
 #include "TestArray.c.gen"
