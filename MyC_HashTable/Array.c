@@ -72,15 +72,7 @@ static bool Equals(const Array* self, const Array* other)
 		return false;
 	}
 
-	for (size_t i = 0; i < $Array.Length(self); i++)
-	{
-		if (((char*)self->Items)[i] != ((char*)other->Items)[i])
-		{
-			return false;
-		}
-	}
-
-	return true;
+	return !memcmp(self->Items, other->Items, $Array.Length(self));
 }
 // Returns the total size of the Array in bytes, calculated by SizeOfItem * Count
 static size_t Length(const Array* self)
