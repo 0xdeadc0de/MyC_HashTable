@@ -3,7 +3,7 @@
 
 _NamespaceHashTableItem const $HashTableItem =
 {
-	.Constructor = &Constructor,
+	.Constructor2 = &Constructor2,
 	.Destructor = &Destructor
 };
 // Auto-generate end. Do not modify!

@@ -8,7 +8,7 @@
 typedef struct
 {
 	// Constructs a List of size and returns the list pointer, or NULL if any error
-	List* (*Constructor)(List* self, size_t size);
+	List* (*Constructor1)(List* self, size_t size);
 	// Frees the resources held, and returns reference to self
 	void* (*Destructor)(List* self);
 	// Returns the Item at given index; or NULL if out of bounds

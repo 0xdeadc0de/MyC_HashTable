@@ -40,9 +40,9 @@ def GenerateMacroFile() -> str:
 #include <stdlib.h>
 
 #define new(typename) $##typename.Constructor(malloc(sizeof(typename)))
-#define new1(typename,a1) $##typename.Constructor(malloc(sizeof(typename)),a1)
-#define new2(typename,a1,a2) $##typename.Constructor(malloc(sizeof(typename)),a1,a2)
-#define new3(typename,a1,a2,a3) $##typename.Constructor(malloc(sizeof(typename)),a1,a2,a3)
+#define new1(typename,a1) $##typename.Constructor1(malloc(sizeof(typename)),a1)
+#define new2(typename,a1,a2) $##typename.Constructor2(malloc(sizeof(typename)),a1,a2)
+#define new3(typename,a1,a2,a3) $##typename.Constructor3(malloc(sizeof(typename)),a1,a2,a3)
 #define delete(typename,self) free($##typename.Destructor(self))
 
 #define	$(x) if (x) return NULL

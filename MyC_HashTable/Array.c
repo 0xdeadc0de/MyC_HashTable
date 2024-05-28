@@ -5,7 +5,7 @@
 #include "Array.h"
 _Check_return_
 // Constructs an Array of size and returns the array pointer, or NULL if any error
-static Array* Constructor(Array* self, size_t sizeOfItem, size_t length)
+static Array* Constructor2(Array* self, size_t sizeOfItem, size_t length)
 {
 	$(sizeOfItem <= 0 || length <= 0);
 

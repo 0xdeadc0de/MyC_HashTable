@@ -3,7 +3,7 @@
 
 _NamespaceList const $List =
 {
-	.Constructor = &Constructor,
+	.Constructor1 = &Constructor1,
 	.Destructor = &Destructor,
 	.At = &At,
 	.Set = &Set,

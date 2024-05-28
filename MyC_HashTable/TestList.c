@@ -10,7 +10,7 @@ static void List_Initialize_ShouldHaveZeroItems()
 	List list;
 
 	// Act
-	$List.Constructor(&list, 42);
+	$List.Constructor1(&list, 42);
 	
 	// Assert
 	assert(list._array->Length == 42);
@@ -23,7 +23,7 @@ static void List_At_ShouldReturnItemAtLocation()
 {
 	// Arrange
 	List list;
-	assert($List.Constructor(&list, 1));
+	assert($List.Constructor1(&list, 1));
 	
 	int item = 42;
 	int* itemLocation = &item;
@@ -47,7 +47,7 @@ static void List_Set_ShouldSetItemAtLocation()
 {
 	// Arrange
 	List list;
-	assert($List.Constructor(&list, 1));
+	assert($List.Constructor1(&list, 1));
 	
 	int item = 42;
 	int* itemLocation = &item;
@@ -73,7 +73,7 @@ static void List_CapacityReached_ShouldDoubleSize()
 {
 	// Arrange
 	List list;
-	assert($List.Constructor(&list, 1));
+	assert($List.Constructor1(&list, 1));
 	
 	int item;
 
@@ -102,7 +102,7 @@ static void List_WhenHasLessItems_ShouldReduceSize()
 {
 	// Arrange
 	List list;
-	assert($List.Constructor(&list, 1));
+	assert($List.Constructor1(&list, 1));
 	
 	int item;
 
@@ -147,7 +147,7 @@ static void List_Front_ShouldReturnItemAtFront()
 {
 	// Arrange
 	List list;
-	assert($List.Constructor(&list, 1));
+	assert($List.Constructor1(&list, 1));
 	
 	int item0, item1;
 
@@ -174,7 +174,7 @@ static void List_Back_ShouldReturnItemAtEnd()
 {
 	// Arrange
 	List list;
-	assert($List.Constructor(&list, 1));
+	assert($List.Constructor1(&list, 1));
 	
 	int item0, item1;
 
@@ -196,7 +196,7 @@ static void List_PushBack_ShouldAddItemToEnd()
 {
 	// Arrange
 	List list;
-	assert($List.Constructor(&list, 1));
+	assert($List.Constructor1(&list, 1));
 	
 	int item0, item1;
 
@@ -217,7 +217,7 @@ static void List_PushFront_ShouldAddItemToFront()
 {
 	// Arrange
 	List list;
-	assert($List.Constructor(&list, 1));
+	assert($List.Constructor1(&list, 1));
 	
 	int item0, item1;
 
@@ -238,7 +238,7 @@ static void List_RemoveFront_ShouldRemoveItemAtFront()
 {
 	// Arrange
 	List list;
-	assert($List.Constructor(&list, 1));
+	assert($List.Constructor1(&list, 1));
 	
 	int item0, item1;
 
@@ -259,7 +259,7 @@ static void List_RemoveBack_ShouldRemoveItemAtBack()
 {
 	// Arrange
 	List list;
-	assert($List.Constructor(&list, 1));
+	assert($List.Constructor1(&list, 1));
 	
 	int item0, item1;
 
@@ -280,7 +280,7 @@ static void List_Remove_ShouldRemoveItemAtGivenIndex()
 {
 	// Arrange
 	List list;
-	assert($List.Constructor(&list, 1));
+	assert($List.Constructor1(&list, 1));
 	
 	int item0, item1, item2;
 
@@ -303,7 +303,7 @@ static void List_Insert_ShouldInsertItemAtGivenIndex()
 {
 	// Arrange
 	List list;
-	assert($List.Constructor(&list, 1));
+	assert($List.Constructor1(&list, 1));
 	
 	int item0, item1, item2, itemX;
 

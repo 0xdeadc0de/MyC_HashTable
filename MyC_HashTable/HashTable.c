@@ -143,7 +143,7 @@ static void resize(HashTable* self, size_t newSize)
 }
 
 // Constructs a HashTable and returns the pointer, or NULL if any error
-static HashTable* Constructor(HashTable* self, size_t size)
+static HashTable* Constructor1(HashTable* self, size_t size)
 {
 	size = findNextPrime(size);
 

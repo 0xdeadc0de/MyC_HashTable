@@ -7,7 +7,7 @@ static List* resize(List* self, size_t size)
 	Array* oldArray = self->_array;
 	size_t oldCount = self->Count;
 	
-	$(!$List.Constructor(self, size));
+	$(!$List.Constructor1(self, size));
 
 	self->Count = oldCount;
 
@@ -23,7 +23,7 @@ static List* resize(List* self, size_t size)
 }
 
 // Constructs a List of size and returns the list pointer, or NULL if any error
-static List* Constructor(List* self, size_t size)
+static List* Constructor1(List* self, size_t size)
 {
 	$(size <= 0);
 

@@ -8,7 +8,7 @@
 typedef struct
 {
 	// Constructs an Array of size and returns the array pointer, or NULL if any error
-	Array* (*Constructor)(Array* self, size_t sizeOfItem, size_t length);
+	Array* (*Constructor2)(Array* self, size_t sizeOfItem, size_t length);
 	// Frees the resources held, and returns reference to self
 	void* (*Destructor)(Array* self);
 	// Creates an exact copy and returns the pointer, or NULL if any error

@@ -8,7 +8,7 @@
 typedef struct
 {
 	// Constructs a HashTable and returns the pointer, or NULL if any error
-	HashTable* (*Constructor)(HashTable* self, size_t size);
+	HashTable* (*Constructor1)(HashTable* self, size_t size);
 	// Frees the resources held, and returns reference to self
 	void* (*Destructor)(HashTable* self);
 	// Inserts the given key, value into the hash table

@@ -3,7 +3,7 @@
 
 _NamespaceHashTable const $HashTable =
 {
-	.Constructor = &Constructor,
+	.Constructor1 = &Constructor1,
 	.Destructor = &Destructor,
 	.Insert = &Insert,
 	.Delete = &Delete,

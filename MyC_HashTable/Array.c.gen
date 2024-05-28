@@ -3,7 +3,7 @@
 
 _NamespaceArray const $Array =
 {
-	.Constructor = &Constructor,
+	.Constructor2 = &Constructor2,
 	.Destructor = &Destructor,
 	.Clone = &Clone,
 	.At = &At,
