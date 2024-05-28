@@ -168,6 +168,7 @@ static void* Destructor(HashTable* self)
 	delete(List, self->_list);
 	return self;
 }
+// Inserts the given key, value into the hash table
 static void Insert(HashTable* self, const Array* key, const void* value)
 {
 	if (70 < self->Count * 100 / self->_size)
@@ -177,11 +178,13 @@ static void Insert(HashTable* self, const Array* key, const void* value)
 
 	// Search an empty slot location to insert the new item
 	size_t index = search(self, key, true);
-	$List.Set(self->_list, index, new2(HashTableItem, key, value));
+	HashTableItem* newPair = new2(HashTableItem, key, value);
+	$List.Set(self->_list, index, newPair);
 
 	// Increase the count of items in the table
 	self->Count++;
 }
+// Deletes the key from the hash table
 static void Delete(HashTable* self, const Array* key)
 {
 	size_t index = search(self, key, false);
@@ -202,6 +205,7 @@ static void Delete(HashTable* self, const Array* key)
 		resize(self, self->_size / 2);
 	}
 }
+// Searches and retrieves the value from given key if exists, or NULL if any error
 static void* Search(HashTable* self, const Array* key)
 {
 	// Search for the item with the given key

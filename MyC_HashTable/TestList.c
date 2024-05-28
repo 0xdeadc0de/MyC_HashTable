@@ -53,6 +53,9 @@ static void List_Set_ShouldSetItemAtLocation()
 	int* itemLocation = &item;
 	// Act
 	assert($List.PushBack(&list, itemLocation));
+	int newItem = 38;
+	int newLocation = &newItem;
+	assert($List.Set(&list, 0, newLocation));
 	
 	// Assert
 	assert(list._array->Length == 1);
@@ -60,9 +63,7 @@ static void List_Set_ShouldSetItemAtLocation()
 	assert($List.At(&list, 0) == *(void**)$Array.At(list._array, 0));
 
 	void* location = $List.At(&list, 0);
-	int* intLocation = location;
-	int value = *intLocation;
-	assert(42 == value);
+	assert(location == newLocation);
 
 	// Annihilate
 	$List.Destructor(&list);

@@ -11,6 +11,12 @@ typedef struct
 	HashTable* (*Constructor)(HashTable* self, size_t size);
 	// Frees the resources held, and returns reference to self
 	void* (*Destructor)(HashTable* self);
+	// Inserts the given key, value into the hash table
+	void (*Insert)(HashTable* self, const Array* key, const void* value);
+	// Deletes the key from the hash table
+	void (*Delete)(HashTable* self, const Array* key);
+	// Searches and retrieves the value from given key if exists, or NULL if any error
+	void* (*Search)(HashTable* self, const Array* key);
 }
 _NamespaceHashTable;
 

@@ -1,6 +1,6 @@
 // Auto-generate begin. Do not modify!
-#ifndef H_Gen_TestList
-#define H_Gen_TestList
+#ifndef H_Gen_TestHashTable
+#define H_Gen_TestHashTable
 
 #include "MyC.h.gen"
 
@@ -8,9 +8,9 @@ typedef struct
 {
 	void (*RunAll)();
 }
-_NamespaceTestList;
+_NamespaceTestHashTable;
 
-extern _NamespaceTestList const $TestList;
+extern _NamespaceTestHashTable const $TestHashTable;
 
 #endif
 // Auto-generate end. Do not modify!

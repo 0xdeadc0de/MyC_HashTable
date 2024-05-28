@@ -6,7 +6,7 @@ from typing import Generator
 Signature = namedtuple('Signature', ['returnType', 'name', 'parameters', 'comment'])
 FilePathName = namedtuple('FilePathName', ['path', 'nameWithoutExtension', 'headerExists', 'testing'])
 
-signatureRunAll = Signature("void", "RunAll", "", "// Run all tests in this module\n")
+signatureRunAll = Signature("void", "RunAll", "", "// Run all tests in this module")
 
 def SignatureToString(signature: Signature) -> str:
     return f"{signature.returnType} {signature.name}({signature.parameters})"
@@ -54,7 +54,7 @@ def GenerateCFile(structName: str, signatures: list[Signature], headerExists: bo
     
     runAll = ""
     if generateRunAll:
-        calls = "\n".join(f"\t{methodName}();" for _, methodName, _ in signatures)
+        calls = "\n".join(f"\t{methodName}();" for _, methodName, _, _ in signatures)
         runAll = f"""static {SignatureToString(signatureRunAll)}
 {{
 {calls}
@@ -100,7 +100,7 @@ def FindCFiles(directory: str) -> Generator[FilePathName, None, None]:
                     yield (path, fileName[:-2], os.path.exists(path[:-2]+".h"), testing)
                     break
 
-def ParseSignatures(path: str) -> Generator[Signature, None, None]:
+def ParseSignatures(path: str, testing: bool) -> Generator[Signature, None, None]:
     """
     Parses the .c file and extracts all the function signatures
     to be used in the namespace file
@@ -111,12 +111,15 @@ def ParseSignatures(path: str) -> Generator[Signature, None, None]:
     
     lines = "".join(x for x in open(path))
     # match form '// comment\n void MethodName(type1 name1, type2 name2)'
-    r = "(//.+?)\\r?\\nstatic (\w+\s*\*?)\s+([A-Z]\w*)\(((?:,?\s*(?:\w+\s*\*?)\s+\w+)*)\)"
+    r  = "" if testing else "(//.+?)\\r?\\n"
+    r += "static (\w+\s*\*?)\s+([A-Z]\w*)\(((?:,?\s*(?:\w+\s*\*?)\s+\w+)*)\)"
     for found in re.finditer(r, lines, flags=re.MULTILINE):
-        print(found.group(0))
-        yield Signature(found.group(2), found.group(3), found.group(4), found.group(1))
+        if testing:
+            yield Signature(found.group(1), found.group(2), found.group(3), "")
+        else:
+            yield Signature(found.group(2), found.group(3), found.group(4), found.group(1))
 
-def MakeFunctionPointers(matches: list[Signature]) -> Generator[str, None, None]:
+def MakeFunctionPointers(matches: list[Signature], testing: bool) -> Generator[str, None, None]:
     """
     Transforms each Signature into function pointer string
         Ex: void f(int a, char b) -> void (*f)(int, char)
@@ -128,7 +131,8 @@ def MakeFunctionPointers(matches: list[Signature]) -> Generator[str, None, None]
         comment = match[3]
         #if (len(arguments) == 0):
         #    arguments = "void"
-        yield comment
+        if not testing:
+            yield comment
         yield f"{returnType} (*{methodName})({arguments});"
 
 def main():
@@ -138,10 +142,10 @@ def main():
     # Generate all the namespace headers and c files
     for path, structName, headerExists, testing in FindCFiles("."):
 
-        signatures = list(ParseSignatures(path))
+        signatures = list(ParseSignatures(path, testing))
 
         # Generate header
-        methods = "\n".join(f"\t{x}" for x in MakeFunctionPointers([signatureRunAll] if testing else signatures))
+        methods = "\n".join(f"\t{x}" for x in MakeFunctionPointers([signatureRunAll] if testing else signatures, testing))
         headerFileName = f"{structName}.h.gen"
         with open(headerFileName, "w") as file:
             print(f"Generating file {headerFileName}")

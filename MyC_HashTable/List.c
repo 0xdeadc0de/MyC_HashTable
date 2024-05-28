@@ -53,7 +53,7 @@ static void* At(List* self, size_t index)
 static void* Set(List* self, size_t index, const void* item)
 {
 	$(index < 0 || self->Count <= index);
-	return $Array.Set(self->_array, index, item);
+	return $Array.Set(self->_array, index, &item);
 }
 // Returns the first Item, or NULL if out of bounds
 static void* Front(List* self)

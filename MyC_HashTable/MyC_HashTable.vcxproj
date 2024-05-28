@@ -145,6 +145,7 @@
     <ClCompile Include="List.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="TestArray.c" />
+    <ClCompile Include="TestHashTable.c" />
     <ClCompile Include="TestHashTableItem.c" />
     <ClCompile Include="TestList.c" />
   </ItemGroup>

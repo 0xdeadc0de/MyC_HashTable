@@ -2,7 +2,7 @@
 #include "TestHashTableItem.h.gen"
 static void RunAll()
 {
-
+	HashTableItem_Constructor_CreatesExactCopyOfKeys();
 }
 
 _NamespaceTestHashTableItem const $TestHashTableItem =
