@@ -54,7 +54,7 @@ static void List_Set_ShouldSetItemAtLocation()
 	// Act
 	assert($List.PushBack(&list, itemLocation));
 	int newItem = 38;
-	int newLocation = &newItem;
+	int* newLocation = &newItem;
 	assert($List.Set(&list, 0, newLocation));
 	
 	// Assert

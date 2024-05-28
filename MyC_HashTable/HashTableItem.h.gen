@@ -8,7 +8,7 @@
 typedef struct
 {
 	// Constructs an HashTableItem with cloned key and returns the pointer, or NULL if any error
-	HashTableItem* (*Constructor2)(HashTableItem* self, const Array* key, const void* value);
+	HashTableItem* (*Constructor2)(HashTableItem* self, const Array* key, void* value);
 	// Frees the resources held, and returns reference to self
 	void* (*Destructor)(HashTableItem* self);
 }

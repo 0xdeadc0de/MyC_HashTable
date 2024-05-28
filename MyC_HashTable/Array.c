@@ -70,7 +70,7 @@ static void* Set(Array* self, size_t index, const void* itemLocation)
 	return (void*)baseAddress[offset];
 }
 // Compares two Arrays, returns true if they're exactly identical
-static bool Equals(Array* self, Array* other)
+static bool Equals(const Array* self, const Array* other)
 {
 	if (self->Length != other->Length || self->SizeOfItem != other->SizeOfItem)
 	{
