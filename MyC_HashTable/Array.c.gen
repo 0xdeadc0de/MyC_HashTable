@@ -8,6 +8,7 @@ _NamespaceArray const $Array =
 	.Clone = &Clone,
 	.At = &At,
 	.Set = &Set,
-	.Equals = &Equals
+	.Equals = &Equals,
+	.Length = &Length
 };
 // Auto-generate end. Do not modify!

@@ -5,7 +5,7 @@
 
 typedef struct
 {
-	size_t Length;
+	size_t Count;
 	size_t SizeOfItem;
 	void* Items;
 }

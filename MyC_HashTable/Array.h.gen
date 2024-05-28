@@ -19,6 +19,8 @@ typedef struct
 	void* (*Set)(Array* self, size_t index, const void* itemLocation);
 	// Compares two Arrays, returns true if they're exactly identical
 	bool (*Equals)(const Array* self, const Array* other);
+	// Returns the total size of the Array in bytes, calculated by SizeOfItem * Count
+	size_t (*Length)(const Array* self);
 }
 _NamespaceArray;
 

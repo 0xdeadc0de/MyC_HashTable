@@ -29,7 +29,7 @@ static size_t findNextPrime(size_t x)
 	}
 
 	// Lowest x is 9, sqrt(9) = 3, 3 <= 3 will run once at least
-	for (int i = 3; i <= floor(sqrt((double)x)); i += 2)
+	for (size_t i = 3; i <= floor(sqrt((double)x)); i += 2)
 	{
 		if (0 == (x % i))
 		{
@@ -40,38 +40,37 @@ static size_t findNextPrime(size_t x)
 
 	return x;
 }
-// Polynomial rolling hash function
-static int hash(const char* key, size_t n, int prime, size_t size)
+static int hash(const char* key, size_t n, size_t prime, size_t size)
 {
 	int hash = 0;
 	for (size_t i = 0; i < n; i++)
 	{
-		hash += ((unsigned)pow(prime, (double)i) % size) * (key[i] % size);
+		hash += ((size_t)pow(prime, (double)i) % size) * (key[i] % size);
 		hash %= size;
 	}
 
 	return hash;
 }
 // Open addressing, we will use double hashing
-static int doubleHash(const char* key, size_t n, size_t size, int attempt)
+static size_t doubleHash(const Array* key, size_t size, size_t attempt)
 {
 	// We're hashing ASCII strings, which has an alphabet size of 128 
 	// We should choose a prime larger than that 151, 163 should do
-	const int firstHash  = hash(key, n, 151, size);
-	const int secondHash = hash(key, n, 163, size-1) + 1;
+	const size_t firstHash  = hash(key->Items, $Array.Length(key), 151, size);
+	const size_t secondHash = hash(key->Items, $Array.Length(key), 163, size-1) + 1;
 
-	int finalHash = firstHash + attempt * secondHash;
+	size_t finalHash = firstHash + attempt * secondHash;
 	finalHash %= size;
 
 	return finalHash;
 }
 static size_t search(HashTable* self, const Array* key, bool findInsertLocation)
 {
-	int attempt = 0;
+	size_t attempt = 0;
 	// Search until we find the key matching or we find an empty slot
 	for (;;)
 	{
-		int index = doubleHash(key->Items, key->Length * key->SizeOfItem, self->_size, attempt);
+		size_t index = doubleHash(key, self->_size, attempt);
 		attempt++;
 
 		HashTableItem* item = $List.At(self->_list, index);
@@ -163,7 +162,7 @@ static HashTable* Constructor1(HashTable* self, size_t size)
 	return self;
 }
 // Frees the resources held, and returns reference to self
-static void* Destructor(HashTable* self)
+static HashTable* Destructor(HashTable* self)
 {
 	delete(List, self->_list);
 	return self;

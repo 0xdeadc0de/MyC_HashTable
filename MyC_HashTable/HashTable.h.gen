@@ -10,7 +10,7 @@ typedef struct
 	// Constructs a HashTable and returns the pointer, or NULL if any error
 	HashTable* (*Constructor1)(HashTable* self, size_t size);
 	// Frees the resources held, and returns reference to self
-	void* (*Destructor)(HashTable* self);
+	HashTable* (*Destructor)(HashTable* self);
 	// Inserts the given key, value into the hash table
 	void (*Insert)(HashTable* self, const Array* key, const void* value);
 	// Deletes the key from the hash table

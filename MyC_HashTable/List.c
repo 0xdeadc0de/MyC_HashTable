@@ -70,9 +70,9 @@ static void* Insert(List* self, size_t index, const void* item)
 {
 	$(index < 0 || self->Count < index);
 
-	if (self->Count == self->_array->Length)
+	if (self->Count == self->_array->Count)
 	{
-		$(!resize(self, self->_array->Length * 2));
+		$(!resize(self, self->_array->Count * 2));
 	}
 
 	for (size_t i = self->Count; i > index; i--)
@@ -112,9 +112,9 @@ static void* Remove(List* self, size_t index)
 
 	self->Count--;
 	
-	if (self->Count == self->_array->Length / 4)
+	if (self->Count == self->_array->Count / 4)
 	{
-		$(!resize(self, self->_array->Length / 2));
+		$(!resize(self, self->_array->Count / 2));
 	}
 
 	return removed;

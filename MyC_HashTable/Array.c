@@ -11,7 +11,7 @@ static Array* Constructor2(Array* self, size_t sizeOfItem, size_t length)
 
 	*self = (Array)
 	{
-		.Length = length,
+		.Count = length,
 		.SizeOfItem = sizeOfItem,
 		.Items = calloc(sizeOfItem, length)
 	};
@@ -33,19 +33,18 @@ static Array* Clone(const Array* self)
 	$(!clone);
 	clone = (Array*)memcpy(clone, self, sizeof(Array));
 
-	size_t size = self->Length * self->SizeOfItem;
-	void* cloneItems = malloc(size);
-	$(!cloneItems);
-	cloneItems = memcpy(cloneItems, self->Items, size);
+	void* clonedItems = malloc($Array.Length(self));
+	$(!clonedItems);
+	clonedItems = memcpy(clonedItems, self->Items, $Array.Length(self));
 
-	clone->Items = cloneItems;
+	clone->Items = clonedItems;
 
 	return clone;
 }
 // Returns the location of the item at index to read from, or NULL if any error
 static void* At(const Array* self, size_t index)
 {
-	$(index < 0 || self->Length <= index);
+	$(self->Count <= index);
 
 	const size_t offset = self->SizeOfItem * index;
 	char* baseAddress = ((char*)self->Items);
@@ -56,28 +55,24 @@ static void* At(const Array* self, size_t index)
 // and returns internal location of item, or NULL if any error
 static void* Set(Array* self, size_t index, const void* itemLocation)
 {
-	$(index < 0 || self->Length <= index);
+	$(self->Count <= index);
 	
 	const size_t offset = self->SizeOfItem * index;
 	char* baseAddress = ((char*)self->Items);
 
-	for (int i = 0; i < self->SizeOfItem; i++)
-	{
-		char byte = ((char*)itemLocation)[i];
-		baseAddress[offset + i] = byte;
-	}
+	memcpy(&baseAddress[offset], itemLocation, self->SizeOfItem);
 
-	return (void*)baseAddress[offset];
+	return &baseAddress[offset];
 }
 // Compares two Arrays, returns true if they're exactly identical
 static bool Equals(const Array* self, const Array* other)
 {
-	if (self->Length != other->Length || self->SizeOfItem != other->SizeOfItem)
+	if (self->Count != other->Count || self->SizeOfItem != other->SizeOfItem)
 	{
 		return false;
 	}
 
-	for (size_t i = 0; i < self->Length * self->SizeOfItem; i++)
+	for (size_t i = 0; i < $Array.Length(self); i++)
 	{
 		if (((char*)self->Items)[i] != ((char*)other->Items)[i])
 		{
@@ -86,6 +81,11 @@ static bool Equals(const Array* self, const Array* other)
 	}
 
 	return true;
+}
+// Returns the total size of the Array in bytes, calculated by SizeOfItem * Count
+static size_t Length(const Array* self)
+{
+	return self->Count * self->SizeOfItem;
 }
 
 #include "Array.c.gen"
