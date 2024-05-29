@@ -15,14 +15,14 @@ static void HashTable_InsertItem_AbleToGetBack()
 	int keyValue = 48;
 	int value = 42;
 
-	$Array.Set(key, 0, &keyValue);
+	Array_Set(key, 0, &keyValue);
 
 	// Act
-	$HashTable.Upsert(table, key, &value);
+	HashTable_Upsert(table, key, &value);
 
 	// Assert
-	$Array.Set(key2, 0, &keyValue);
-	$HashTable.Search(table, key2);
+	Array_Set(key2, 0, &keyValue);
+	HashTable_Search(table, key2);
 	assert(value == 42);
 
 	// Annihilate
@@ -42,15 +42,15 @@ static void HashTable_InsertItemTwice_WHAT_TO_DO()
 	Array* key = new2(Array, 4, 1);
 	int keyValue = 48;
 	int value = 42;
-	$Array.Set(key, 0, &keyValue);
+	Array_Set(key, 0, &keyValue);
 
 	// Act
-	$HashTable.Upsert(table, key, &value);
+	HashTable_Upsert(table, key, &value);
 
 	// Assert
 	Array* key2 = new2(Array, 4, 1);
-	$Array.Set(key2, 0, &keyValue);
-	$HashTable.Search(table, key2);
+	Array_Set(key2, 0, &keyValue);
+	HashTable_Search(table, key2);
 	assert(value == 42);
 }
 

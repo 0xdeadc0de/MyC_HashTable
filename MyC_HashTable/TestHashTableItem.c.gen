@@ -1,12 +1,8 @@
 // Auto-generate begin. Do not modify!
 #include "TestHashTableItem.h.gen"
-static void RunAll()
+void TestHashTableItem_RunAll()
 {
 	HashTableItem_Constructor_CreatesExactCopyOfKeys();
 }
 
-_NamespaceTestHashTableItem const $TestHashTableItem =
-{
-	.RunAll = &RunAll
-};
 // Auto-generate end. Do not modify!

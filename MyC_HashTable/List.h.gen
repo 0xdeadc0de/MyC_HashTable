@@ -5,36 +5,31 @@
 #include "MyC.h.gen"
 #include "List.h"
 
-typedef struct
-{
-	// Constructs a List of size and returns the list pointer, or NULL if any error
-	List* (*Constructor1)(List* self, size_t size);
-	// Frees the resources held, and returns reference to self
-	void* (*Destructor)(List* self);
-	// Returns the Item at given index; or NULL if out of bounds
-	void* (*At)(List* self, size_t index);
-	// Sets the Item at given index; or NULL if out of bounds
-	void* (*Set)(List* self, size_t index, const void* item);
-	// Returns the first Item, or NULL if out of bounds
-	void* (*Front)(List* self);
-	// Returns the last Item, or NULL if out of bounds
-	void* (*Back)(List* self);
-	// Inserts the Item at given index. Returns NULL if out of bounds, or any error
-	void* (*Insert)(List* self, size_t index, const void* item);
-	// Inserts the Item at front, or NULL if any error
-	void* (*PushFront)(List* self, const void* item);
-	// Inserts the Item at end, or NULL if any error
-	void* (*PushBack)(List* self, const void* item);
-	// Removes the Item at given index. Returns NULL if out of bounds, or any error
-	void* (*Remove)(List* self, size_t index);
-	// Removes the Item at front, or NULL if any error
-	void* (*RemoveFront)(List* self);
-	// Removes the Item at end, or NULL if any error
-	void* (*RemoveBack)(List* self);
-}
-_NamespaceList;
 
-extern _NamespaceList const $List;
+// Constructs a List of size and returns the list pointer, or NULL if any error
+List* List_Constructor1(List* self, size_t size);
+// Frees the resources held, and returns reference to self
+void* List_Destructor(List* self);
+// Returns the Item at given index; or NULL if out of bounds
+void* List_At(List* self, size_t index);
+// Sets the Item at given index; or NULL if out of bounds
+void* List_Set(List* self, size_t index, const void* item);
+// Returns the first Item, or NULL if out of bounds
+void* List_Front(List* self);
+// Returns the last Item, or NULL if out of bounds
+void* List_Back(List* self);
+// Inserts the Item at given index. Returns NULL if out of bounds, or any error
+void* List_Insert(List* self, size_t index, const void* item);
+// Inserts the Item at front, or NULL if any error
+void* List_PushFront(List* self, const void* item);
+// Inserts the Item at end, or NULL if any error
+void* List_PushBack(List* self, const void* item);
+// Removes the Item at given index. Returns NULL if out of bounds, or any error
+void* List_Remove(List* self, size_t index);
+// Removes the Item at front, or NULL if any error
+void* List_RemoveFront(List* self);
+// Removes the Item at end, or NULL if any error
+void* List_RemoveBack(List* self);
 
 #endif
 // Auto-generate end. Do not modify!

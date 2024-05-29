@@ -10,46 +10,46 @@ static void Array_SetsItem_AbleToRetrieveByAtMethod()
 {
 	// Arrange
 	Array array;
-	assert($Array.Constructor2(&array, sizeof(int), 1));
+	assert(Array_Constructor2(&array, sizeof(int), 1));
 
 	// Act
 	int item = 42;
 	int* itemLocation = &item;
-	assert($Array.Set(&array, 0, itemLocation));
+	assert(Array_Set(&array, 0, itemLocation));
 	
 	// Assert
-	void* location = $Array.At(&array, 0);
+	void* location = Array_At(&array, 0);
 	int* intLocation = location;
 	int value = *intLocation;
 	assert(item == value);
 	
 	// Annihilate
-	$Array.Destructor(&array);
+	Array_Destructor(&array);
 }
 static void Array_SetsAllItems_AbleToRetrieveAllItems()
 {
 	// Arrange
 	Array array;
 	const int length = 42;
-	assert($Array.Constructor2(&array, sizeof(int), length));
+	assert(Array_Constructor2(&array, sizeof(int), length));
 
 	// Act
 	for (int i = 0; i < length; i++)
 	{
-		$Array.Set(&array, i, &i);
+		Array_Set(&array, i, &i);
 	}
 
 	// Assert
 	for (int i = 0; i < length; i++)
 	{
-		void* location = $Array.At(&array, i);
+		void* location = Array_At(&array, i);
 		int* intLocation = location;
 		int value = *intLocation;
 		assert(i == value);
 	}
 	
 	// Annihilate
-	$Array.Destructor(&array);
+	Array_Destructor(&array);
 }
 static void Array_AsStringType_WorksAsExpected()
 {
@@ -57,18 +57,18 @@ static void Array_AsStringType_WorksAsExpected()
 	Array array;
 	const char string[] = "hello testing string";
 	const int length = 20+1;
-	$Array.Constructor2(&array, sizeof(char), length);
+	Array_Constructor2(&array, sizeof(char), length);
 
 	// Act
 	for (int i = 0; i < length; i++)
 	{
-		$Array.Set(&array, i, &string[i]);
+		Array_Set(&array, i, &string[i]);
 	}
 
 	// Assert
 	for (int i = 0; i < length; i++)
 	{
-		void* location = $Array.At(&array, i);
+		void* location = Array_At(&array, i);
 		char* charLocation = location;
 		int value = *charLocation;
 		assert(string[i] == value);
@@ -76,7 +76,7 @@ static void Array_AsStringType_WorksAsExpected()
 	assert(!strcmp(string, array.Items));
 	
 	// Annihilate
-	$Array.Destructor(&array);
+	Array_Destructor(&array);
 }
 static void Array_AsCustomType_WorksAsExpected()
 {
@@ -109,18 +109,18 @@ static void Array_AsCustomType_WorksAsExpected()
 		},
 	};
 
-	$Array.Constructor2(&array, sizeof(CustomType), length);
+	Array_Constructor2(&array, sizeof(CustomType), length);
 
 	// Act
 	for (int i = 0; i < length; i++)
 	{
-		$Array.Set(&array, i, &customTypes[i]);
+		Array_Set(&array, i, &customTypes[i]);
 	}
 
 	// Assert
 	for (int i = 0; i < length; i++)
 	{
-		void* location = $Array.At(&array, i);
+		void* location = Array_At(&array, i);
 		CustomType* customTypeLocation = location;
 		CustomType value = *customTypeLocation;
 		assert(customTypes[i].number == value.number);
@@ -131,56 +131,56 @@ static void Array_AsCustomType_WorksAsExpected()
 	}
 	
 	// Annihilate
-	$Array.Destructor(&array);
+	Array_Destructor(&array);
 }
 
 static void ArrayEquals_DifferentSizeOfItems_ReturnsFalse()
 {
 	// Arrange
 	Array a1, a2;
-	$Array.Constructor2(&a1, 2, 2);
-	$Array.Constructor2(&a1, 1, 2);
+	Array_Constructor2(&a1, 2, 2);
+	Array_Constructor2(&a1, 1, 2);
 
 	// Act & Assert
-	assert(false == $Array.Equals(&a1, &a2));
+	assert(false == Array_Equals(&a1, &a2));
 }
 static void ArrayEquals_DifferentLength_ReturnsFalse()
 {
 	// Arrange
 	Array a1, a2;
-	$Array.Constructor2(&a1, 2, 1);
-	$Array.Constructor2(&a2, 2, 2);
+	Array_Constructor2(&a1, 2, 1);
+	Array_Constructor2(&a2, 2, 2);
 
 	// Act & Assert
-	assert(false == $Array.Equals(&a1, &a2));
+	assert(false == Array_Equals(&a1, &a2));
 }
 static void ArrayEquals_SameLengthAndSizeOfButDifferentData_ReturnsFalse()
 {
 	// Arrange
 	Array a1, a2;
-	$Array.Constructor2(&a1, 2, 2);
-	$Array.Constructor2(&a2, 2, 2);
+	Array_Constructor2(&a1, 2, 2);
+	Array_Constructor2(&a2, 2, 2);
 	
 	int x = 1, y = 2;
-	$Array.Set(&a1, 0, &x);
-	$Array.Set(&a2, 0, &y);
+	Array_Set(&a1, 0, &x);
+	Array_Set(&a2, 0, &y);
 
 	// Act & Assert
-	assert(false == $Array.Equals(&a1, &a2));
+	assert(false == Array_Equals(&a1, &a2));
 }
 static void ArrayEquals_SameLengthAndSizeOfAndData_ReturnsTrue()
 {
 	// Arrange
 	Array a1, a2;
-	$Array.Constructor2(&a1, 2, 2);
-	$Array.Constructor2(&a2, 2, 2);
+	Array_Constructor2(&a1, 2, 2);
+	Array_Constructor2(&a2, 2, 2);
 	
 	int x = 2, y = 2;
-	$Array.Set(&a1, 0, &x);
-	$Array.Set(&a2, 0, &y);
+	Array_Set(&a1, 0, &x);
+	Array_Set(&a2, 0, &y);
 
 	// Act & Assert
-	assert(true == $Array.Equals(&a1, &a2));
+	assert(true == Array_Equals(&a1, &a2));
 }
 
 static void Array_Clone_CreatesExactCopy()
@@ -189,14 +189,14 @@ static void Array_Clone_CreatesExactCopy()
 	Array* a1 = new2(Array, sizeof(int), 5);
 	for (size_t i = 0; i < 5; i++)
 	{
-		$Array.Set(a1, i, &i);
+		Array_Set(a1, i, &i);
 	}
 
 	// Act
-	Array* cloned = $Array.Clone(a1);
+	Array* cloned = Array_Clone(a1);
 
 	// Assert
-	assert($Array.Equals(a1, cloned));
+	assert(Array_Equals(a1, cloned));
 }
 
 #include "TestArray.c.gen"

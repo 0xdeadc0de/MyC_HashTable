@@ -1,6 +1,6 @@
 // Auto-generate begin. Do not modify!
 #include "TestList.h.gen"
-static void RunAll()
+void TestList_RunAll()
 {
 	List_Initialize_ShouldHaveZeroItems();
 	List_At_ShouldReturnItemAtLocation();
@@ -17,8 +17,4 @@ static void RunAll()
 	List_Insert_ShouldInsertItemAtGivenIndex();
 }
 
-_NamespaceTestList const $TestList =
-{
-	.RunAll = &RunAll
-};
 // Auto-generate end. Do not modify!

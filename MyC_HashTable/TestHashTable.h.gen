@@ -4,13 +4,8 @@
 
 #include "MyC.h.gen"
 
-typedef struct
-{
-	void (*RunAll)();
-}
-_NamespaceTestHashTable;
 
-extern _NamespaceTestHashTable const $TestHashTable;
+void RunAll();
 
 #endif
 // Auto-generate end. Do not modify!

@@ -5,26 +5,21 @@
 #include "MyC.h.gen"
 #include "Array.h"
 
-typedef struct
-{
-	// Constructs an Array of size and returns the array pointer, or NULL if any error
-	Array* (*Constructor2)(Array* self, size_t sizeOfItem, size_t length);
-	// Frees the resources held, and returns reference to self
-	void* (*Destructor)(Array* self);
-	// Creates an exact copy and returns the pointer, or NULL if any error
-	Array* (*Clone)(const Array* self);
-	// Returns the location of the item at index to read from, or NULL if any error
-	void* (*At)(const Array* self, size_t index);
-	// and returns internal location of item, or NULL if any error
-	void* (*Set)(Array* self, size_t index, const void* itemLocation);
-	// Compares two Arrays, returns true if they're exactly identical
-	bool (*Equals)(const Array* self, const Array* other);
-	// Returns the total size of the Array in bytes, calculated by SizeOfItem * Count
-	size_t (*Length)(const Array* self);
-}
-_NamespaceArray;
 
-extern _NamespaceArray const $Array;
+// Constructs an Array of size and returns the array pointer, or NULL if any error
+Array* Array_Constructor2(Array* self, size_t sizeOfItem, size_t length);
+// Frees the resources held, and returns reference to self
+void* Array_Destructor(Array* self);
+// Creates an exact copy and returns the pointer, or NULL if any error
+Array* Array_Clone(const Array* self);
+// Returns the location of the item at index to read from, or NULL if any error
+void* Array_At(const Array* self, size_t index);
+// and returns internal location of item, or NULL if any error
+void* Array_Set(Array* self, size_t index, const void* itemLocation);
+// Compares two Arrays, returns true if they're exactly identical
+bool Array_Equals(const Array* self, const Array* other);
+// Returns the total size of the Array in bytes, calculated by SizeOfItem * Count
+size_t Array_Length(const Array* self);
 
 #endif
 // Auto-generate end. Do not modify!

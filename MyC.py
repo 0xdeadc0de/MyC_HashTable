@@ -10,12 +10,12 @@ template_macro = """\
 
 #include <stdlib.h>
 
-#define new(typename) $##typename.Constructor(malloc(sizeof(typename)))
-#define new1(typename,a1) $##typename.Constructor1(malloc(sizeof(typename)),a1)
-#define new2(typename,a1,a2) $##typename.Constructor2(malloc(sizeof(typename)),a1,a2)
-#define new3(typename,a1,a2,a3) $##typename.Constructor3(malloc(sizeof(typename)),a1,a2,a3)
+#define new(typename) typename##_Constructor(malloc(sizeof(typename)))
+#define new1(typename,a1) typename##_Constructor1(malloc(sizeof(typename)),a1)
+#define new2(typename,a1,a2) typename##_Constructor2(malloc(sizeof(typename)),a1,a2)
+#define new3(typename,a1,a2,a3) typename##_Constructor3(malloc(sizeof(typename)),a1,a2,a3)
 
-#define delete(typename,self) free($##typename.Destructor(self))
+#define delete(typename,self) free(typename##_Destructor(self))
 
 #define	$(x) if (x) return NULL
 
@@ -29,29 +29,20 @@ template_header = """\
 
 #include "MyC.h.gen"
 {includeHeader}
-typedef struct
-{{
-{methods}
-}}
-_Namespace{structName};
 
-extern _Namespace{structName} const ${structName};
+{methods}
 
 #endif
 // Auto-generate end. Do not modify!"""
 
 template_c = """\
 // Auto-generate begin. Do not modify!
-#include "{headerName}"
+{includeHeader}
 {runAll}
-_Namespace{structName} const ${structName} =
-{{
-{members}
-}};
 // Auto-generate end. Do not modify!"""
 
 template_runAll = """\
-static {signature}
+{signature}
 {{
 {calls}
 }}
@@ -63,12 +54,9 @@ FilePathName = namedtuple('FilePathName', ['path', 'nameWithoutExtension', 'head
 
 signatureRunAll = Signature("void", "RunAll", "", "// Run all tests in this module")
 
-def SignatureToString(signature: Signature) -> str:
-    return f"{signature.returnType} {signature.name}({signature.parameters})"
+def GenerateHeader(structName: str, signatures: list[Signature], headerExists: bool, testing: bool) -> str:
 
-def GenerateHeader(structName: str, signatures: str, headerExists: bool, testing: bool) -> str:
-
-    methods = "\n".join(f"\t{x}" for x in MakeFunctionPointers([signatureRunAll] if testing else signatures, testing))
+    methods = "\n".join(f"{x}" for x in MakeFunctionDefinition([signatureRunAll] if testing else signatures, testing))
     includeHeader = f"""#include "{structName}.h"\n""" if headerExists else ""
 
     return template_header.format(
@@ -80,38 +68,29 @@ def GenerateHeader(structName: str, signatures: str, headerExists: bool, testing
 def GenerateMacroFile() -> str:
     return template_macro
 
-def GenerateCFile(structName: str, signatures: list[Signature], headerExists: bool, generateRunAll: bool) -> str:
+def GenerateCFile(structName: str, signatures: list[Signature], headerExists: bool) -> str:
     
     runAll = ""
-    if generateRunAll:
-        calls = "\n".join(f"\t{methodName}();" for _, methodName, _, _ in signatures)
-        runAll = template_runAll.format(
-            signature = SignatureToString(signatureRunAll),
-            calls = calls
-        )
-        signatures = [signatureRunAll]
-    
-    members = []
-    for _, methodName, _, _ in signatures:
-        members.append(f"\t.{methodName} = &{methodName}")
-        
-    members = ",\n".join(members)
+    calls = "\n".join(f"\t{methodName}();" for _, methodName, _, _ in signatures)
+    runAll = template_runAll.format(
+        signature = f"{signatureRunAll.returnType} {structName}_{signatureRunAll.name}({signatureRunAll.parameters})",
+        calls = calls
+    )
+    signatures = [signatureRunAll]
 
     return template_c.format(
-        headerName = f"""{structName}.h{"" if headerExists else ".gen"}""",
-        runAll = runAll,
-        structName = structName,
-        members = members
+        includeHeader = f"""#include "{structName}.h{"" if headerExists else ".gen"}\"""",
+        runAll = runAll
     )
 
 def FindCFiles(directory: str) -> Generator[FilePathName, None, None]:
     """
-    Finds all the C files with #include "MyObject.c.gen" or #undef line
+    Finds all the C files with #include "MyObject.h.gen" or #undef line
     that will be used for namespace generation.
     """
     for root, _, files in os.walk(directory):
         for fileName in files:
-            if not fileName.endswith(".c"):
+            if not fileName.endswith(".c") and not fileName.endswith(".h"):
                 continue
 
             path = os.path.join(root, fileName)
@@ -120,11 +99,14 @@ def FindCFiles(directory: str) -> Generator[FilePathName, None, None]:
             lines = file.readlines()
             file.close()
 
-            for line in lines:
-                testing = "#undef MyC_Test" in line
-                if f'#include "{fileName}.gen"' in line or testing:
-                    yield (path, fileName[:-2], os.path.exists(path[:-2]+".h"), testing)
-                    break
+            testing = "#undef MyC_Test" in lines[0]
+            generateHeader = f'#include "{fileName}.gen"' in lines[-1]
+            if testing:
+                yield (path, fileName[:-2], os.path.exists(path[:-2]+".h"), testing)
+                continue
+            if generateHeader:
+                yield (path[:-2]+".c", fileName[:-2], os.path.exists(path[:-2]+".h"), testing)
+                continue
 
 def ParseSignatures(path: str, testing: bool) -> Generator[Signature, None, None]:
     """
@@ -136,9 +118,10 @@ def ParseSignatures(path: str, testing: bool) -> Generator[Signature, None, None
     """
     
     lines = "".join(x for x in open(path))
+    
     # match form '// comment\n void MethodName(type1 name1, type2 name2)'
-    r  = "" if testing else "(//.+?)\\r?\\n"
-    r += "static (\w+\s*\*?)\s+([A-Z]\w*)\(((?:,?\s*(?:\w+\s*\*?)\s+\w+)*)\)"
+    r  = "" if testing else "(\/\/.+?)\r?\n"
+    r += "(\w+\s*\*?)\s+([A-Z]\w*)\(((?:,?\s*(?:\w+\s*\*?)\s+\w+)*)\)"
     for found in re.finditer(r, lines, flags=re.MULTILINE):
         if testing:
             yield Signature(found.group(1), found.group(2), found.group(3), "")
@@ -161,6 +144,17 @@ def MakeFunctionPointers(matches: list[Signature], testing: bool) -> Generator[s
             yield comment
         yield f"{returnType} (*{methodName})({arguments});"
 
+def MakeFunctionDefinition(matches: list[Signature], testing: bool) -> Generator[str, None, None]:
+
+    for match in matches:
+        arguments = match[2]
+        methodName = match[1]
+        returnType = match[0]
+        comment = match[3]
+        if not testing:
+            yield comment
+        yield f"{returnType} {methodName}({arguments});"
+
 def main():
     print("\nMyC Python Pre-Build script begin.\n")
     generatedFilesCount = 0
@@ -177,12 +171,13 @@ def main():
             file.write(GenerateHeader(structName, signatures, headerExists, testing))
             generatedFilesCount += 1
 
-        # Generate C file
-        cFileName = f"{structName}.c.gen"
-        with open(cFileName, "w") as file:
-            print(f"Generating file {cFileName}")
-            file.write(GenerateCFile(structName, signatures, headerExists, testing))
-            generatedFilesCount += 1
+        # Generate C file for testing
+        if testing:
+            cFileName = f"{structName}.c.gen"
+            with open(cFileName, "w") as file:
+                print(f"Generating file {cFileName}")
+                file.write(GenerateCFile(structName, signatures, headerExists))
+                generatedFilesCount += 1
 
     if generatedFilesCount > 0:
         # Generate macro keywords header

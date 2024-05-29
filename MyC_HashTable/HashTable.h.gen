@@ -5,22 +5,17 @@
 #include "MyC.h.gen"
 #include "HashTable.h"
 
-typedef struct
-{
-	// Constructs a HashTable and returns the pointer, or NULL if any error
-	HashTable* (*Constructor1)(HashTable* self, size_t size);
-	// Frees the resources held, and returns reference to self
-	HashTable* (*Destructor)(HashTable* self);
-	// Inserts key, value. If key exists, updates the value. Returns NULL if any error
-	HashTable* (*Upsert)(HashTable* self, const Array* key, void* value);
-	// Deletes the key from the hash table
-	void (*Delete)(HashTable* self, const Array* key);
-	// Searches and retrieves the value from given key if exists, or NULL if any error
-	void* (*Search)(HashTable* self, const Array* key);
-}
-_NamespaceHashTable;
 
-extern _NamespaceHashTable const $HashTable;
+// Constructs a HashTable and returns the pointer, or NULL if any error
+HashTable* HashTable_Constructor1(HashTable* self, size_t size);
+// Frees the resources held, and returns reference to self
+HashTable* HashTable_Destructor(HashTable* self);
+// Inserts key, value. If key exists, updates the value. Returns NULL if any error
+HashTable* HashTable_Upsert(HashTable* self, const Array* key, void* value);
+// Deletes the key from the hash table
+void HashTable_Delete(HashTable* self, const Array* key);
+// Searches and retrieves the value from given key if exists, or NULL if any error
+void* HashTable_Search(HashTable* self, const Array* key);
 
 #endif
 // Auto-generate end. Do not modify!

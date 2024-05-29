@@ -1,13 +1,9 @@
 // Auto-generate begin. Do not modify!
 #include "TestHashTable.h.gen"
-static void RunAll()
+void TestHashTable_RunAll()
 {
 	HashTable_InsertItem_AbleToGetBack();
 	HashTable_InsertItemTwice_WHAT_TO_DO();
 }
 
-_NamespaceTestHashTable const $TestHashTable =
-{
-	.RunAll = &RunAll
-};
 // Auto-generate end. Do not modify!

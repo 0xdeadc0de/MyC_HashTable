@@ -1,6 +1,6 @@
 // Auto-generate begin. Do not modify!
 #include "TestArray.h.gen"
-static void RunAll()
+void TestArray_RunAll()
 {
 	Array_SetsItem_AbleToRetrieveByAtMethod();
 	Array_SetsAllItems_AbleToRetrieveAllItems();
@@ -13,8 +13,4 @@ static void RunAll()
 	Array_Clone_CreatesExactCopy();
 }
 
-_NamespaceTestArray const $TestArray =
-{
-	.RunAll = &RunAll
-};
 // Auto-generate end. Do not modify!

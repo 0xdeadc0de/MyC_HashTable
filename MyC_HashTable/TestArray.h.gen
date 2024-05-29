@@ -4,13 +4,8 @@
 
 #include "MyC.h.gen"
 
-typedef struct
-{
-	void (*RunAll)();
-}
-_NamespaceTestArray;
 
-extern _NamespaceTestArray const $TestArray;
+void RunAll();
 
 #endif
 // Auto-generate end. Do not modify!

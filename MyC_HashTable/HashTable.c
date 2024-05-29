@@ -6,7 +6,7 @@
 #include "HashTable.h"
 #include "HashTableItem.h"
 
-static HashTable* Upsert(HashTable* self, const Array* key, void* value);
+HashTable* HashTable_Upsert(HashTable* self, const Array* key, void* value);
 // Allocate a memory location to use as a sentinel value for items marked as deleted (similar to NULL pointer)
 static void* DELETED = &DELETED;
 
@@ -57,8 +57,8 @@ static size_t doubleHash(const Array* key, size_t size, size_t attempt)
 {
 	// We're hashing ASCII strings, which has an alphabet size of 128 
 	// We should choose a prime larger than that 151, 163 should do
-	const size_t firstHash  = hash(key->Items, $Array.Length(key), 151, size);
-	const size_t secondHash = hash(key->Items, $Array.Length(key), 163, size-1) + 1;
+	const size_t firstHash  = hash(key->Items, Array_Length(key), 151, size);
+	const size_t secondHash = hash(key->Items, Array_Length(key), 163, size-1) + 1;
 
 	size_t finalHash = firstHash + attempt * secondHash;
 	finalHash %= size;
@@ -74,7 +74,7 @@ static size_t search(HashTable* self, const Array* key, bool findInsertLocation)
 		size_t index = doubleHash(key, self->_size, attempt);
 		attempt++;
 
-		HashTableItem* item = $List.At(self->_list, index);
+		HashTableItem* item = List_At(self->_list, index);
 
 		if (NULL == item)
 		{
@@ -99,7 +99,7 @@ static size_t search(HashTable* self, const Array* key, bool findInsertLocation)
 			continue;
 		}
 		
-		if ($Array.Equals(key, item->Key))
+		if (Array_Equals(key, item->Key))
 		{
 			return index;
 		}
@@ -118,7 +118,7 @@ static HashTable* resize(HashTable* self, size_t newSize)
 
 	for (size_t i = 0; i < self->_size; i++)
 	{
-		HashTableItem* item = $List.At(self->_list, i);
+		HashTableItem* item = List_At(self->_list, i);
 		
 		// If an item is deleted or null, skip it
 		if (NULL == item || DELETED == item)
@@ -126,7 +126,7 @@ static HashTable* resize(HashTable* self, size_t newSize)
 			continue;
 		}
 
-		Upsert(newTable, item->Key, item->Value);
+		HashTable_Upsert(newTable, item->Key, item->Value);
 	}
 
 	// Swap tables so we can free memory on new table pointer
@@ -145,7 +145,7 @@ static HashTable* resize(HashTable* self, size_t newSize)
 	return self;
 }
 // Constructs a HashTable and returns the pointer, or NULL if any error
-static HashTable* Constructor1(HashTable* self, size_t size)
+HashTable* HashTable_Constructor1(HashTable* self, size_t size)
 {
 	size = findNextPrime(size);
 
@@ -159,19 +159,19 @@ static HashTable* Constructor1(HashTable* self, size_t size)
 	
 	for (size_t i = 0; i < size; i++)
 	{
-		$List.PushBack(self->_list, NULL);
+		List_PushBack(self->_list, NULL);
 	}
 
 	return self;
 }
 // Frees the resources held, and returns reference to self
-static HashTable* Destructor(HashTable* self)
+HashTable* HashTable_Destructor(HashTable* self)
 {
 	delete(List, self->_list);
 	return self;
 }
 // Inserts key, value. If key exists, updates the value. Returns NULL if any error
-static HashTable* Upsert(HashTable* self, const Array* key, void* value)
+HashTable* HashTable_Upsert(HashTable* self, const Array* key, void* value)
 {
 	if (70 < self->Count * 100 / self->_size)
 	{
@@ -184,23 +184,23 @@ static HashTable* Upsert(HashTable* self, const Array* key, void* value)
 	$(newPair);
 
 	// Set item
-	$List.Set(self->_list, index, newPair);
+	List_Set(self->_list, index, newPair);
 
 	// Increase the count of items in the table
 	self->Count++;
 }
 // Deletes the key from the hash table
-static void Delete(HashTable* self, const Array* key)
+void HashTable_Delete(HashTable* self, const Array* key)
 {
 	size_t index = search(self, key, false);
-	HashTableItem* item = $List.At(self->_list, index);
+	HashTableItem* item = List_At(self->_list, index);
 	// If search returned an empty slot location, we do nothing, this item doesn't exist in table already
 	if (NULL == item)
 	{
 		return;
 	}
 
-	$List.Set(self->_list, index, DELETED);
+	List_Set(self->_list, index, DELETED);
 	delete(HashTableItem, item);
 
 	self->Count--;
@@ -211,15 +211,13 @@ static void Delete(HashTable* self, const Array* key)
 	}
 }
 // Searches and retrieves the value from given key if exists, or NULL if any error
-static void* Search(HashTable* self, const Array* key)
+void* HashTable_Search(HashTable* self, const Array* key)
 {
 	// Search for the item with the given key
 	size_t index = search(self, key, false);
-	HashTableItem* item = $List.At(self->_list, index);
+	HashTableItem* item = List_At(self->_list, index);
 	$(!item);
 
 	// Return the value of the item found
 	return item->Value;
 }
-
-#include "HashTable.c.gen"
