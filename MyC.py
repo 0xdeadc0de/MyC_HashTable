@@ -2,21 +2,28 @@ import os, re
 from collections import namedtuple
 from typing import Generator
 
-# Define named tuples
-Signature = namedtuple('Signature', ['returnType', 'name', 'parameters', 'comment'])
-FilePathName = namedtuple('FilePathName', ['path', 'nameWithoutExtension', 'headerExists', 'testing'])
+# Templates
+template_macro = """\
+// Auto-generate begin. Do not modify!
+#ifndef H_MyC
+#define H_MyC
 
-signatureRunAll = Signature("void", "RunAll", "", "// Run all tests in this module")
+#include <stdlib.h>
 
-def SignatureToString(signature: Signature) -> str:
-    return f"{signature.returnType} {signature.name}({signature.parameters})"
+#define new(typename) $##typename.Constructor(malloc(sizeof(typename)))
+#define new1(typename,a1) $##typename.Constructor1(malloc(sizeof(typename)),a1)
+#define new2(typename,a1,a2) $##typename.Constructor2(malloc(sizeof(typename)),a1,a2)
+#define new3(typename,a1,a2,a3) $##typename.Constructor3(malloc(sizeof(typename)),a1,a2,a3)
 
-def GenerateHeader(structName: str, signatures: str, headerExists: bool, testing: bool) -> str:
+#define delete(typename,self) free($##typename.Destructor(self))
 
-    methods = "\n".join(f"\t{x}" for x in MakeFunctionPointers([signatureRunAll] if testing else signatures, testing))
-    includeHeader = f"""#include "{structName}.h"\n""" if headerExists else ""
+#define	$(x) if (x) return NULL
 
-    return f"""// Auto-generate begin. Do not modify!
+#endif
+// Auto-generate end. Do not modify!"""
+
+template_header = """\
+// Auto-generate begin. Do not modify!
 #ifndef H_Gen_{structName}
 #define H_Gen_{structName}
 
@@ -33,34 +40,55 @@ extern _Namespace{structName} const ${structName};
 #endif
 // Auto-generate end. Do not modify!"""
 
-def GenerateMacroFile() -> str:
-    return """// Auto-generate begin. Do not modify!
-#ifndef H_MyC
-#define H_MyC
-
-#include <stdlib.h>
-
-#define new(typename) $##typename.Constructor(malloc(sizeof(typename)))
-#define new1(typename,a1) $##typename.Constructor1(malloc(sizeof(typename)),a1)
-#define new2(typename,a1,a2) $##typename.Constructor2(malloc(sizeof(typename)),a1,a2)
-#define new3(typename,a1,a2,a3) $##typename.Constructor3(malloc(sizeof(typename)),a1,a2,a3)
-#define delete(typename,self) free($##typename.Destructor(self))
-
-#define	$(x) if (x) return NULL
-
-#endif
+template_c = """\
+// Auto-generate begin. Do not modify!
+#include "{headerName}"
+{runAll}
+_Namespace{structName} const ${structName} =
+{{
+{members}
+}};
 // Auto-generate end. Do not modify!"""
+
+template_runAll = """\
+static {signature}
+{{
+{calls}
+}}
+"""
+
+# Define named tuples
+Signature = namedtuple('Signature', ['returnType', 'name', 'parameters', 'comment'])
+FilePathName = namedtuple('FilePathName', ['path', 'nameWithoutExtension', 'headerExists', 'testing'])
+
+signatureRunAll = Signature("void", "RunAll", "", "// Run all tests in this module")
+
+def SignatureToString(signature: Signature) -> str:
+    return f"{signature.returnType} {signature.name}({signature.parameters})"
+
+def GenerateHeader(structName: str, signatures: str, headerExists: bool, testing: bool) -> str:
+
+    methods = "\n".join(f"\t{x}" for x in MakeFunctionPointers([signatureRunAll] if testing else signatures, testing))
+    includeHeader = f"""#include "{structName}.h"\n""" if headerExists else ""
+
+    return template_header.format(
+        structName = structName, 
+        methods = methods,
+        includeHeader = includeHeader
+    )
+
+def GenerateMacroFile() -> str:
+    return template_macro
 
 def GenerateCFile(structName: str, signatures: list[Signature], headerExists: bool, generateRunAll: bool) -> str:
     
     runAll = ""
     if generateRunAll:
         calls = "\n".join(f"\t{methodName}();" for _, methodName, _, _ in signatures)
-        runAll = f"""static {SignatureToString(signatureRunAll)}
-{{
-{calls}
-}}
-"""
+        runAll = template_runAll.format(
+            signature = SignatureToString(signatureRunAll),
+            calls = calls
+        )
         signatures = [signatureRunAll]
     
     members = []
@@ -69,15 +97,12 @@ def GenerateCFile(structName: str, signatures: list[Signature], headerExists: bo
         
     members = ",\n".join(members)
 
-
-    return f"""// Auto-generate begin. Do not modify!
-#include "{structName}.h{"" if headerExists else ".gen"}"
-{runAll}
-_Namespace{structName} const ${structName} =
-{{
-{members}
-}};
-// Auto-generate end. Do not modify!"""
+    return template_c.format(
+        headerName = f"""{structName}.h{"" if headerExists else ".gen"}""",
+        runAll = runAll,
+        structName = structName,
+        members = members
+    )
 
 def FindCFiles(directory: str) -> Generator[FilePathName, None, None]:
     """
