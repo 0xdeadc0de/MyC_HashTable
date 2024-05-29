@@ -56,7 +56,13 @@ signatureRunAll = Signature("void", "RunAll", "", "// Run all tests in this modu
 
 def GenerateHeader(structName: str, signatures: list[Signature], headerExists: bool, testing: bool) -> str:
 
-    methods = "\n".join(f"{x}" for x in MakeFunctionDefinition([signatureRunAll] if testing else signatures, testing))
+    customRunAll = Signature(
+        signatureRunAll.returnType,
+        f"{structName}_{signatureRunAll.name}",
+        signatureRunAll.parameters,
+        signatureRunAll.comment
+    )
+    methods = "\n".join(f"{x}" for x in MakeFunctionDefinition([customRunAll] if testing else signatures, testing))
     includeHeader = f"""#include "{structName}.h"\n""" if headerExists else ""
 
     return template_header.format(

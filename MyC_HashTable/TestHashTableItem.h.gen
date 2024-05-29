@@ -5,7 +5,7 @@
 #include "MyC.h.gen"
 
 
-void RunAll();
+void TestHashTableItem_RunAll();
 
 #endif
 // Auto-generate end. Do not modify!
