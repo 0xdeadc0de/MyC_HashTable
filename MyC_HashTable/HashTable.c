@@ -6,7 +6,6 @@
 #include "HashTable.h"
 #include "HashTableItem.h"
 
-HashTable* HashTable_Upsert(HashTable* self, const Array* key, void* value);
 // Allocate a memory location to use as a sentinel value for items marked as deleted (similar to NULL pointer)
 static void* DELETED = &DELETED;
 
@@ -144,8 +143,9 @@ static HashTable* resize(HashTable* self, size_t newSize)
 
 	return self;
 }
+
 // Constructs a HashTable and returns the pointer, or NULL if any error
-HashTable* HashTable_Constructor1(HashTable* self, size_t size)
+[[nodiscard]] HashTable* HashTable_Constructor1(HashTable* self, size_t size)
 {
 	size = findNextPrime(size);
 
@@ -171,7 +171,7 @@ HashTable* HashTable_Destructor(HashTable* self)
 	return self;
 }
 // Inserts key, value. If key exists, updates the value. Returns NULL if any error
-HashTable* HashTable_Upsert(HashTable* self, const Array* key, void* value)
+[[nodiscard]] HashTable* HashTable_Upsert(HashTable* self, const Array* key, void* value)
 {
 	if (70 < self->Count * 100 / self->_size)
 	{
@@ -189,15 +189,15 @@ HashTable* HashTable_Upsert(HashTable* self, const Array* key, void* value)
 	// Increase the count of items in the table
 	self->Count++;
 }
-// Deletes the key from the hash table
-void HashTable_Delete(HashTable* self, const Array* key)
+// Deletes the key from the hash table and returns self, or NULL if any error
+[[nodiscard]] HashTable* HashTable_Delete(HashTable* self, const Array* key)
 {
 	size_t index = search(self, key, false);
 	HashTableItem* item = List_At(self->_list, index);
 	// If search returned an empty slot location, we do nothing, this item doesn't exist in table already
 	if (NULL == item)
 	{
-		return;
+		return self;
 	}
 
 	List_Set(self->_list, index, DELETED);
@@ -207,11 +207,13 @@ void HashTable_Delete(HashTable* self, const Array* key)
 
 	if (10 > self->Count * 100 / self->_size)
 	{
-		resize(self, self->_size / 2);
+		return resize(self, self->_size / 2);
 	}
+
+	return self;
 }
 // Searches and retrieves the value from given key if exists, or NULL if any error
-void* HashTable_Search(HashTable* self, const Array* key)
+[[nodiscard]] void* HashTable_Search(HashTable* self, const Array* key)
 {
 	// Search for the item with the given key
 	size_t index = search(self, key, false);

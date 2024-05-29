@@ -5,6 +5,7 @@
 #include "MyC.h.gen"
 
 
+// Run all tests in this module
 void TestList_RunAll();
 
 #endif

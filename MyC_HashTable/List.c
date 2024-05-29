@@ -23,7 +23,7 @@ static List* resize(List* self, size_t size)
 }
 
 // Constructs a List of size and returns the list pointer, or NULL if any error
-List* List_Constructor1(List* self, size_t size)
+[[nodiscard]] List* List_Constructor1(List* self, size_t size)
 {
 	$(size <= 0);
 
@@ -38,35 +38,35 @@ List* List_Constructor1(List* self, size_t size)
 	return self;
 }
 // Frees the resources held, and returns reference to self
-void* List_Destructor(List* self)
+List* List_Destructor(List* self)
 {
 	delete(Array, self->_array);
 	return self;
 }
 // Returns the Item at given index; or NULL if out of bounds
-void* List_At(List* self, size_t index)
+[[nodiscard]] void* List_At(List* self, size_t index)
 {
 	$(index < 0 || self->Count <= index);
 	return *(void**)Array_At(self->_array, index);
 }
 // Sets the Item at given index; or NULL if out of bounds
-void* List_Set(List* self, size_t index, const void* item)
+[[nodiscard]] void* List_Set(List* self, size_t index, const void* item)
 {
 	$(index < 0 || self->Count <= index);
 	return Array_Set(self->_array, index, &item);
 }
 // Returns the first Item, or NULL if out of bounds
-void* List_Front(List* self)
+[[nodiscard]] void* List_Front(List* self)
 {
 	return List_At(self, 0);
 }
 // Returns the last Item, or NULL if out of bounds
-void* List_Back(List* self)
+[[nodiscard]] void* List_Back(List* self)
 {
 	return List_At(self, self->Count - 1);
 }
-// Inserts the Item at given index. Returns NULL if out of bounds, or any error
-void* List_Insert(List* self, size_t index, const void* item)
+// Inserts the Item at given index and returns it. Returns NULL if out of bounds, or any error
+[[nodiscard]] void* List_Insert(List* self, size_t index, const void* item)
 {
 	$(index < 0 || self->Count < index);
 
@@ -78,27 +78,28 @@ void* List_Insert(List* self, size_t index, const void* item)
 	for (size_t i = self->Count; i > index; i--)
 	{
 		void* previous = List_At(self, i - 1);
-		Array_Set(self->_array, i, &previous);
+		$(!previous);
+		$(!Array_Set(self->_array, i, &previous));
 	}
 
-	Array_Set(self->_array, index, &item);
+	$(!Array_Set(self->_array, index, &item));
 
 	self->Count++;
 
-	return *(void**)Array_At(self->_array, index);
+	return List_At(self, index);
 }
-// Inserts the Item at front, or NULL if any error
-void* List_PushFront(List* self, const void* item)
+// Inserts the Item at front and returns it, or NULL if any error
+[[nodiscard]] void* List_PushFront(List* self, const void* item)
 {
 	return List_Insert(self, 0, item);
 }
-// Inserts the Item at end, or NULL if any error
-void* List_PushBack(List* self, const void* item)
+// Inserts the Item at end and returns it, or NULL if any error
+[[nodiscard]] void* List_PushBack(List* self, const void* item)
 {
 	return List_Insert(self, self->Count, item);
 }
-// Removes the Item at given index. Returns NULL if out of bounds, or any error
-void* List_Remove(List* self, size_t index)
+// Removes the Item at given index and returns removed. Returns NULL if out of bounds, or any error
+[[nodiscard]] void* List_Remove(List* self, size_t index)
 {
 	$(!List_At(self, index));
 
@@ -107,7 +108,8 @@ void* List_Remove(List* self, size_t index)
 	for (size_t i = index; i < self->Count - 1; i++)
 	{
 		void* next = List_At(self, i + 1);
-		Array_Set(self->_array, i, &next);
+		$(!next);
+		$(!Array_Set(self->_array, i, &next));
 	}
 
 	self->Count--;
@@ -119,12 +121,12 @@ void* List_Remove(List* self, size_t index)
 
 	return removed;
 }
-// Removes the Item at front, or NULL if any error
+// Removes the Item at front and returns removed, or NULL if any error
 void* List_RemoveFront(List* self)
 {
 	return List_Remove(self, 0);
 }
-// Removes the Item at end, or NULL if any error
+// Removes the Item at end and returns removed, or NULL if any error
 void* List_RemoveBack(List* self)
 {
 	return List_Remove(self, self->Count - 1);

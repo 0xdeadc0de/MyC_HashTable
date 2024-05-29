@@ -2,7 +2,7 @@
 
 #include "Array.h"
 
-typedef struct [[nodiscard]]
+typedef struct
 {
 	Array* Key;
 	void* Value;

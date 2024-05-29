@@ -5,7 +5,7 @@
 #include "Array.h"
 
 // Constructs an Array of size and returns the array pointer, or NULL if any error
-Array* Array_Constructor2(Array* self, size_t sizeOfItem, size_t length)
+[[nodiscard]] Array* Array_Constructor2(Array* self, size_t sizeOfItem, size_t length)
 {
 	$(sizeOfItem <= 0 || length <= 0);
 
@@ -21,13 +21,13 @@ Array* Array_Constructor2(Array* self, size_t sizeOfItem, size_t length)
 	return self;
 }
 // Frees the resources held, and returns reference to self
-void* Array_Destructor(Array* self)
+Array* Array_Destructor(Array* self)
 {
 	free(self->Items);
 	return self;
 }
 // Creates an exact copy and returns the pointer, or NULL if any error
-Array* Array_Clone(const Array* self)
+[[nodiscard]] Array* Array_Clone(const Array* self)
 {
 	Array* clone = malloc(sizeof(Array));
 	$(!clone);
@@ -42,7 +42,7 @@ Array* Array_Clone(const Array* self)
 	return clone;
 }
 // Returns the location of the item at index to read from, or NULL if any error
-void* Array_At(const Array* self, size_t index)
+[[nodiscard]] void* Array_At(const Array* self, size_t index)
 {
 	$(self->Count <= index);
 
@@ -51,9 +51,8 @@ void* Array_At(const Array* self, size_t index)
 
 	return &baseAddress[offset];
 }
-// Copies the item at the given location to the index 
-// and returns internal location of item, or NULL if any error
-void* Array_Set(Array* self, size_t index, const void* itemLocation)
+// Copies the item at the given location to the index and returns internal location of item, or NULL if any error
+[[nodiscard]] void* Array_Set(Array* self, size_t index, const void* itemLocation)
 {
 	$(self->Count <= index);
 	
