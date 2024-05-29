@@ -11,8 +11,8 @@ typedef struct
 	HashTable* (*Constructor1)(HashTable* self, size_t size);
 	// Frees the resources held, and returns reference to self
 	HashTable* (*Destructor)(HashTable* self);
-	// Inserts the given key, value into the hash table
-	void (*Insert)(HashTable* self, const Array* key, const void* value);
+	// Inserts key, value. If key exists, updates the value. Returns NULL if any error
+	HashTable* (*Upsert)(HashTable* self, const Array* key, void* value);
 	// Deletes the key from the hash table
 	void (*Delete)(HashTable* self, const Array* key);
 	// Searches and retrieves the value from given key if exists, or NULL if any error

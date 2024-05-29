@@ -3,7 +3,7 @@
 static void RunAll()
 {
 	HashTable_InsertItem_AbleToGetBack();
-	HashTable_InsertItemTwice_LastItemShouldExist();
+	HashTable_InsertItemTwice_WHAT_TO_DO();
 }
 
 _NamespaceTestHashTable const $TestHashTable =

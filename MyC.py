@@ -11,8 +11,9 @@ signatureRunAll = Signature("void", "RunAll", "", "// Run all tests in this modu
 def SignatureToString(signature: Signature) -> str:
     return f"{signature.returnType} {signature.name}({signature.parameters})"
 
-def GenerateHeader(structName: str, methods: str, headerExists: bool) -> str:
+def GenerateHeader(structName: str, signatures: str, headerExists: bool, testing: bool) -> str:
 
+    methods = "\n".join(f"\t{x}" for x in MakeFunctionPointers([signatureRunAll] if testing else signatures, testing))
     includeHeader = f"""#include "{structName}.h"\n""" if headerExists else ""
 
     return f"""// Auto-generate begin. Do not modify!
@@ -145,11 +146,10 @@ def main():
         signatures = list(ParseSignatures(path, testing))
 
         # Generate header
-        methods = "\n".join(f"\t{x}" for x in MakeFunctionPointers([signatureRunAll] if testing else signatures, testing))
         headerFileName = f"{structName}.h.gen"
         with open(headerFileName, "w") as file:
             print(f"Generating file {headerFileName}")
-            file.write(GenerateHeader(structName, methods, headerExists))
+            file.write(GenerateHeader(structName, signatures, headerExists, testing))
             generatedFilesCount += 1
 
         # Generate C file

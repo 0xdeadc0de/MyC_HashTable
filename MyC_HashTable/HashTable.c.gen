@@ -5,7 +5,7 @@ _NamespaceHashTable const $HashTable =
 {
 	.Constructor1 = &Constructor1,
 	.Destructor = &Destructor,
-	.Insert = &Insert,
+	.Upsert = &Upsert,
 	.Delete = &Delete,
 	.Search = &Search
 };

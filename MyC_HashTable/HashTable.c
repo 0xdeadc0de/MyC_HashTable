@@ -6,6 +6,7 @@
 #include "HashTable.h"
 #include "HashTableItem.h"
 
+static HashTable* Upsert(HashTable* self, const Array* key, void* value);
 // Allocate a memory location to use as a sentinel value for items marked as deleted (similar to NULL pointer)
 static void* DELETED = &DELETED;
 
@@ -104,16 +105,17 @@ static size_t search(HashTable* self, const Array* key, bool findInsertLocation)
 		}
 	}
 }
-extern void Insert(HashTable* self, const Array* key, const void* value);
-static void resize(HashTable* self, size_t newSize)
+static HashTable* resize(HashTable* self, size_t newSize)
 {
 	if (newSize < 50)
 	{
-		return;
+		return self;
 	}
 
 	// Allocate a new table, and copy item pointers
 	HashTable* newTable = new1(HashTable, newSize);
+	$(newTable);
+
 	for (size_t i = 0; i < self->_size; i++)
 	{
 		HashTableItem* item = $List.At(self->_list, i);
@@ -124,7 +126,7 @@ static void resize(HashTable* self, size_t newSize)
 			continue;
 		}
 
-		Insert(newTable, item->Key, item->Value);
+		Upsert(newTable, item->Key, item->Value);
 	}
 
 	// Swap tables so we can free memory on new table pointer
@@ -139,8 +141,9 @@ static void resize(HashTable* self, size_t newSize)
 	// The strategy is we modify the table passed as argument
 	// And free the new table with swapped memory locations
 	delete(HashTable, newTable);
-}
 
+	return self;
+}
 // Constructs a HashTable and returns the pointer, or NULL if any error
 static HashTable* Constructor1(HashTable* self, size_t size)
 {
@@ -167,8 +170,8 @@ static HashTable* Destructor(HashTable* self)
 	delete(List, self->_list);
 	return self;
 }
-// Inserts the given key, value into the hash table
-static void Insert(HashTable* self, const Array* key, const void* value)
+// Inserts key, value. If key exists, updates the value. Returns NULL if any error
+static HashTable* Upsert(HashTable* self, const Array* key, void* value)
 {
 	if (70 < self->Count * 100 / self->_size)
 	{
@@ -178,6 +181,9 @@ static void Insert(HashTable* self, const Array* key, const void* value)
 	// Search an empty slot location to insert the new item
 	size_t index = search(self, key, true);
 	HashTableItem* newPair = new2(HashTableItem, key, value);
+	$(newPair);
+
+	// Set item
 	$List.Set(self->_list, index, newPair);
 
 	// Increase the count of items in the table

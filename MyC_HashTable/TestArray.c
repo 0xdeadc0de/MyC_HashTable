@@ -30,7 +30,7 @@ static void Array_SetsAllItems_AbleToRetrieveAllItems()
 {
 	// Arrange
 	Array array;
-	const length = 42;
+	const int length = 42;
 	assert($Array.Constructor2(&array, sizeof(int), length));
 
 	// Act
@@ -89,7 +89,7 @@ static void Array_AsCustomType_WorksAsExpected()
 	CustomType;
 
 	Array array;
-	const length = 3;
+	const int length = 3;
 	CustomType customTypes[3] =
 	{
 		(CustomType)
