@@ -2,7 +2,8 @@
 
 #include "List.h"
 
-static List* resize(List* self, size_t size)
+// Resizes the List (modifies ptr), and returns self, or NULL if any error
+[[nodiscard]] static List* resize(List* self, size_t size)
 {
 	Array* oldArray = self->_array;
 	size_t oldCount = self->Count;
@@ -13,8 +14,9 @@ static List* resize(List* self, size_t size)
 
 	for (size_t i = 0; i < oldCount; i++)
 	{
-		void* oldItem = *(void**)Array_At(oldArray, i);
-		Array_Set(self->_array, i, &oldItem);
+		void* oldItem = Array_At(oldArray, i);
+		$(!oldItem);
+		$(!Array_Set(self->_array, i, oldItem));
 	}
 
 	delete(Array, oldArray);
@@ -44,29 +46,29 @@ List* List_Destructor(List* self)
 	return self;
 }
 // Returns the Item at given index; or NULL if out of bounds
-[[nodiscard]] void* List_At(List* self, size_t index)
+void* List_At(List* self, size_t index)
 {
 	$(index < 0 || self->Count <= index);
 	return *(void**)Array_At(self->_array, index);
 }
 // Sets the Item at given index; or NULL if out of bounds
-[[nodiscard]] void* List_Set(List* self, size_t index, const void* item)
+void* List_Set(List* self, size_t index, const void* item)
 {
 	$(index < 0 || self->Count <= index);
 	return Array_Set(self->_array, index, &item);
 }
 // Returns the first Item, or NULL if out of bounds
-[[nodiscard]] void* List_Front(List* self)
+void* List_Front(List* self)
 {
 	return List_At(self, 0);
 }
 // Returns the last Item, or NULL if out of bounds
-[[nodiscard]] void* List_Back(List* self)
+void* List_Back(List* self)
 {
 	return List_At(self, self->Count - 1);
 }
 // Inserts the Item at given index and returns it. Returns NULL if out of bounds, or any error
-[[nodiscard]] void* List_Insert(List* self, size_t index, const void* item)
+void* List_Insert(List* self, size_t index, const void* item)
 {
 	$(index < 0 || self->Count < index);
 
@@ -89,17 +91,17 @@ List* List_Destructor(List* self)
 	return List_At(self, index);
 }
 // Inserts the Item at front and returns it, or NULL if any error
-[[nodiscard]] void* List_PushFront(List* self, const void* item)
+void* List_PushFront(List* self, const void* item)
 {
 	return List_Insert(self, 0, item);
 }
 // Inserts the Item at end and returns it, or NULL if any error
-[[nodiscard]] void* List_PushBack(List* self, const void* item)
+void* List_PushBack(List* self, const void* item)
 {
 	return List_Insert(self, self->Count, item);
 }
 // Removes the Item at given index and returns removed. Returns NULL if out of bounds, or any error
-[[nodiscard]] void* List_Remove(List* self, size_t index)
+void* List_Remove(List* self, size_t index)
 {
 	$(!List_At(self, index));
 

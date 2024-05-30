@@ -1,8 +1,11 @@
 // Auto-generate begin. Do not modify!
 #include "TestHashTableItem.h.gen"
+#include <stdio.h>
 void TestHashTableItem_RunAll()
 {
-	HashTableItem_Constructor_CreatesExactCopyOfKeys();
+    size_t i = 0;
+	HashTableItem_Constructor_CreatesExactCopyOfKeys(); i++;
+    printf("%d test cases on TestHashTableItem has successfully run.\n\n", i);
 }
 
 // Auto-generate end. Do not modify!

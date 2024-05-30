@@ -1,16 +1,19 @@
 // Auto-generate begin. Do not modify!
 #include "TestArray.h.gen"
+#include <stdio.h>
 void TestArray_RunAll()
 {
-	Array_SetsItem_AbleToRetrieveByAtMethod();
-	Array_SetsAllItems_AbleToRetrieveAllItems();
-	Array_AsStringType_WorksAsExpected();
-	Array_AsCustomType_WorksAsExpected();
-	ArrayEquals_DifferentSizeOfItems_ReturnsFalse();
-	ArrayEquals_DifferentLength_ReturnsFalse();
-	ArrayEquals_SameLengthAndSizeOfButDifferentData_ReturnsFalse();
-	ArrayEquals_SameLengthAndSizeOfAndData_ReturnsTrue();
-	Array_Clone_CreatesExactCopy();
+    size_t i = 0;
+	Array_SetsItem_AbleToRetrieveByAtMethod(); i++;
+	Array_SetsAllItems_AbleToRetrieveAllItems(); i++;
+	Array_AsStringType_WorksAsExpected(); i++;
+	Array_AsCustomType_WorksAsExpected(); i++;
+	ArrayEquals_DifferentSizeOfItems_ReturnsFalse(); i++;
+	ArrayEquals_DifferentLength_ReturnsFalse(); i++;
+	ArrayEquals_SameLengthAndSizeOfButDifferentData_ReturnsFalse(); i++;
+	ArrayEquals_SameLengthAndSizeOfAndData_ReturnsTrue(); i++;
+	Array_Clone_CreatesExactCopy(); i++;
+    printf("%d test cases on TestArray has successfully run.\n\n", i);
 }
 
 // Auto-generate end. Do not modify!

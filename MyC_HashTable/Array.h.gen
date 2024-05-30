@@ -11,11 +11,11 @@
 // Frees the resources held, and returns reference to self
 Array* Array_Destructor(Array* self);
 // Creates an exact copy and returns the pointer, or NULL if any error
-Array* Array_Clone(const Array* self);
+[[nodiscard]] Array* Array_Clone(const Array* self);
 // Returns the location of the item at index to read from, or NULL if any error
-void* Array_At(const Array* self, size_t index);
+[[nodiscard]] void* Array_At(const Array* self, size_t index);
 // Copies the item at the given location to the index and returns internal location of item, or NULL if any error
-void* Array_Set(Array* self, size_t index, const void* itemLocation);
+[[nodiscard]] void* Array_Set(Array* self, size_t index, const void* itemLocation);
 // Compares two Arrays, returns true if they're exactly identical
 bool Array_Equals(const Array* self, const Array* other);
 // Returns the total size of the Array in bytes, calculated by SizeOfItem * Count

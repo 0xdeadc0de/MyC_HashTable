@@ -42,9 +42,12 @@ template_c = """\
 // Auto-generate end. Do not modify!"""
 
 template_runAll = """\
+#include <stdio.h>
 {signature}
 {{
+    size_t i = 0;
 {calls}
+    printf("%d test cases on {structName} has successfully run.\\n\\n", i);
 }}
 """
 
@@ -77,10 +80,11 @@ def GenerateMacroFile() -> str:
 def GenerateCFile(structName: str, signatures: list[Signature], headerExists: bool) -> str:
     
     runAll = ""
-    calls = "\n".join(f"\t{methodName}();" for _, methodName, _, _ in signatures)
+    calls = "\n".join(f"\t{methodName}(); i++;" for _, methodName, _, _ in signatures)
     runAll = template_runAll.format(
         signature = f"{signatureRunAll.returnType} {structName}_{signatureRunAll.name}({signatureRunAll.parameters})",
-        calls = calls
+        calls = calls,
+        structName = structName
     )
     signatures = [signatureRunAll]
 

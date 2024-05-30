@@ -113,7 +113,7 @@ static HashTable* resize(HashTable* self, size_t newSize)
 
 	// Allocate a new table, and copy item pointers
 	HashTable* newTable = new1(HashTable, newSize);
-	$(newTable);
+	$(!newTable);
 
 	for (size_t i = 0; i < self->_size; i++)
 	{
@@ -125,7 +125,7 @@ static HashTable* resize(HashTable* self, size_t newSize)
 			continue;
 		}
 
-		HashTable_Upsert(newTable, item->Key, item->Value);
+		$(!HashTable_Upsert(newTable, item->Key, item->Value));
 	}
 
 	// Swap tables so we can free memory on new table pointer
@@ -170,24 +170,26 @@ HashTable* HashTable_Destructor(HashTable* self)
 	delete(List, self->_list);
 	return self;
 }
-// Inserts key, value. If key exists, updates the value. Returns NULL if any error
+// Inserts key, value returns self. If key exists, updates the value. Returns NULL if any error
 [[nodiscard]] HashTable* HashTable_Upsert(HashTable* self, const Array* key, void* value)
 {
 	if (70 < self->Count * 100 / self->_size)
 	{
-		resize(self, self->_size * 2);
+		$(!resize(self, self->_size * 2));
  	}
 
 	// Search an empty slot location to insert the new item
 	size_t index = search(self, key, true);
 	HashTableItem* newPair = new2(HashTableItem, key, value);
-	$(newPair);
+	$(!newPair);
 
 	// Set item
 	List_Set(self->_list, index, newPair);
 
 	// Increase the count of items in the table
 	self->Count++;
+
+	return self;
 }
 // Deletes the key from the hash table and returns self, or NULL if any error
 [[nodiscard]] HashTable* HashTable_Delete(HashTable* self, const Array* key)

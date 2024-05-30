@@ -1,20 +1,23 @@
 // Auto-generate begin. Do not modify!
 #include "TestList.h.gen"
+#include <stdio.h>
 void TestList_RunAll()
 {
-	List_Initialize_ShouldHaveZeroItems();
-	List_At_ShouldReturnItemAtLocation();
-	List_Set_ShouldSetItemAtLocation();
-	List_CapacityReached_ShouldDoubleSize();
-	List_WhenHasLessItems_ShouldReduceSize();
-	List_Front_ShouldReturnItemAtFront();
-	List_Back_ShouldReturnItemAtEnd();
-	List_PushBack_ShouldAddItemToEnd();
-	List_PushFront_ShouldAddItemToFront();
-	List_RemoveFront_ShouldRemoveItemAtFront();
-	List_RemoveBack_ShouldRemoveItemAtBack();
-	List_Remove_ShouldRemoveItemAtGivenIndex();
-	List_Insert_ShouldInsertItemAtGivenIndex();
+    size_t i = 0;
+	List_Initialize_ShouldHaveZeroItems(); i++;
+	List_At_ShouldReturnItemAtLocation(); i++;
+	List_Set_ShouldSetItemAtLocation(); i++;
+	List_CapacityReached_ShouldDoubleSize(); i++;
+	List_WhenHasLessItems_ShouldReduceSize(); i++;
+	List_Front_ShouldReturnItemAtFront(); i++;
+	List_Back_ShouldReturnItemAtEnd(); i++;
+	List_PushBack_ShouldAddItemToEnd(); i++;
+	List_PushFront_ShouldAddItemToFront(); i++;
+	List_RemoveFront_ShouldRemoveItemAtFront(); i++;
+	List_RemoveBack_ShouldRemoveItemAtBack(); i++;
+	List_Remove_ShouldRemoveItemAtGivenIndex(); i++;
+	List_Insert_ShouldInsertItemAtGivenIndex(); i++;
+    printf("%d test cases on TestList has successfully run.\n\n", i);
 }
 
 // Auto-generate end. Do not modify!

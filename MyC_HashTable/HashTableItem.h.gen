@@ -7,9 +7,9 @@
 
 
 // Constructs an HashTableItem with cloned key and returns the pointer, or NULL if any error
-HashTableItem* HashTableItem_Constructor2(HashTableItem* self, const Array* key, void* value);
+[[nodiscard]] HashTableItem* HashTableItem_Constructor2(HashTableItem* self, const Array* key, void* value);
 // Frees the resources held, and returns reference to self
-void* HashTableItem_Destructor(HashTableItem* self);
+HashTableItem* HashTableItem_Destructor(HashTableItem* self);
 
 #endif
 // Auto-generate end. Do not modify!

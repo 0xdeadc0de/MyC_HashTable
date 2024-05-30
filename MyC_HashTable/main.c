@@ -11,9 +11,9 @@ int main()
 {
 	//Array* ret __attribute__ ((cleanup(Array_Destructor))) = Array_Constructor2(NULL, 0, 0);
 
-	Array_Set(NULL, 0, NULL);
+	//Array_Set(NULL, 0, NULL);
 	
-	new2(Array, 1, 2);
+	//new2(Array, 1, 2);
 
 	TestArray_RunAll();
 	TestList_RunAll();
