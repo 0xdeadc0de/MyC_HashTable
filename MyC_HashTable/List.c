@@ -17,7 +17,7 @@
 	{
 		void* oldItem; 
 		try (Array_At(oldArray, i))
-		set (oldItem)
+		out (oldItem)
 
 		try (Array_Set(self->_array, i, oldItem))
 		end
@@ -38,7 +38,7 @@
 
 	Array* array;
 	try (new2(Array, sizeof(void*), size))
-	set (array)
+	out (array)
 
 	*self = (List)
 	{
@@ -64,7 +64,7 @@ Result List_At(List* self, size_t index)
 
 	void* location;
 	try (Array_At(self->_array, index))
-	set (location);
+	out (location);
 
 	return (Result) {OK, *(void**)location};
 }
@@ -106,7 +106,7 @@ Result List_Insert(List* self, size_t index, const void* item)
 	{
 		void* previous;
 		try (List_At(self, i - 1))
-		set (previous)
+		out (previous)
 
 		try (Array_Set(self->_array, i, &previous))
 		end
@@ -137,13 +137,13 @@ Result List_Remove(List* self, size_t index)
 
 	void* removed;
 	try (List_At(self, index))
-	set (removed)
+	out (removed)
 
 	for (size_t i = index; i < self->Count - 1; i++)
 	{
 		void* next;
 		try (List_At(self, i + 1))
-		set (next)
+		out (next)
 		
 		try (Array_Set(self->_array, i, &next))
 		end

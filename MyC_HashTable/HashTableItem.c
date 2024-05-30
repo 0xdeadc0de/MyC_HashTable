@@ -8,7 +8,7 @@
 {
 	Array* clone;
 	try (Array_Clone(key))
-	set (clone)
+	out (clone)
 
 	self->Key = clone;
 	self->Value = value;

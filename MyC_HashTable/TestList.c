@@ -39,14 +39,14 @@ static Result List_At_ShouldReturnItemAtLocation()
 
 	void *a, *b;
 	try (List_At(&list, 0))
-	set (a)
+	out (a)
 	try (Array_At(list._array, 0))
-	set (b)
+	out (b)
 	assert(a == *(void**)b);
 
 	void* location;
 	try (List_At(&list, 0))
-	set (location)
+	out (location)
 
 	int* intLocation = location;
 	int value = *intLocation;
@@ -78,14 +78,14 @@ static Result List_Set_ShouldSetItemAtLocation()
 	
 	void *a, *b;
 	try (List_At(&list, 0))
-	set (a)
+	out (a)
 	try (Array_At(list._array, 0))
-	set (b)
+	out (b)
 	assert(a == *(void**)b);
 
 	void* location;
 	try (List_At(&list, 0))
-	set (location)
+	out (location)
 
 	assert(location == newLocation);
 
@@ -205,15 +205,15 @@ static Result List_Front_ShouldReturnItemAtFront()
 	
 	void* front;
 	try (List_Front(&list))
-	set (front)
+	out (front)
 
 	void* zeroth;
 	try (Array_At(list._array, 0))
-	set (zeroth)
+	out (zeroth)
 
 	void* listZero;
 	try (List_At(&list, 0))
-	set (listZero)
+	out (listZero)
 
 	assert(front == *(void**)zeroth);
 	assert(front == listZero);
@@ -244,15 +244,15 @@ static Result List_Back_ShouldReturnItemAtEnd()
 	// Assert
 	void* listBack;
 	try (List_Back(&list))
-	set (listBack)
+	out (listBack)
 
 	void* first;
 	try (Array_At(list._array, 1))
-	set (first)
+	out (first)
 
 	void* listFirst;
 	try (List_At(&list, 1))
-	set (listFirst)
+	out (listFirst)
 
 	assert(list._array->Count == 2);
 	assert(list.Count == 2);
@@ -284,11 +284,11 @@ static Result List_PushBack_ShouldAddItemToEnd()
 
 	void* zeroth;
 	try (List_At(&list, 0))
-	set (zeroth)
+	out (zeroth)
 
 	void* first;
 	try (List_At(&list, 1))
-	set (first)
+	out (first)
 
 	assert(zeroth == &item0);
 	assert(first == &item1);
@@ -317,11 +317,11 @@ static Result List_PushFront_ShouldAddItemToFront()
 
 	void* zeroth;
 	try (List_At(&list, 0))
-	set (zeroth)
+	out (zeroth)
 
 	void* first;
 	try (List_At(&list, 1))
-	set (first)
+	out (first)
 
 	assert(zeroth == &item1);
 	assert(first == &item0);
@@ -353,7 +353,7 @@ static Result List_RemoveFront_ShouldRemoveItemAtFront()
 
 	void* zeroth;
 	try (List_At(&list, 0))
-	set (zeroth)
+	out (zeroth)
 
 	assert(zeroth == &item1);
 
@@ -383,7 +383,7 @@ static Result List_RemoveBack_ShouldRemoveItemAtBack()
 	
 	void* zeroth;
 	try (List_At(&list, 0))
-	set (zeroth)
+	out (zeroth)
 
 	assert(zeroth == &item0);
 
@@ -415,11 +415,11 @@ static Result List_Remove_ShouldRemoveItemAtGivenIndex()
 	
 	void* zeroth;
 	try (List_At(&list, 0))
-	set (zeroth)
+	out (zeroth)
 
 	void* first;
 	try (List_At(&list, 1))
-	set (first)
+	out (first)
 
 	assert(zeroth == &item0);
 	assert(first == &item2);
@@ -453,19 +453,19 @@ static Result List_Insert_ShouldInsertItemAtGivenIndex()
 	
 	void* a;
 	try (List_At(&list, 0))
-	set (a)
+	out (a)
 	assert(a == &item0);
 
 	try (List_At(&list, 1))
-	set (a)
+	out (a)
 	assert(a == &itemX);
 
 	try (List_At(&list, 2))
-	set (a)
+	out (a)
 	assert(a == &item1);
 
 	try (List_At(&list, 3))
-	set (a)
+	out (a)
 	assert(a == &item2);
 
 	// Annihilate

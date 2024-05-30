@@ -32,7 +32,7 @@ enum ResultCode
 	if (result.code != 0) \
 		return result;
 
-#define set(variable) \
+#define out(variable) \
 	variable = result.value;\
 }
 

@@ -10,15 +10,15 @@ static Result HashTable_InsertItem_AbleToGetBack()
 	// Arrange
 	HashTable* table;
 	try (new1(HashTable, 50))
-	set (table)
+	out (table)
 
 	Array* key;
 	try (new2(Array, 4, 1))
-	set (key)
+	out (key)
 
 	Array* key2;
 	try (new2(Array, 4, 1))
-	set (key2)
+	out (key2)
 
 	int keyValue = 48;
 	int value = 42;

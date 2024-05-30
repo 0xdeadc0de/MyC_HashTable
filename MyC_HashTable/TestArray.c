@@ -23,7 +23,7 @@ static Result Array_SetsItem_AbleToRetrieveByAtMethod()
 	// Assert
 	void* location;
 	try (Array_At(&array, 0))
-	set (location)
+	out (location)
 
 	int* intLocation = location;
 	int value = *intLocation;
@@ -52,7 +52,7 @@ static Result Array_SetsAllItems_AbleToRetrieveAllItems()
 	{
 		void* location;
 		try (Array_At(&array, i))
-		set (location)
+		out (location)
 
 		int* intLocation = location;
 		int value = *intLocation;
@@ -83,7 +83,7 @@ static Result Array_AsStringType_WorksAsExpected()
 	{
 		void* location;
 		try (Array_At(&array, i))
-		set (location)
+		out (location)
 
 		char* charLocation = location;
 		int value = *charLocation;
@@ -140,7 +140,7 @@ static Result Array_AsCustomType_WorksAsExpected()
 	{
 		void* location;
 		try (Array_At(&array, i))
-		set (location)
+		out (location)
 
 		CustomType* customTypeLocation = location;
 		CustomType value = *customTypeLocation;
@@ -221,7 +221,7 @@ static Result Array_Clone_CreatesExactCopy()
 	// Arrange
 	Array* a1;
 	try (new2(Array, sizeof(int), 5))
-	set (a1)
+	out (a1)
 
 	for (size_t i = 0; i < 5; i++)
 	{
@@ -232,7 +232,7 @@ static Result Array_Clone_CreatesExactCopy()
 	// Act
 	Array* cloned;
 	try (Array_Clone(a1))
-	set (cloned)
+	out (cloned)
 
 	// Assert
 	assert(Array_Equals(a1, cloned));

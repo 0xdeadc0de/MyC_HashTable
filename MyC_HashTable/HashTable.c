@@ -75,7 +75,7 @@ static Result search(HashTable* self, const Array* key, bool findInsertLocation)
 
 		HashTableItem* item;
 		try (List_At(self->_list, index))
-		set (item)
+		out (item)
 
 		if (NULL == item)
 		{
@@ -116,13 +116,13 @@ static Result resize(HashTable* self, size_t newSize)
 	// Allocate a new table, and copy item pointers
 	HashTable* newTable;
 	try (new1(HashTable, newSize))
-	set (newTable);
+	out (newTable);
 
 	for (size_t i = 0; i < self->_size; i++)
 	{
 		HashTableItem* item;
 		try (List_At(self->_list, i))
-		set (item)
+		out (item)
 		
 		// If an item is deleted or null, skip it
 		if (NULL == item || DELETED == item)
@@ -157,7 +157,7 @@ static Result resize(HashTable* self, size_t newSize)
 
 	List* list;
 	try (new1(List, size))
-	set (list)
+	out (list)
 
 	*self = (HashTable)
 	{
@@ -192,11 +192,11 @@ HashTable* HashTable_Destructor(HashTable* self)
 	// Search an empty slot location to insert the new item
 	size_t index;
 	try (search(self, key, true))
-	set (index)
+	out (index)
 
 	HashTableItem* newPair;
 	try (new2(HashTableItem, key, value))
-	set (newPair)
+	out (newPair)
 
 	// Set item
 	try (List_Set(self->_list, index, newPair))
@@ -212,11 +212,11 @@ HashTable* HashTable_Destructor(HashTable* self)
 {
 	size_t index;
 	try (search(self, key, false))
-	set (index)
+	out (index)
 	
 	HashTableItem* item;
 	try (List_At(self->_list, index))
-	set (item)
+	out (item)
 	
 	// If search returned an empty slot location, we do nothing, this item doesn't exist in table already
 	if (NULL == item)
@@ -242,11 +242,11 @@ HashTable* HashTable_Destructor(HashTable* self)
 	// Search for the item with the given key
 	size_t index;
 	try (search(self, key, false))
-	set (index)
+	out (index)
 
 	HashTableItem* item;
 	try (List_At(self->_list, index))
-	set (item)
+	out (item)
 
 	// Return the value of the item found
 	return (Result) {OK, item->Value};
