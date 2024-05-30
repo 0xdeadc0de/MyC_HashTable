@@ -6,30 +6,30 @@
 #include "List.h"
 
 
-// Constructs a List of size and returns the list pointer, or NULL if any error
-[[nodiscard]] List* List_Constructor1(List* self, size_t size);
+// Constructs a List of size and returns the self pointer
+[[nodiscard]] Result List_Constructor1(List* self, size_t size);
 // Frees the resources held, and returns reference to self
 List* List_Destructor(List* self);
-// Returns the Item at given index; or NULL if out of bounds
-void* List_At(List* self, size_t index);
-// Sets the Item at given index; or NULL if out of bounds
-void* List_Set(List* self, size_t index, const void* item);
-// Returns the first Item, or NULL if out of bounds
-void* List_Front(List* self);
-// Returns the last Item, or NULL if out of bounds
-void* List_Back(List* self);
-// Inserts the Item at given index and returns it. Returns NULL if out of bounds, or any error
-void* List_Insert(List* self, size_t index, const void* item);
+// Returns the item at given index; or NULL if out of bounds
+Result List_At(List* self, size_t index);
+// Sets the Item at given index
+Result List_Set(List* self, size_t index, const void* item);
+// Returns the first Item
+Result List_Front(List* self);
+// Returns the last Item
+Result List_Back(List* self);
+// Inserts the Item at given index and returns it
+Result List_Insert(List* self, size_t index, const void* item);
 // Inserts the Item at front and returns it, or NULL if any error
-void* List_PushFront(List* self, const void* item);
+Result List_PushFront(List* self, const void* item);
 // Inserts the Item at end and returns it, or NULL if any error
-void* List_PushBack(List* self, const void* item);
+Result List_PushBack(List* self, const void* item);
 // Removes the Item at given index and returns removed. Returns NULL if out of bounds, or any error
-void* List_Remove(List* self, size_t index);
+Result List_Remove(List* self, size_t index);
 // Removes the Item at front and returns removed, or NULL if any error
-void* List_RemoveFront(List* self);
+Result List_RemoveFront(List* self);
 // Removes the Item at end and returns removed, or NULL if any error
-void* List_RemoveBack(List* self);
+Result List_RemoveBack(List* self);
 
 #endif
 // Auto-generate end. Do not modify!

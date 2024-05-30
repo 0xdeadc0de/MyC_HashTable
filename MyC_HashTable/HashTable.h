@@ -4,7 +4,7 @@
 
 #include "List.h"
 
-typedef struct
+typedef struct HashTable
 {
 	size_t Count;
 

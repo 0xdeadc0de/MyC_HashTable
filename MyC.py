@@ -17,7 +17,32 @@ template_macro = """\
 
 #define delete(typename,self) free(typename##_Destructor(self))
 
-#define	$(x) if (x) return NULL
+typedef struct Result
+{
+	// A value set to zero when operation was successful and result is set properly
+	int code;
+	void* value;
+}
+Result;
+
+enum ResultCode
+{
+    InvalidArgument = -3,
+    AllocNull = -2,
+	OutOfBounds = -1,
+	OK = 0
+};
+
+#define	try(x) {\\
+	Result result = x; \\
+	if (result.code != 0) \\
+		return result;
+
+#define set(variable) \\
+	variable = result.value;\\
+}
+
+#define end }
 
 #endif
 // Auto-generate end. Do not modify!"""
@@ -47,7 +72,7 @@ template_runAll = """\
 {{
     size_t i = 0;
 {calls}
-    printf("%d test cases on {structName} has successfully run.\\n\\n", i);
+    printf("\\n%d test cases on {structName} has successfully run.\\n\\n\\n", i);
 }}
 """
 
@@ -80,7 +105,7 @@ def GenerateMacroFile() -> str:
 def GenerateCFile(structName: str, signatures: list[Signature], headerExists: bool) -> str:
     
     runAll = ""
-    calls = "\n".join(f"\t{methodName}(); i++;" for _, methodName, _, _ in signatures)
+    calls = "\n".join(f"\tprintf(\"Executing test case `{methodName}` ...\"); {methodName}(); puts(\"OK\"); i++;" for _, methodName, _, _ in signatures)
     runAll = template_runAll.format(
         signature = f"{signatureRunAll.returnType} {structName}_{signatureRunAll.name}({signatureRunAll.parameters})",
         calls = calls,

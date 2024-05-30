@@ -3,7 +3,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-typedef struct
+typedef struct Array
 {
 	size_t Count;
 	size_t SizeOfItem;

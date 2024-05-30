@@ -4,9 +4,9 @@
 void TestHashTable_RunAll()
 {
     size_t i = 0;
-	HashTable_InsertItem_AbleToGetBack(); i++;
-	HashTable_InsertItemTwice_WHAT_TO_DO(); i++;
-    printf("%d test cases on TestHashTable has successfully run.\n\n", i);
+	printf("Executing test case `HashTable_InsertItem_AbleToGetBack` ..."); HashTable_InsertItem_AbleToGetBack(); puts("OK"); i++;
+	printf("Executing test case `HashTable_InsertItemTwice_WHAT_TO_DO` ..."); HashTable_InsertItemTwice_WHAT_TO_DO(); puts("OK"); i++;
+    printf("\n%d test cases on TestHashTable has successfully run.\n\n\n", i);
 }
 
 // Auto-generate end. Do not modify!

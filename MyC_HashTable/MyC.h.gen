@@ -11,7 +11,32 @@
 
 #define delete(typename,self) free(typename##_Destructor(self))
 
-#define	$(x) if (x) return NULL
+typedef struct Result
+{
+	// A value set to zero when operation was successful and result is set properly
+	int code;
+	void* value;
+}
+Result;
+
+enum ResultCode
+{
+    InvalidArgument = -3,
+    AllocNull = -2,
+	OutOfBounds = -1,
+	OK = 0
+};
+
+#define	try(x) {\
+	Result result = x; \
+	if (result.code != 0) \
+		return result;
+
+#define set(variable) \
+	variable = result.value;\
+}
+
+#define end }
 
 #endif
 // Auto-generate end. Do not modify!

@@ -4,13 +4,14 @@
 
 #include "List.h"
 
-static void List_Initialize_ShouldHaveZeroItems()
+static Result List_Initialize_ShouldHaveZeroItems()
 {
 	// Arrange
 	List list;
 
 	// Act
-	List_Constructor1(&list, 42);
+	try (List_Constructor1(&list, 42))
+	end;
 	
 	// Assert
 	assert(list._array->Count == 42);
@@ -19,23 +20,34 @@ static void List_Initialize_ShouldHaveZeroItems()
 	// Annihilate
 	List_Destructor(&list);
 }
-static void List_At_ShouldReturnItemAtLocation()
+static Result List_At_ShouldReturnItemAtLocation()
 {
 	// Arrange
 	List list;
-	assert(List_Constructor1(&list, 1));
+	try (List_Constructor1(&list, 1))
+	end
 	
 	int item = 42;
 	int* itemLocation = &item;
 	// Act
-	assert(List_PushBack(&list, itemLocation));
+	try (List_PushBack(&list, itemLocation))
+	end
 	
 	// Assert
 	assert(list._array->Count == 1);
 	assert(list.Count == 1);
-	assert(List_At(&list, 0) == *(void**)Array_At(list._array, 0));
 
-	void* location = List_At(&list, 0);
+	void *a, *b;
+	try (List_At(&list, 0))
+	set (a)
+	try (Array_At(list._array, 0))
+	set (b)
+	assert(a == *(void**)b);
+
+	void* location;
+	try (List_At(&list, 0))
+	set (location)
+
 	int* intLocation = location;
 	int value = *intLocation;
 	assert(42 == value);
@@ -43,37 +55,50 @@ static void List_At_ShouldReturnItemAtLocation()
 	// Annihilate
 	List_Destructor(&list);
 }
-static void List_Set_ShouldSetItemAtLocation()
+static Result List_Set_ShouldSetItemAtLocation()
 {
 	// Arrange
 	List list;
-	assert(List_Constructor1(&list, 1));
+	try (List_Constructor1(&list, 1))
+	end
 	
 	int item = 42;
 	int* itemLocation = &item;
 	// Act
-	assert(List_PushBack(&list, itemLocation));
+	try (List_PushBack(&list, itemLocation))
+	end
 	int newItem = 38;
 	int* newLocation = &newItem;
-	assert(List_Set(&list, 0, newLocation));
+	try (List_Set(&list, 0, newLocation))
+	end
 	
 	// Assert
 	assert(list._array->Count == 1);
 	assert(list.Count == 1);
-	assert(List_At(&list, 0) == *(void**)Array_At(list._array, 0));
+	
+	void *a, *b;
+	try (List_At(&list, 0))
+	set (a)
+	try (Array_At(list._array, 0))
+	set (b)
+	assert(a == *(void**)b);
 
-	void* location = List_At(&list, 0);
+	void* location;
+	try (List_At(&list, 0))
+	set (location)
+
 	assert(location == newLocation);
 
 	// Annihilate
 	List_Destructor(&list);
 }
 
-static void List_CapacityReached_ShouldDoubleSize()
+static Result List_CapacityReached_ShouldDoubleSize()
 {
 	// Arrange
 	List list;
-	assert(List_Constructor1(&list, 1));
+	try (List_Constructor1(&list, 1))
+	end
 	
 	int item;
 
@@ -81,28 +106,34 @@ static void List_CapacityReached_ShouldDoubleSize()
 	assert(list._array->Count == 1);
 	assert(list.Count == 0);
 	
-	assert(List_PushBack(&list, &item));
-	assert(List_PushBack(&list, &item));
+	try (List_PushBack(&list, &item))
+	end
+	try (List_PushBack(&list, &item))
+	end
 	assert(list._array->Count == 2);
 	assert(list.Count == 2);
 	
-	assert(List_PushBack(&list, &item));
+	try (List_PushBack(&list, &item))
+	end
 	assert(list._array->Count == 4);
 	assert(list.Count == 3);
 	
-	assert(List_PushBack(&list, &item));
-	assert(List_PushBack(&list, &item));
+	try (List_PushBack(&list, &item))
+	end
+	try (List_PushBack(&list, &item))
+	end
 	assert(list._array->Count == 8);
 	assert(list.Count == 5);
 
 	// Annihilate
 	List_Destructor(&list);
 }
-static void List_WhenHasLessItems_ShouldReduceSize()
+static Result List_WhenHasLessItems_ShouldReduceSize()
 {
 	// Arrange
 	List list;
-	assert(List_Constructor1(&list, 1));
+	try (List_Constructor1(&list, 1))
+	end
 	
 	int item;
 
@@ -110,32 +141,42 @@ static void List_WhenHasLessItems_ShouldReduceSize()
 	assert(list._array->Count == 1);
 	assert(list.Count == 0);
 	
-	assert(List_PushBack(&list, &item));
-	assert(List_PushBack(&list, &item));
-	assert(List_PushBack(&list, &item));
-	assert(List_PushBack(&list, &item));
-	assert(List_PushBack(&list, &item));
+	try (List_PushBack(&list, &item))
+	end
+	try (List_PushBack(&list, &item))
+	end
+	try (List_PushBack(&list, &item))
+	end
+	try (List_PushBack(&list, &item))
+	end
+	try (List_PushBack(&list, &item))
+	end
 	assert(list._array->Count == 8);
 	assert(list.Count == 5);
 
-	assert(List_RemoveBack(&list));
-	assert(List_RemoveBack(&list));
+	try (List_RemoveBack(&list))
+	end
+	try (List_RemoveBack(&list))
+	end
 	assert(list._array->Count == 8);
 
-	assert(List_RemoveBack(&list));
+	try (List_RemoveBack(&list))
+	end
 	assert(list._array->Count == 4);
 	assert(list.Count == 2);
 
-	assert(List_RemoveBack(&list));
+	try (List_RemoveBack(&list))
+	end
 	assert(list._array->Count == 2);
 	assert(list.Count == 1);
 
-	assert(List_RemoveBack(&list));
+	try (List_RemoveBack(&list))
+	end
 	assert(list._array->Count == 1);
 	assert(list.Count == 0);
 
 	// Can't do
-	assert(!List_RemoveBack(&list));
+	assert(List_RemoveBack(&list).code == OutOfBounds);
 	assert(list._array->Count == 1);
 	assert(list.Count == 0);
 
@@ -143,183 +184,289 @@ static void List_WhenHasLessItems_ShouldReduceSize()
 	List_Destructor(&list);
 }
 
-static void List_Front_ShouldReturnItemAtFront()
+static Result List_Front_ShouldReturnItemAtFront()
 {
 	// Arrange
 	List list;
-	assert(List_Constructor1(&list, 1));
+	try (List_Constructor1(&list, 1))
+	end
 	
 	int item0, item1;
 
 	// Act
-	assert(List_PushBack(&list, &item0));
-	assert(List_PushBack(&list, &item1));
+	try (List_PushBack(&list, &item0))
+	end
+	try (List_PushBack(&list, &item1))
+	end
 	
 	// Assert
 	assert(list._array->Count == 2);
 	assert(list.Count == 2);
-	assert(List_Front(&list) == *(void**)Array_At(list._array, 0));
-	assert(List_Front(&list) == List_At(&list, 0));
-
 	
-	void* a = List_Front(&list), *b = &item0;
+	void* front;
+	try (List_Front(&list))
+	set (front)
+
+	void* zeroth;
+	try (Array_At(list._array, 0))
+	set (zeroth)
+
+	void* listZero;
+	try (List_At(&list, 0))
+	set (listZero)
+
+	assert(front == *(void**)zeroth);
+	assert(front == listZero);
+
+	void* a = front, *b = &item0;
 	assert(a == b);
 
-	assert(List_Front(&list) == &item0);
+	assert(front == &item0);
 
 	// Annihilate
 	List_Destructor(&list);
 }
-static void List_Back_ShouldReturnItemAtEnd()
+static Result List_Back_ShouldReturnItemAtEnd()
 {
 	// Arrange
 	List list;
-	assert(List_Constructor1(&list, 1));
+	try (List_Constructor1(&list, 1))
+	end
 	
 	int item0, item1;
 
 	// Act
-	assert(List_PushBack(&list, &item0));
-	assert(List_PushBack(&list, &item1));
+	try (List_PushBack(&list, &item0))
+	end
+	try (List_PushBack(&list, &item1))
+	end
+	
+	// Assert
+	void* listBack;
+	try (List_Back(&list))
+	set (listBack)
+
+	void* first;
+	try (Array_At(list._array, 1))
+	set (first)
+
+	void* listFirst;
+	try (List_At(&list, 1))
+	set (listFirst)
+
+	assert(list._array->Count == 2);
+	assert(list.Count == 2);
+	assert(listBack == *(void**)first);
+	assert(listBack == listFirst);
+	assert(listBack == &item1);
+
+	// Annihilate
+	List_Destructor(&list);
+}
+static Result List_PushBack_ShouldAddItemToEnd()
+{
+	// Arrange
+	List list;
+	try (List_Constructor1(&list, 1))
+	end
+	
+	int item0, item1;
+
+	// Act
+	try (List_PushBack(&list, &item0))
+	end
+	try (List_PushBack(&list, &item1))
+	end
 	
 	// Assert
 	assert(list._array->Count == 2);
 	assert(list.Count == 2);
-	assert(List_Back(&list) == *(void**)Array_At(list._array, 1));
-	assert(List_Back(&list) == List_At(&list, 1));
-	assert(List_Back(&list) == &item1);
+
+	void* zeroth;
+	try (List_At(&list, 0))
+	set (zeroth)
+
+	void* first;
+	try (List_At(&list, 1))
+	set (first)
+
+	assert(zeroth == &item0);
+	assert(first == &item1);
 
 	// Annihilate
 	List_Destructor(&list);
 }
-static void List_PushBack_ShouldAddItemToEnd()
+static Result List_PushFront_ShouldAddItemToFront()
 {
 	// Arrange
 	List list;
-	assert(List_Constructor1(&list, 1));
+	try (List_Constructor1(&list, 1))
+	end
 	
 	int item0, item1;
 
 	// Act
-	assert(List_PushBack(&list, &item0));
-	assert(List_PushBack(&list, &item1));
+	try (List_PushFront(&list, &item0))
+	end
+	try (List_PushFront(&list, &item1))
+	end
 	
 	// Assert
 	assert(list._array->Count == 2);
 	assert(list.Count == 2);
-	assert(List_At(&list, 0) == &item0);
-	assert(List_At(&list, 1) == &item1);
 
+	void* zeroth;
+	try (List_At(&list, 0))
+	set (zeroth)
+
+	void* first;
+	try (List_At(&list, 1))
+	set (first)
+
+	assert(zeroth == &item1);
+	assert(first == &item0);
+	
 	// Annihilate
 	List_Destructor(&list);
 }
-static void List_PushFront_ShouldAddItemToFront()
+static Result List_RemoveFront_ShouldRemoveItemAtFront()
 {
 	// Arrange
 	List list;
-	assert(List_Constructor1(&list, 1));
+	try (List_Constructor1(&list, 1))
+	end
 	
 	int item0, item1;
 
 	// Act
-	assert(List_PushFront(&list, &item0));
-	assert(List_PushFront(&list, &item1));
-	
-	// Assert
-	assert(list._array->Count == 2);
-	assert(list.Count == 2);
-	assert(List_At(&list, 0) == &item1);
-	assert(List_At(&list, 1) == &item0);
-
-	// Annihilate
-	List_Destructor(&list);
-}
-static void List_RemoveFront_ShouldRemoveItemAtFront()
-{
-	// Arrange
-	List list;
-	assert(List_Constructor1(&list, 1));
-	
-	int item0, item1;
-
-	// Act
-	assert(List_PushBack(&list, &item0));
-	assert(List_PushBack(&list, &item1));
-	assert(List_RemoveFront(&list));
+	try (List_PushBack(&list, &item0))
+	end
+	try (List_PushBack(&list, &item1))
+	end
+	try (List_RemoveFront(&list))
+	end
 	
 	// Assert
 	assert(list._array->Count == 2);
 	assert(list.Count == 1);
-	assert(List_At(&list, 0) == &item1);
+
+
+	void* zeroth;
+	try (List_At(&list, 0))
+	set (zeroth)
+
+	assert(zeroth == &item1);
 
 	// Annihilate
 	List_Destructor(&list);
 }
-static void List_RemoveBack_ShouldRemoveItemAtBack()
+static Result List_RemoveBack_ShouldRemoveItemAtBack()
 {
 	// Arrange
 	List list;
-	assert(List_Constructor1(&list, 1));
+	try (List_Constructor1(&list, 1))
+	end
 	
 	int item0, item1;
 
 	// Act
-	assert(List_PushBack(&list, &item0));
-	assert(List_PushBack(&list, &item1));
-	assert(List_RemoveBack(&list));
+	try (List_PushBack(&list, &item0))
+	end
+	try (List_PushBack(&list, &item1))
+	end
+	try (List_RemoveBack(&list))
+	end
 	
 	// Assert
 	assert(list._array->Count == 2);
 	assert(list.Count == 1);
-	assert(List_At(&list, 0) == &item0);
+	
+	void* zeroth;
+	try (List_At(&list, 0))
+	set (zeroth)
+
+	assert(zeroth == &item0);
 
 	// Annihilate
 	List_Destructor(&list);
 }
-static void List_Remove_ShouldRemoveItemAtGivenIndex()
+static Result List_Remove_ShouldRemoveItemAtGivenIndex()
 {
 	// Arrange
 	List list;
-	assert(List_Constructor1(&list, 1));
+	try (List_Constructor1(&list, 1))
+	end
 	
 	int item0, item1, item2;
 
 	// Act
-	assert(List_PushBack(&list, &item0));
-	assert(List_PushBack(&list, &item1));
-	assert(List_PushBack(&list, &item2));
-	assert(List_Remove(&list, 1));
+	try (List_PushBack(&list, &item0))
+	end
+	try (List_PushBack(&list, &item1))
+	end
+	try (List_PushBack(&list, &item2))
+	end
+	try (List_Remove(&list, 1))
+	end
 	
 	// Assert
 	assert(list._array->Count == 4);
 	assert(list.Count == 2);
-	assert(List_At(&list, 0) == &item0);
-	assert(List_At(&list, 1) == &item2);
+	
+	void* zeroth;
+	try (List_At(&list, 0))
+	set (zeroth)
 
+	void* first;
+	try (List_At(&list, 1))
+	set (first)
+
+	assert(zeroth == &item0);
+	assert(first == &item2);
+	
 	// Annihilate
 	List_Destructor(&list);
 }
-static void List_Insert_ShouldInsertItemAtGivenIndex()
+static Result List_Insert_ShouldInsertItemAtGivenIndex()
 {
 	// Arrange
 	List list;
-	assert(List_Constructor1(&list, 1));
+	try (List_Constructor1(&list, 1))
+	end
 	
 	int item0, item1, item2, itemX;
 
 	// Act
-	assert(List_PushBack(&list, &item0));
-	assert(List_PushBack(&list, &item1));
-	assert(List_PushBack(&list, &item2));
-	assert(List_Insert(&list, 1, &itemX));
+	try (List_PushBack(&list, &item0))
+	end
+	try (List_PushBack(&list, &item1))
+	end
+	try (List_PushBack(&list, &item2))
+	end
+	try (List_Insert(&list, 1, &itemX))
+	end
 	
 	// Assert
 	assert(list._array->Count == 4);
 	assert(list.Count == 4);
-	assert(List_At(&list, 0) == &item0);
-	assert(List_At(&list, 1) == &itemX);
-	assert(List_At(&list, 2) == &item1);
-	assert(List_At(&list, 3) == &item2);
+
+	
+	void* a;
+	try (List_At(&list, 0))
+	set (a)
+	assert(a == &item0);
+
+	try (List_At(&list, 1))
+	set (a)
+	assert(a == &itemX);
+
+	try (List_At(&list, 2))
+	set (a)
+	assert(a == &item1);
+
+	try (List_At(&list, 3))
+	set (a)
+	assert(a == &item2);
 
 	// Annihilate
 	List_Destructor(&list);

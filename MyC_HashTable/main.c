@@ -14,13 +14,13 @@ int main()
 	//Array_Set(NULL, 0, NULL);
 	
 	//new2(Array, 1, 2);
-
+puts("start");
 	TestArray_RunAll();
 	TestList_RunAll();
 	TestHashTableItem_RunAll();
 	TestHashTable_RunAll();
 
-	printf("OK\n");
+	puts("OK");
 	
 	return 0;
 }

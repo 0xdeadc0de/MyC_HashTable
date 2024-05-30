@@ -2,7 +2,7 @@
 
 #include "Array.h"
 
-typedef struct
+typedef struct HashTableItem
 {
 	Array* Key;
 	void* Value;

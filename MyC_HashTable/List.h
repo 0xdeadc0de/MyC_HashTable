@@ -4,7 +4,7 @@
 
 #include "Array.h"
 
-typedef struct
+typedef struct List
 {
 	size_t Count;
 	

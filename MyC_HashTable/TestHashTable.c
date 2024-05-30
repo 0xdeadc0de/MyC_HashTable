@@ -5,24 +5,36 @@
 
 #include "HashTable.h"
 
-static void HashTable_InsertItem_AbleToGetBack()
+static Result HashTable_InsertItem_AbleToGetBack()
 {
 	// Arrange
-	HashTable* table = new1(HashTable, 50);
-	Array* key = new2(Array, 4, 1);
-	Array* key2 = new2(Array, 4, 1);
+	HashTable* table;
+	try (new1(HashTable, 50))
+	set (table)
+
+	Array* key;
+	try (new2(Array, 4, 1))
+	set (key)
+
+	Array* key2;
+	try (new2(Array, 4, 1))
+	set (key2)
 
 	int keyValue = 48;
 	int value = 42;
 
-	Array_Set(key, 0, &keyValue);
+	try (Array_Set(key, 0, &keyValue))
+	end;
 
 	// Act
-	HashTable_Upsert(table, key, &value);
+	try (HashTable_Upsert(table, key, &value))
+	end;
 
 	// Assert
-	Array_Set(key2, 0, &keyValue);
-	HashTable_Search(table, key2);
+	try (Array_Set(key2, 0, &keyValue))
+	end
+	try (HashTable_Search(table, key2))
+	end
 	assert(value == 42);
 
 	// Annihilate
@@ -36,22 +48,6 @@ static void HashTable_InsertItemTwice_WHAT_TO_DO()
 	// 1. multiple same keys exist
 	//		Problem: which key to update afterwards? first one?
 	// 2. upsert the key if exists (update)
-	
-	// Arrange
-	HashTable* table = new1(HashTable, 50);
-	Array* key = new2(Array, 4, 1);
-	int keyValue = 48;
-	int value = 42;
-	Array_Set(key, 0, &keyValue);
-
-	// Act
-	HashTable_Upsert(table, key, &value);
-
-	// Assert
-	Array* key2 = new2(Array, 4, 1);
-	Array_Set(key2, 0, &keyValue);
-	HashTable_Search(table, key2);
-	assert(value == 42);
 }
 
 #include "TestHashTable.c.gen"

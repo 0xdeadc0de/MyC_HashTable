@@ -4,12 +4,16 @@
 #include "HashTableItem.h"
 
 // Constructs an HashTableItem with cloned key and returns the pointer, or NULL if any error
-[[nodiscard]] HashTableItem* HashTableItem_Constructor2(HashTableItem* self, const Array* key, void* value)
+[[nodiscard]] Result HashTableItem_Constructor2(HashTableItem* self, const Array* key, void* value)
 {
-	self->Key = Array_Clone(key);
+	Array* clone;
+	try (Array_Clone(key))
+	set (clone)
+
+	self->Key = clone;
 	self->Value = value;
 
-	return self;
+	return (Result) {OK, self};
 }
 // Frees the resources held, and returns reference to self
 HashTableItem* HashTableItem_Destructor(HashTableItem* self)
