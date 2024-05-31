@@ -17,6 +17,10 @@ template_macro = """\
 
 #define delete(typename,self) free(typename##_Destructor(self))
 
+// Result related definitions
+
+#define Result(T) Result##T
+
 typedef struct Result
 {
 	// A value set to zero when operation was successful and result is set properly
@@ -43,6 +47,27 @@ enum ResultCode
 }
 
 #define end_old }
+
+#define set(T) T _MyC_try_return_value
+
+#define try(T, x, statement) _MyC_try(T, statement, UNIQUE_NAME(temp_result), x)
+#define	_MyC_try(T, statement, result, x) \
+	Result(T) result = statement; \
+	if (result.code != 0) \
+	{ \
+		_MyC_try_return_value.code = result.code; \
+		return _MyC_try_return_value; \
+	} \
+	T x = result.value;
+
+#define run(statement) _MyC_run(statement, UNIQUE_NAME(temp_code))
+#define _MyC_run(statement, temp) \
+	int temp = statement.code; \
+	if (temp != 0) \
+	{ \
+		_MyC_try_return_value.code = temp; \
+		return _MyC_try_return_value; \
+	} \
 
 #endif
 // Auto-generate end. Do not modify!"""
