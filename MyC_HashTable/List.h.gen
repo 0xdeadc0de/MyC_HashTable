@@ -7,7 +7,7 @@
 
 
 // Constructs a List of size and returns the self pointer
-[[nodiscard]] Result(ref) List_Constructor1(List* self, size_t size);
+Result(ref) List_Constructor1(List* self, size_t size);
 // Frees the resources held, and returns reference to self
 List* List_Destructor(List* self);
 // Returns the item at given index

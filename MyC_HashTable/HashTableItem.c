@@ -4,7 +4,7 @@
 #include "HashTableItem.h"
 
 // Constructs an HashTableItem with cloned key and returns the pointer
-[[nodiscard]] Result(ref) HashTableItem_Constructor2(HashTableItem* self, const Array* key, void* value)
+Result(ref) HashTableItem_Constructor2(HashTableItem* self, const Array* key, void* value)
 {
 	ret (ref);
 	try (ref, clone, Array_Clone(key));

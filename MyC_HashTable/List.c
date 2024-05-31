@@ -5,7 +5,7 @@
 #include "List.head.c.gen"
 
 // Resizes the List (modifies given pointer), returns self
-[[nodiscard]] static Result(ref) resize(List* self, size_t size)
+static Result(ref) resize(List* self, size_t size)
 {
 	Array* oldArray = self->_array;
 	size_t oldCount = self->Count;
@@ -28,7 +28,7 @@
 }
 
 // Constructs a List of size and returns the self pointer
-[[nodiscard]] Result(ref) List_Constructor1(List* self, size_t size)
+Result(ref) List_Constructor1(List* self, size_t size)
 {
 	if (size <= 0)
 	{

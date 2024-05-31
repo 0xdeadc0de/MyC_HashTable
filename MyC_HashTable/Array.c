@@ -5,7 +5,7 @@
 #include "Array.h"
 
 // Constructs an Array of size and returns the array pointer
-[[nodiscard]] Result(ref) Array_Constructor2(Array* self, size_t sizeOfItem, size_t length)
+Result(ref) Array_Constructor2(Array* self, size_t sizeOfItem, size_t length)
 {
 	if (sizeOfItem <= 0 || length <= 0)
 	{
@@ -33,7 +33,7 @@ Array* Array_Destructor(Array* self)
 	return self;
 }
 // Creates an exact copy and returns the pointer
-[[nodiscard]] Result(ref) Array_Clone(const Array* self)
+Result(ref) Array_Clone(const Array* self)
 {
 	Array* clone = malloc(sizeof(Array));
 	if (NULL == clone)
@@ -56,7 +56,7 @@ Array* Array_Destructor(Array* self)
 	return (Result(ref)) {OK, clone};
 }
 // Returns the location of the item at index to read from
-[[nodiscard]] Result(ref) Array_At(const Array* self, size_t index)
+Result(ref) Array_At(const Array* self, size_t index)
 {
 	if (self->Count <= index)
 	{
@@ -69,7 +69,7 @@ Array* Array_Destructor(Array* self)
 	return (Result(ref)) {OK, &baseAddress[offset]};
 }
 // Copies the item at the given location to the index and returns internal location of item
-[[nodiscard]] Result(ref) Array_Set(Array* self, size_t index, const void* itemLocation)
+Result(ref) Array_Set(Array* self, size_t index, const void* itemLocation)
 {
 	if (self->Count <= index)
 	{

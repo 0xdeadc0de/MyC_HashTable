@@ -153,7 +153,7 @@ static Result(ref) resize(HashTable* self, size_t newSize)
 }
 
 // Constructs a HashTable and returns the pointer
-[[nodiscard]] Result(ref) HashTable_Constructor1(HashTable* self, size_t size)
+Result(ref) HashTable_Constructor1(HashTable* self, size_t size)
 {
 	size = findNextPrime(size);
 
@@ -183,7 +183,7 @@ HashTable* HashTable_Destructor(HashTable* self)
 	return self;
 }
 // Inserts key, value returns self. If key exists, updates the value
-[[nodiscard]] Result(ref) HashTable_Upsert(HashTable* self, const Array* key, void* value)
+Result(ref) HashTable_Upsert(HashTable* self, const Array* key, void* value)
 {
 	ret (ref);
 
@@ -206,7 +206,7 @@ HashTable* HashTable_Destructor(HashTable* self)
 	return (Result(ref)) {OK, self};
 }
 // Deletes the key from the hash table and returns self
-[[nodiscard]] Result(ref) HashTable_Delete(HashTable* self, const Array* key)
+Result(ref) HashTable_Delete(HashTable* self, const Array* key)
 {
 	ret (ref);
 	try (size_t, index, search(self, key, false));
@@ -232,7 +232,7 @@ HashTable* HashTable_Destructor(HashTable* self)
 	return (Result(ref)) {OK, self};
 }
 // Searches and retrieves the value from given key if exists
-[[nodiscard]] Result(ref) HashTable_Search(HashTable* self, const Array* key)
+Result(ref) HashTable_Search(HashTable* self, const Array* key)
 {
 	// Search for the item with the given key
 	ret (ref);
