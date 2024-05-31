@@ -150,7 +150,7 @@ static Result(ref) resize(HashTable* self, size_t newSize)
 	return (Result(ref)) {OK, self};
 }
 
-// Constructs a HashTable and returns the pointer, or NULL if any error
+// Constructs a HashTable and returns the pointer
 [[nodiscard]] Result(ref) HashTable_Constructor1(HashTable* self, size_t size)
 {
 	size = findNextPrime(size);
@@ -180,7 +180,7 @@ HashTable* HashTable_Destructor(HashTable* self)
 	delete(List, self->_list);
 	return self;
 }
-// Inserts key, value returns self. If key exists, updates the value. Returns NULL if any error
+// Inserts key, value returns self. If key exists, updates the value
 [[nodiscard]] Result(ref) HashTable_Upsert(HashTable* self, const Array* key, void* value)
 {
 	ret (ref);

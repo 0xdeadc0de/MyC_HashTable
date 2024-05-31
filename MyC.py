@@ -36,7 +36,7 @@ enum ResultCode
 {
     InvalidArgument = -3,
     AllocNull = -2,
-	out_oldOfBounds = -1,
+	OutOfBounds = -1,
 	OK = 0
 };
 

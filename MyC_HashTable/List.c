@@ -50,12 +50,12 @@ List* List_Destructor(List* self)
 	delete(Array, self->_array);
 	return self;
 }
-// Returns the item at given index; or NULL if out_old of bounds
+// Returns the item at given index
 Result(ref) List_At(List* self, size_t index)
 {
 	if (index < 0 || self->Count <= index)
 	{
-		return (Result(ref)) {out_oldOfBounds};
+		return (Result(ref)) {OutOfBounds};
 	}
 
 	ret (ref);
@@ -68,7 +68,7 @@ Result(ref) List_Set(List* self, size_t index, const void* item)
 {
 	if (index < 0 || self->Count <= index)
 	{
-		return (Result(ref)) {out_oldOfBounds};
+		return (Result(ref)) {OutOfBounds};
 	}
 
 	return Array_Set(self->_array, index, &item);
@@ -90,7 +90,7 @@ Result(ref) List_Insert(List* self, size_t index, const void* item)
 	
 	if (index < 0 || self->Count < index)
 	{
-		return (Result(ref)) {out_oldOfBounds};
+		return (Result(ref)) {OutOfBounds};
 	}
 
 	if (self->Count == self->_array->Count)
@@ -111,17 +111,17 @@ Result(ref) List_Insert(List* self, size_t index, const void* item)
 
 	return List_At(self, index);
 }
-// Inserts the Item at front and returns it, or NULL if any error
+// Inserts the Item at front and returns it
 Result(ref) List_PushFront(List* self, const void* item)
 {
 	return List_Insert(self, 0, item);
 }
-// Inserts the Item at end and returns it, or NULL if any error
+// Inserts the Item at end and returns it
 Result(ref) List_PushBack(List* self, const void* item)
 {
 	return List_Insert(self, self->Count, item);
 }
-// Removes the Item at given index and returns removed. Returns NULL if out_old of bounds, or any error
+// Removes the Item at given index and returns removed
 Result(ref) List_Remove(List* self, size_t index)
 {
 	ret (ref);
@@ -145,12 +145,12 @@ Result(ref) List_Remove(List* self, size_t index)
 
 	return (Result(ref)) {OK, removed};
 }
-// Removes the Item at front and returns removed, or NULL if any error
+// Removes the Item at front and returns removed
 Result(ref) List_RemoveFront(List* self)
 {
 	return List_Remove(self, 0);
 }
-// Removes the Item at end and returns removed, or NULL if any error
+// Removes the Item at end and returns removed
 Result(ref) List_RemoveBack(List* self)
 {
 	return List_Remove(self, self->Count - 1);

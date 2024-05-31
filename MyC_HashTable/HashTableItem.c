@@ -3,7 +3,7 @@
 
 #include "HashTableItem.h"
 
-// Constructs an HashTableItem with cloned key and returns the pointer, or NULL if any error
+// Constructs an HashTableItem with cloned key and returns the pointer
 [[nodiscard]] Result(ref) HashTableItem_Constructor2(HashTableItem* self, const Array* key, void* value)
 {
 	ret (ref);

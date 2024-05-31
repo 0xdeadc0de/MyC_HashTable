@@ -148,7 +148,7 @@ static Result(ref) List_WhenHasLessItems_ShouldReduceSize()
 	assert(list.Count == 0);
 
 	// Can't do
-	assert(List_RemoveBack(&list).code == out_oldOfBounds);
+	assert(List_RemoveBack(&list).code == OutOfBounds);
 	assert(list._array->Count == 1);
 	assert(list.Count == 0);
 

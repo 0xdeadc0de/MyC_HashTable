@@ -4,7 +4,7 @@
 
 #include "Array.h"
 
-// Constructs an Array of size and returns the array pointer, or NULL if any error
+// Constructs an Array of size and returns the array pointer
 [[nodiscard]] Resultref Array_Constructor2(Array* self, size_t sizeOfItem, size_t length)
 {
 	if (sizeOfItem <= 0 || length <= 0)
@@ -32,7 +32,7 @@ Array* Array_Destructor(Array* self)
 	free(self->Items);
 	return self;
 }
-// Creates an exact copy and returns the pointer, or NULL if any error
+// Creates an exact copy and returns the pointer
 [[nodiscard]] Resultref Array_Clone(const Array* self)
 {
 	Array* clone = malloc(sizeof(Array));
@@ -60,7 +60,7 @@ Array* Array_Destructor(Array* self)
 {
 	if (self->Count <= index)
 	{
-		return (Resultref) {out_oldOfBounds};
+		return (Resultref) {OutOfBounds};
 	}
 
 	const size_t offset = self->SizeOfItem * index;
@@ -68,12 +68,12 @@ Array* Array_Destructor(Array* self)
 
 	return (Resultref) {OK, &baseAddress[offset]};
 }
-// Copies the item at the given location to the index and returns internal location of item, or NULL if any error
+// Copies the item at the given location to the index and returns internal location of item
 [[nodiscard]] Resultref Array_Set(Array* self, size_t index, const void* itemLocation)
 {
 	if (self->Count <= index)
 	{
-		return (Resultref) {out_oldOfBounds};
+		return (Resultref) {OutOfBounds};
 	}
 	
 	const size_t offset = self->SizeOfItem * index;
