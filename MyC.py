@@ -23,12 +23,12 @@ typedef void* ref;
 
 #define Result(T) Result##T
 #define TypedefResult(T) \\
-typedef struct Result(T) \\
+typedef struct [[nodiscard]] Result(T) \\
 { \\
 	int code; \\
 	T value; \\
 } \\
-Result(T);
+Result(T)
 
 TypedefResult(ref);
 

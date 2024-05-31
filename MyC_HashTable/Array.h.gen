@@ -6,16 +6,16 @@
 #include "Array.h"
 
 
-// Constructs an Array of size and returns the array pointer, or NULL if any error
-[[nodiscard]] Resultref Array_Constructor2(Array* self, size_t sizeOfItem, size_t length);
+// Constructs an Array of size and returns the array pointer
+[[nodiscard]] Result(ref) Array_Constructor2(Array* self, size_t sizeOfItem, size_t length);
 // Frees the resources held, and returns reference to self
 Array* Array_Destructor(Array* self);
-// Creates an exact copy and returns the pointer, or NULL if any error
-[[nodiscard]] Resultref Array_Clone(const Array* self);
+// Creates an exact copy and returns the pointer
+[[nodiscard]] Result(ref) Array_Clone(const Array* self);
 // Returns the location of the item at index to read from
-[[nodiscard]] Resultref Array_At(const Array* self, size_t index);
-// Copies the item at the given location to the index and returns internal location of item, or NULL if any error
-[[nodiscard]] Resultref Array_Set(Array* self, size_t index, const void* itemLocation);
+[[nodiscard]] Result(ref) Array_At(const Array* self, size_t index);
+// Copies the item at the given location to the index and returns internal location of item
+[[nodiscard]] Result(ref) Array_Set(Array* self, size_t index, const void* itemLocation);
 // Compares two Arrays, returns true if they're exactly identical
 bool Array_Equals(const Array* self, const Array* other);
 // Returns the total size of the Array in bytes, calculated by SizeOfItem * Count

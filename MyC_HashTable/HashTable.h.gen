@@ -6,11 +6,11 @@
 #include "HashTable.h"
 
 
-// Constructs a HashTable and returns the pointer, or NULL if any error
+// Constructs a HashTable and returns the pointer
 [[nodiscard]] Result(ref) HashTable_Constructor1(HashTable* self, size_t size);
 // Frees the resources held, and returns reference to self
 HashTable* HashTable_Destructor(HashTable* self);
-// Inserts key, value returns self. If key exists, updates the value. Returns NULL if any error
+// Inserts key, value returns self. If key exists, updates the value
 [[nodiscard]] Result(ref) HashTable_Upsert(HashTable* self, const Array* key, void* value);
 // Deletes the key from the hash table and returns self
 [[nodiscard]] Result(ref) HashTable_Delete(HashTable* self, const Array* key);
