@@ -1,0 +1,7 @@
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
+static inline size_t _size(HashTable* self) { return self->_size; };
+static inline List* _list(HashTable* self) { return self->_list; };
+
+#pragma GCC diagnostic pop

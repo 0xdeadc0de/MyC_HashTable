@@ -8,8 +8,8 @@ typedef struct HashTable
 {
 	size_t Count;
 
-	size_t _size;
-	List* _list;
+	[[deprecated("private")]] size_t _size;
+	[[deprecated("private")]] List* _list;
 }
 HashTable;
 

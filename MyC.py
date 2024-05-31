@@ -10,13 +10,12 @@ template_macro = """\
 
 #include <stdlib.h>
 
-#define new(typename) typename##_Constructor(malloc(sizeof(typename)))
-#define new1(typename,a1) typename##_Constructor1(malloc(sizeof(typename)),a1)
-#define new2(typename,a1,a2) typename##_Constructor2(malloc(sizeof(typename)),a1,a2)
+#define new(typename)           typename##_Constructor(malloc(sizeof(typename)))
+#define new1(typename,a1)       typename##_Constructor1(malloc(sizeof(typename)),a1)
+#define new2(typename,a1,a2)    typename##_Constructor2(malloc(sizeof(typename)),a1,a2)
 #define new3(typename,a1,a2,a3) typename##_Constructor3(malloc(sizeof(typename)),a1,a2,a3)
 
 #define delete(typename,self) free(typename##_Destructor(self))
-
 
 // Result related definitions
 typedef void* ref;
@@ -96,6 +95,14 @@ template_header = """\
 #endif
 // Auto-generate end. Do not modify!"""
 
+template_head_c = """\
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
+{privateFields}
+
+#pragma GCC diagnostic pop"""
+
 template_c = """\
 // Auto-generate begin. Do not modify!
 {includeHeader}
@@ -112,7 +119,11 @@ template_runAll = """\
 }}
 """
 
+template_field = \
+"static inline {fieldType} {fieldName}({structType}* self) {{ return self->{fieldName}; }};"
+
 # Define named tuples
+Field = namedtuple("Field", ["fieldType", "fieldName", "structType"])
 Signature = namedtuple('Signature', ['returnType', 'name', 'parameters', 'comment'])
 FilePathName = namedtuple('FilePathName', ['path', 'nameWithout_oldExtension', 'headerExists', 'testing'])
 
@@ -154,6 +165,12 @@ def GenerateCFile(structName: str, signatures: list[Signature], headerExists: bo
         runAll = runAll
     )
 
+def GenerateHeadCFile(fields: list[Field]) -> str:
+
+    return template_head_c.format(
+        privateFields = "\n".join(template_field.format(**x._asdict()) for x in fields)
+    )
+
 def FindCFiles(directory: str) -> Generator[FilePathName, None, None]:
     """
     Finds all the C files with #include "MyObject.h.gen" or #undef line
@@ -187,7 +204,6 @@ def ParseSignatures(path: str, testing: bool) -> Generator[Signature, None, None
     Matches format: `void method(int param1, int param2)` with
         indefinite number of parameters
     """
-    
     lines = "".join(x for x in open(path))
     
     # match form '// comment\n void MethodName(type1 name1, type2 name2)'
@@ -199,6 +215,22 @@ def ParseSignatures(path: str, testing: bool) -> Generator[Signature, None, None
         else:
             yield Signature(found.group(2), found.group(3), found.group(4), found.group(1))
 
+def ParseFields(structName: str, pathHeader: str) -> Generator[Field, None, None]:
+    """
+    Parses the .h file and extracts all the fields that are private
+    to be put in c head file
+
+    Matches format: `int _value;` inside struct declaration
+    """
+    lines = "".join(x for x in open(pathHeader))
+
+    for match in re.finditer("(?:[\s]*(?:\[\[deprecated\(\"private\"\)\]\])[\s](\w+\*?)[\s](\w+);)", lines):
+        yield Field(
+            fieldType = match[1], 
+            fieldName = match[2], 
+            structType = structName
+        )
+        
 def MakeFunctionPointers(matches: list[Signature], testing: bool) -> Generator[str, None, None]:
     """
     Transforms each Signature into function pointer string
@@ -240,6 +272,19 @@ def main():
             print(f"Generating file {headerFileName}")
             file.write(GenerateHeader(structName, signatures, headerExists, testing))
             generatedFilesCount += 1
+
+        # Generate C head file
+        if not testing:
+            fields = ParseFields(structName, path[:-2]+".h")
+            fields = list(fields)
+            if not any(fields):
+                continue
+
+            fileName = f"{structName}.head.c.gen"
+            with open(fileName, "w") as file:
+                print(f"Generating file {fileName}")
+                file.write(GenerateHeadCFile(fields))
+                generatedFilesCount += 1
 
         # Generate C file for testing
         if testing:

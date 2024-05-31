@@ -6,6 +6,8 @@
 #include "HashTable.h"
 #include "HashTableItem.h"
 
+#include "HashTable.head.c.gen"
+
 TypedefResult(size_t);
 
 // Allocate a memory location to use as a sentinel value for items marked as deleted (similar to NULL pointer)

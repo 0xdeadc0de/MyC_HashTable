@@ -8,7 +8,7 @@ typedef struct List
 {
 	size_t Count;
 	
-	Array* _array;
+	[[deprecated("private")]] Array* _array;
 }
 List;
 

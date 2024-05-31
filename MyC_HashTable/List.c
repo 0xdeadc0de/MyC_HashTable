@@ -2,6 +2,8 @@
 
 #include "List.h"
 
+#include "List.head.c.gen"
+
 // Resizes the List (modifies given pointer), returns self
 [[nodiscard]] static Result(ref) resize(List* self, size_t size)
 {
@@ -105,7 +107,7 @@ Result(ref) List_Insert(List* self, size_t index, const void* item)
 		run (Array_Set(self->_array, i, &previous));
 	}
 
-	run (Array_Set(self->_array, index, &item));
+	run (Array_Set(_array(self), index, &item));
 
 	self->Count++;
 

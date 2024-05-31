@@ -1,0 +1,6 @@
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
+static inline Array* _array(List* self) { return self->_array; };
+
+#pragma GCC diagnostic pop
