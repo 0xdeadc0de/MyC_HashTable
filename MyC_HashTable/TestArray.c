@@ -20,9 +20,7 @@ static Result(ref) Array_SetsItem_AbleToRetrieveByAtMethod()
 	run (Array_Set(&array, 0, itemLocation));
 	
 	// Assert
-	void* location;
-	try_old (Array_At(&array, 0))
-	out_old (location)
+	try (ref, location, Array_At(&array, 0));
 
 	int* intLocation = location;
 	int value = *intLocation;
@@ -48,9 +46,7 @@ static Result(ref) Array_SetsAllItems_AbleToRetrieveAllItems()
 	// Assert
 	for (int i = 0; i < length; i++)
 	{
-		void* location;
-		try_old (Array_At(&array, i))
-		out_old (location)
+		try (ref, location, Array_At(&array, i));
 
 		int* intLocation = location;
 		int value = *intLocation;
@@ -78,9 +74,7 @@ static Result(ref) Array_AsStringType_WorksAsExpected()
 	// Assert
 	for (int i = 0; i < length; i++)
 	{
-		void* location;
-		try_old (Array_At(&array, i))
-		out_old (location)
+		try (ref, location, Array_At(&array, i));
 
 		char* charLocation = location;
 		int value = *charLocation;
@@ -134,9 +128,7 @@ static Result(ref) Array_AsCustomType_WorksAsExpected()
 	// Assert
 	for (int i = 0; i < length; i++)
 	{
-		void* location;
-		try_old (Array_At(&array, i))
-		out_old (location)
+		try (ref, location, Array_At(&array, i));
 
 		CustomType* customTypeLocation = location;
 		CustomType value = *customTypeLocation;
@@ -207,10 +199,9 @@ static Result(ref) ArrayEquals_SameLengthAndSizeOfAndData_ReturnsTrue()
 static Result(ref) Array_Clone_CreatesExactCopy()
 {
 	// Arrange
-	Array* a1;
 	ret (ref);
-	try_old (new2(Array, sizeof(int), 5))
-	out_old (a1)
+	try (ref, r, new2(Array, sizeof(int), 5));
+	Array* a1 = r;
 
 	for (size_t i = 0; i < 5; i++)
 	{
@@ -218,9 +209,7 @@ static Result(ref) Array_Clone_CreatesExactCopy()
 	}
 
 	// Act
-	Array* cloned;
-	try_old (Array_Clone(a1))
-	out_old (cloned)
+	try (ref, cloned, Array_Clone(a1));
 
 	// Assert
 	assert(Array_Equals(a1, cloned));

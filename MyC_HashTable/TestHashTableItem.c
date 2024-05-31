@@ -8,17 +8,16 @@
 static Result(ref) HashTableItem_Constructor_CreatesExactCopyOfKeys()
 {
 	// Assert
-	Array* key1;
-	try_old (new2(Array, sizeof(char), 10))
-	out_old (key1)
+	ret (ref);
+	try (ref, key1, new2(Array, sizeof(char), 10));
+	Array* a1 = key1;
 
 	// Act
-	HashTableItem* item;
-	try_old (new2(HashTableItem, key1, &key1))
-	out_old (item);
+	try (ref, item, new2(HashTableItem, key1, &key1));
+	HashTableItem* h = item;
 
 	// Assert
-	assert(Array_Equals(key1, item->Key));
+	assert(Array_Equals(a1, h->Key));
 }
 
 #include "TestHashTableItem.c.gen"

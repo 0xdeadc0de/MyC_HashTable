@@ -11,7 +11,7 @@ static Result(ref) List_Initialize_ShouldHaveZeroItems()
 
 	// Act
 	ret (ref);
-	run (List_Constructor1(&list, 42));;
+	run (List_Constructor1(&list, 42));
 	
 	// Assert
 	assert(list._array->Count == 42);
@@ -36,16 +36,11 @@ static Result(ref) List_At_ShouldReturnItemAtLocation()
 	assert(list._array->Count == 1);
 	assert(list.Count == 1);
 
-	void *a, *b;
-	try_old (List_At(&list, 0))
-	out_old (a)
-	try_old (Array_At(list._array, 0))
-	out_old (b)
+	try (ref, a, List_At(&list, 0));
+	try (ref, b, Array_At(list._array, 0));
 	assert(a == *(void**)b);
 
-	void* location;
-	try_old (List_At(&list, 0))
-	out_old (location)
+	try (ref, location, List_At(&list, 0));
 
 	int* intLocation = location;
 	int value = *intLocation;
@@ -73,16 +68,11 @@ static Result(ref) List_Set_ShouldSetItemAtLocation()
 	assert(list._array->Count == 1);
 	assert(list.Count == 1);
 	
-	void *a, *b;
-	try_old (List_At(&list, 0))
-	out_old (a)
-	try_old (Array_At(list._array, 0))
-	out_old (b)
+	try (ref, a, List_At(&list, 0));
+	try (ref, b, Array_At(list._array, 0));
 	assert(a == *(void**)b);
 
-	void* location;
-	try_old (List_At(&list, 0))
-	out_old (location)
+	try (ref, location, List_At(&list, 0));
 
 	assert(location == newLocation);
 
@@ -183,17 +173,11 @@ static Result(ref) List_Front_ShouldReturnItemAtFront()
 	assert(list._array->Count == 2);
 	assert(list.Count == 2);
 	
-	void* front;
-	try_old (List_Front(&list))
-	out_old (front)
+	try (ref, front, List_Front(&list));
 
-	void* zeroth;
-	try_old (Array_At(list._array, 0))
-	out_old (zeroth)
+	try (ref, zeroth, Array_At(list._array, 0));
 
-	void* listZero;
-	try_old (List_At(&list, 0))
-	out_old (listZero)
+	try (ref, listZero, List_At(&list, 0));
 
 	assert(front == *(void**)zeroth);
 	assert(front == listZero);
@@ -220,17 +204,11 @@ static Result(ref) List_Back_ShouldReturnItemAtEnd()
 	run (List_PushBack(&list, &item1));
 	
 	// Assert
-	void* listBack;
-	try_old (List_Back(&list))
-	out_old (listBack)
+	try (ref, listBack, List_Back(&list));
 
-	void* first;
-	try_old (Array_At(list._array, 1))
-	out_old (first)
+	try (ref, first, Array_At(list._array, 1));
 
-	void* listFirst;
-	try_old (List_At(&list, 1))
-	out_old (listFirst)
+	try (ref, listFirst, List_At(&list, 1));
 
 	assert(list._array->Count == 2);
 	assert(list.Count == 2);
@@ -258,13 +236,9 @@ static Result(ref) List_PushBack_ShouldAddItemToEnd()
 	assert(list._array->Count == 2);
 	assert(list.Count == 2);
 
-	void* zeroth;
-	try_old (List_At(&list, 0))
-	out_old (zeroth)
+	try (ref, zeroth, List_At(&list, 0));
 
-	void* first;
-	try_old (List_At(&list, 1))
-	out_old (first)
+	try (ref, first, List_At(&list, 1));
 
 	assert(zeroth == &item0);
 	assert(first == &item1);
@@ -289,13 +263,9 @@ static Result(ref) List_PushFront_ShouldAddItemToFront()
 	assert(list._array->Count == 2);
 	assert(list.Count == 2);
 
-	void* zeroth;
-	try_old (List_At(&list, 0))
-	out_old (zeroth)
+	try (ref, zeroth, List_At(&list, 0));
 
-	void* first;
-	try_old (List_At(&list, 1))
-	out_old (first)
+	try (ref, first, List_At(&list, 1));
 
 	assert(zeroth == &item1);
 	assert(first == &item0);
@@ -322,9 +292,7 @@ static Result(ref) List_RemoveFront_ShouldRemoveItemAtFront()
 	assert(list.Count == 1);
 
 
-	void* zeroth;
-	try_old (List_At(&list, 0))
-	out_old (zeroth)
+	try (ref, zeroth, List_At(&list, 0));
 
 	assert(zeroth == &item1);
 
@@ -349,9 +317,7 @@ static Result(ref) List_RemoveBack_ShouldRemoveItemAtBack()
 	assert(list._array->Count == 2);
 	assert(list.Count == 1);
 	
-	void* zeroth;
-	try_old (List_At(&list, 0))
-	out_old (zeroth)
+	try (ref, zeroth, List_At(&list, 0));
 
 	assert(zeroth == &item0);
 
@@ -377,13 +343,9 @@ static Result(ref) List_Remove_ShouldRemoveItemAtGivenIndex()
 	assert(list._array->Count == 4);
 	assert(list.Count == 2);
 	
-	void* zeroth;
-	try_old (List_At(&list, 0))
-	out_old (zeroth)
+	try (ref, zeroth, List_At(&list, 0));
 
-	void* first;
-	try_old (List_At(&list, 1))
-	out_old (first)
+	try (ref, first, List_At(&list, 1));
 
 	assert(zeroth == &item0);
 	assert(first == &item2);
@@ -411,22 +373,17 @@ static Result(ref) List_Insert_ShouldInsertItemAtGivenIndex()
 	assert(list.Count == 4);
 
 	
-	void* a;
-	try_old (List_At(&list, 0))
-	out_old (a)
+	try (ref, a, List_At(&list, 0));
 	assert(a == &item0);
 
-	try_old (List_At(&list, 1))
-	out_old (a)
-	assert(a == &itemX);
+	try (ref, a1, List_At(&list, 1));
+	assert(a1 == &itemX);
 
-	try_old (List_At(&list, 2))
-	out_old (a)
-	assert(a == &item1);
+	try (ref, a2, List_At(&list, 2));
+	assert(a2 == &item1);
 
-	try_old (List_At(&list, 3))
-	out_old (a)
-	assert(a == &item2);
+	try (ref, a3, List_At(&list, 3));
+	assert(a3 == &item2);
 
 	// Annihilate
 	List_Destructor(&list);

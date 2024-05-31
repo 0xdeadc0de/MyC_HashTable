@@ -116,15 +116,14 @@ static Result(ref) resize(HashTable* self, size_t newSize)
 	}
 
 	// Allocate a new table, and copy item pointers
-	HashTable* newTable;
-	try_old (new1(HashTable, newSize))
-	out_old (newTable);
+	ret (ref);
+	try (ref, r, new1(HashTable, newSize));
+	HashTable* newTable = r;
 
 	for (size_t i = 0; i < self->_size; i++)
 	{
-		HashTableItem* item;
-		try_old (List_At(self->_list, i))
-		out_old (item)
+		try (ref, r, List_At(self->_list, i));
+		HashTableItem* item = r;
 		
 		// If an item is deleted or null, skip it
 		if (NULL == item || DELETED == item)
@@ -132,7 +131,6 @@ static Result(ref) resize(HashTable* self, size_t newSize)
 			continue;
 		}
 
-		ret (ref);
 		run (HashTable_Upsert(newTable, item->Key, item->Value));
 	}
 
@@ -157,9 +155,9 @@ static Result(ref) resize(HashTable* self, size_t newSize)
 {
 	size = findNextPrime(size);
 
-	List* list;
-	try_old (new1(List, size))
-	out_old (list)
+	ret (ref);
+	try (ref, r, new1(List, size));
+	List* list = r;
 
 	*self = (HashTable)
 	{
@@ -195,9 +193,7 @@ HashTable* HashTable_Destructor(HashTable* self)
 	// Search an empty slot location to insert the new item
 	try (size_t, index, search(self, key, true));
 
-	HashTableItem* newPair;
-	try_old (new2(HashTableItem, key, value))
-	out_old (newPair)
+	try (ref, newPair, new2(HashTableItem, key, value));
 
 	// Set item
 	run (List_Set(self->_list, index, newPair));
@@ -213,9 +209,7 @@ HashTable* HashTable_Destructor(HashTable* self)
 	ret (ref);
 	try (size_t, index, search(self, key, false));
 	
-	HashTableItem* item;
-	try_old (List_At(self->_list, index))
-	out_old (item)
+	try (ref, item, List_At(self->_list, index));
 	
 	// If search returned an empty slot location, we do nothing, this item doesn't exist in table already
 	if (NULL == item)
@@ -242,9 +236,8 @@ HashTable* HashTable_Destructor(HashTable* self)
 	ret (ref);
 	try (size_t, index, search(self, key, false));
 
-	HashTableItem* item;
-	try_old (List_At(self->_list, index))
-	out_old (item)
+	try (ref, r, List_At(self->_list, index));
+	HashTableItem* item = r;
 
 	// Return the value of the item found
 	return (Result(ref)) {OK, item->Value};

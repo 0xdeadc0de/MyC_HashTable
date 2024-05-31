@@ -6,9 +6,8 @@
 // Constructs an HashTableItem with cloned key and returns the pointer, or NULL if any error
 [[nodiscard]] Result(ref) HashTableItem_Constructor2(HashTableItem* self, const Array* key, void* value)
 {
-	Array* clone;
-	try_old (Array_Clone(key))
-	out_old (clone)
+	ret (ref);
+	try (ref, clone, Array_Clone(key));
 
 	self->Key = clone;
 	self->Value = value;

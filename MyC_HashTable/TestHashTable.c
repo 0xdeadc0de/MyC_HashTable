@@ -8,26 +8,18 @@
 static Result(ref) HashTable_InsertItem_AbleToGetBack()
 {
 	// Arrange
-	HashTable* table;
-	try_old (new1(HashTable, 50))
-	out_old (table)
-
-	Array* key;
-	try_old (new2(Array, 4, 1))
-	out_old (key)
-
-	Array* key2;
-	try_old (new2(Array, 4, 1))
-	out_old (key2)
+	ret (ref);
+	try (ref, table, new1(HashTable, 50));
+	try (ref, key, new2(Array, 4, 1));
+	try (ref, key2, new2(Array, 4, 1));
 
 	int keyValue = 48;
 	int value = 42;
 
-	ret (ref);
-	run (Array_Set(key, 0, &keyValue));;
+	run (Array_Set(key, 0, &keyValue));
 
 	// Act
-	run (HashTable_Upsert(table, key, &value));;
+	run (HashTable_Upsert(table, key, &value));
 
 	// Assert
 	run (Array_Set(key2, 0, &keyValue));

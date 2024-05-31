@@ -15,9 +15,7 @@
 
 	for (size_t i = 0; i < oldCount; i++)
 	{
-		void* oldItem; 
-		try_old (Array_At(oldArray, i))
-		out_old (oldItem)
+		try (ref, oldItem, Array_At(oldArray, i));
 
 		run (Array_Set(self->_array, i, oldItem));
 	}
@@ -35,9 +33,8 @@
 		return (Result(ref)) {InvalidArgument};
 	}
 
-	Array* array;
-	try_old (new2(Array, sizeof(void*), size))
-	out_old (array)
+	ret (ref);
+	try (ref, array, new2(Array, sizeof(void*), size));
 
 	*self = (List)
 	{
@@ -61,9 +58,8 @@ Result(ref) List_At(List* self, size_t index)
 		return (Result(ref)) {out_oldOfBounds};
 	}
 
-	void* location;
-	try_old (Array_At(self->_array, index))
-	out_old (location);
+	ret (ref);
+	try (ref, location, Array_At(self->_array, index));
 
 	return (Result(ref)) {OK, *(void**)location};
 }
@@ -104,9 +100,7 @@ Result(ref) List_Insert(List* self, size_t index, const void* item)
 
 	for (size_t i = self->Count; i > index; i--)
 	{
-		void* previous;
-		try_old (List_At(self, i - 1))
-		out_old (previous)
+		try (ref, previous, List_At(self, i - 1));
 
 		run (Array_Set(self->_array, i, &previous));
 	}
@@ -133,15 +127,11 @@ Result(ref) List_Remove(List* self, size_t index)
 	ret (ref);
 	run (List_At(self, index));
 
-	void* removed;
-	try_old (List_At(self, index))
-	out_old (removed)
+	try (ref, removed, List_At(self, index));
 
 	for (size_t i = index; i < self->Count - 1; i++)
 	{
-		void* next;
-		try_old (List_At(self, i + 1))
-		out_old (next)
+		try (ref, next, List_At(self, i + 1));
 		
 		run (Array_Set(self->_array, i, &next));
 	}
