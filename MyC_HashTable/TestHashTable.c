@@ -5,10 +5,10 @@
 
 #include "HashTable.h"
 
-static Result(ref) HashTable_InsertItem_AbleToGetBack()
+static Result HashTable_InsertItem_AbleToGetBack()
 {
 	// Arrange
-	ret (ref);
+	ret ();
 	try (ref, table, new1(HashTable, 50));
 	try (ref, key, new2(Array, 4, 1));
 	try (ref, key2, new2(Array, 4, 1));
@@ -31,7 +31,7 @@ static Result(ref) HashTable_InsertItem_AbleToGetBack()
 	delete(Array, key);
 	delete(Array, key2);
 	
-	return OK(NULL);
+	return ok;
 }
 // HashTable_InsertItemTwice_WHAT_TO_DO()
 	// Two strategies:

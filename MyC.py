@@ -18,6 +18,12 @@ template_macro = """\
 #define delete(typename,self) free(typename##_Destructor(self))
 
 // Result related definitions
+typedef struct Result
+{
+    int code;
+}
+Result;
+
 typedef void* ref;
 
 #define Result(T) Result##T
@@ -38,19 +44,6 @@ enum ResultCode
 	OutOfBounds = -1,
 	OK = 0
 };
-
-#define	try_old(x) {\\
-	Resultref result = x; \\
-	if (result.code != 0) \\
-		return result;
-
-#define out_old(variable) \\
-	variable = result.value;\\
-}
-
-#define end_old }
-
-// New result system
 
 #define _MyC_CONCAT(a, b) a##b
 #define CONCAT(a, b) _MyC_CONCAT(a, b)
@@ -77,6 +70,10 @@ enum ResultCode
 #define OK(x) \\
     _MyC_try_return_value.code = OK, \\
     _MyC_try_return_value.value = x, \\
+    _MyC_try_return_value
+
+#define ok \\
+    _MyC_try_return_value.code = OK, \\
     _MyC_try_return_value
 
 #endif

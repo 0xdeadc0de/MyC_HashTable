@@ -7,13 +7,13 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
-static Result(ref) List_Initialize_ShouldHaveZeroItems()
+static Result List_Initialize_ShouldHaveZeroItems()
 {
 	// Arrange
 	List list;
 
 	// Act
-	ret (ref);
+	ret ();
 	run (List_Constructor1(&list, 42));
 	
 	// Assert
@@ -23,13 +23,13 @@ static Result(ref) List_Initialize_ShouldHaveZeroItems()
 	// Annihilate
 	List_Destructor(&list);
 	
-	return OK(NULL);
+	return ok;
 }
-static Result(ref) List_At_ShouldReturnItemAtLocation()
+static Result List_At_ShouldReturnItemAtLocation()
 {
 	// Arrange
 	List list;
-	ret (ref);
+	ret ();
 	run (List_Constructor1(&list, 1));
 	
 	int item = 42;
@@ -54,11 +54,11 @@ static Result(ref) List_At_ShouldReturnItemAtLocation()
 	// Annihilate
 	List_Destructor(&list);
 	
-	return OK(NULL);
+	return ok;
 }
-static Result(ref) List_Set_ShouldSetItemAtLocation()
+static Result List_Set_ShouldSetItemAtLocation()
 {
-	ret (ref);
+	ret ();
 	// Arrange
 	List list;
 	run (List_Constructor1(&list, 1));
@@ -86,14 +86,14 @@ static Result(ref) List_Set_ShouldSetItemAtLocation()
 	// Annihilate
 	List_Destructor(&list);
 	
-	return OK(NULL);
+	return ok;
 }
 
-static Result(ref) List_CapacityReached_ShouldDoubleSize()
+static Result List_CapacityReached_ShouldDoubleSize()
 {
 	// Arrange
 	List list;
-	ret (ref);
+	ret ();
 	run (List_Constructor1(&list, 1));
 	
 	int item;
@@ -119,13 +119,13 @@ static Result(ref) List_CapacityReached_ShouldDoubleSize()
 	// Annihilate
 	List_Destructor(&list);
 	
-	return OK(NULL);
+	return ok;
 }
-static Result(ref) List_WhenHasLessItems_ShouldReduceSize()
+static Result List_WhenHasLessItems_ShouldReduceSize()
 {
 	// Arrange
 	List list;
-	ret (ref);
+	ret ();
 	run (List_Constructor1(&list, 1));
 	
 	int item;
@@ -166,14 +166,14 @@ static Result(ref) List_WhenHasLessItems_ShouldReduceSize()
 	// Annihilate
 	List_Destructor(&list);
 	
-	return OK(NULL);
+	return ok;
 }
 
-static Result(ref) List_Front_ShouldReturnItemAtFront()
+static Result List_Front_ShouldReturnItemAtFront()
 {
 	// Arrange
 	List list;
-	ret (ref);
+	ret ();
 	run (List_Constructor1(&list, 1));
 	
 	int item0, item1;
@@ -203,13 +203,13 @@ static Result(ref) List_Front_ShouldReturnItemAtFront()
 	// Annihilate
 	List_Destructor(&list);
 	
-	return OK(NULL);
+	return ok;
 }
-static Result(ref) List_Back_ShouldReturnItemAtEnd()
+static Result List_Back_ShouldReturnItemAtEnd()
 {
 	// Arrange
 	List list;
-	ret (ref);
+	ret ();
 	run (List_Constructor1(&list, 1));
 	
 	int item0, item1;
@@ -234,13 +234,13 @@ static Result(ref) List_Back_ShouldReturnItemAtEnd()
 	// Annihilate
 	List_Destructor(&list);
 	
-	return OK(NULL);
+	return ok;
 }
-static Result(ref) List_PushBack_ShouldAddItemToEnd()
+static Result List_PushBack_ShouldAddItemToEnd()
 {
 	// Arrange
 	List list;
-	ret (ref);
+	ret ();
 	run (List_Constructor1(&list, 1));
 	
 	int item0, item1;
@@ -263,13 +263,13 @@ static Result(ref) List_PushBack_ShouldAddItemToEnd()
 	// Annihilate
 	List_Destructor(&list);
 	
-	return OK(NULL);
+	return ok;
 }
-static Result(ref) List_PushFront_ShouldAddItemToFront()
+static Result List_PushFront_ShouldAddItemToFront()
 {
 	// Arrange
 	List list;
-	ret (ref);
+	ret ();
 	run (List_Constructor1(&list, 1));
 	
 	int item0, item1;
@@ -292,13 +292,13 @@ static Result(ref) List_PushFront_ShouldAddItemToFront()
 	// Annihilate
 	List_Destructor(&list);
 	
-	return OK(NULL);
+	return ok;
 }
-static Result(ref) List_RemoveFront_ShouldRemoveItemAtFront()
+static Result List_RemoveFront_ShouldRemoveItemAtFront()
 {
 	// Arrange
 	List list;
-	ret (ref);
+	ret ();
 	run (List_Constructor1(&list, 1));
 	
 	int item0, item1;
@@ -320,13 +320,13 @@ static Result(ref) List_RemoveFront_ShouldRemoveItemAtFront()
 	// Annihilate
 	List_Destructor(&list);
 	
-	return OK(NULL);
+	return ok;
 }
-static Result(ref) List_RemoveBack_ShouldRemoveItemAtBack()
+static Result List_RemoveBack_ShouldRemoveItemAtBack()
 {
 	// Arrange
 	List list;
-	ret (ref);
+	ret ();
 	run (List_Constructor1(&list, 1));
 	
 	int item0, item1;
@@ -347,13 +347,13 @@ static Result(ref) List_RemoveBack_ShouldRemoveItemAtBack()
 	// Annihilate
 	List_Destructor(&list);
 	
-	return OK(NULL);
+	return ok;
 }
-static Result(ref) List_Remove_ShouldRemoveItemAtGivenIndex()
+static Result List_Remove_ShouldRemoveItemAtGivenIndex()
 {
 	// Arrange
 	List list;
-	ret (ref);
+	ret ();
 	run (List_Constructor1(&list, 1));
 	
 	int item0, item1, item2;
@@ -378,13 +378,13 @@ static Result(ref) List_Remove_ShouldRemoveItemAtGivenIndex()
 	// Annihilate
 	List_Destructor(&list);
 	
-	return OK(NULL);
+	return ok;
 }
-static Result(ref) List_Insert_ShouldInsertItemAtGivenIndex()
+static Result List_Insert_ShouldInsertItemAtGivenIndex()
 {
 	// Arrange
 	List list;
-	ret (ref);
+	ret ();
 	run (List_Constructor1(&list, 1));
 	
 	int item0, item1, item2, itemX;
@@ -415,7 +415,7 @@ static Result(ref) List_Insert_ShouldInsertItemAtGivenIndex()
 	// Annihilate
 	List_Destructor(&list);
 	
-	return OK(NULL);
+	return ok;
 }
 
 #pragma GCC diagnostic pop

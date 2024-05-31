@@ -5,10 +5,10 @@
 #include "Array.h"
 #include "HashTableItem.h"
 
-static Result(ref) HashTableItem_Constructor_CreatesExactCopyOfKeys()
+static Result HashTableItem_Constructor_CreatesExactCopyOfKeys()
 {
 	// Assert
-	ret (ref);
+	ret ();
 	try (ref, key1, new2(Array, sizeof(char), 10));
 	Array* a1 = key1;
 
@@ -19,7 +19,7 @@ static Result(ref) HashTableItem_Constructor_CreatesExactCopyOfKeys()
 	// Assert
 	assert(Array_Equals(a1, h->Key));
 	
-	return OK(NULL);
+	return ok;
 }
 
 #include "TestHashTableItem.c.gen"

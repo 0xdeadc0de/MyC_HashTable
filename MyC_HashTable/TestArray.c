@@ -6,11 +6,11 @@
 
 #include "Array.h"
 
-static Result(ref) Array_SetsItem_AbleToRetrieveByAtMethod()
+static Result Array_SetsItem_AbleToRetrieveByAtMethod()
 {
 	// Arrange
 	Array array;
-	ret (ref);
+	ret ();
 	run (Array_Constructor2(&array, sizeof(int), 1));
 
 	// Act
@@ -29,14 +29,14 @@ static Result(ref) Array_SetsItem_AbleToRetrieveByAtMethod()
 	// Annihilate
 	Array_Destructor(&array);
 
-	return OK(NULL);
+	return ok;
 }
-static Result(ref) Array_SetsAllItems_AbleToRetrieveAllItems()
+static Result Array_SetsAllItems_AbleToRetrieveAllItems()
 {
 	// Arrange
 	Array array;
 	const int length = 42;
-	ret (ref);
+	ret ();
 	run (Array_Constructor2(&array, sizeof(int), length));
 
 	// Act
@@ -58,15 +58,15 @@ static Result(ref) Array_SetsAllItems_AbleToRetrieveAllItems()
 	// Annihilate
 	Array_Destructor(&array);
 
-	return OK(NULL);
+	return ok;
 }
-static Result(ref) Array_AsStringType_WorksAsExpected()
+static Result Array_AsStringType_WorksAsExpected()
 {
 	// Arrange
 	Array array;
 	const char string[] = "hello testing string";
 	const int length = 20+1;
-	ret (ref);
+	ret ();
 	run (Array_Constructor2(&array, sizeof(char), length));
 
 	// Act
@@ -89,9 +89,9 @@ static Result(ref) Array_AsStringType_WorksAsExpected()
 	// Annihilate
 	Array_Destructor(&array);
 
-	return OK(NULL);
+	return ok;
 }
-static Result(ref) Array_AsCustomType_WorksAsExpected()
+static Result Array_AsCustomType_WorksAsExpected()
 {
 	// Arrange
 	typedef struct
@@ -122,7 +122,7 @@ static Result(ref) Array_AsCustomType_WorksAsExpected()
 		},
 	};
 
-	ret (ref);
+	ret ();
 	run (Array_Constructor2(&array, sizeof(CustomType), length));
 
 	// Act
@@ -148,40 +148,40 @@ static Result(ref) Array_AsCustomType_WorksAsExpected()
 	// Annihilate
 	Array_Destructor(&array);
 	
-	return OK(NULL);
+	return ok;
 }
 
-static Result(ref) ArrayEquals_DifferentSizeOfItems_ReturnsFalse()
+static Result ArrayEquals_DifferentSizeOfItems_ReturnsFalse()
 {
 	// Arrange
 	Array a1, a2;
-	ret (ref);
+	ret ();
 	run (Array_Constructor2(&a1, 2, 2));
 	run (Array_Constructor2(&a1, 1, 2));
 
 	// Act & Assert
 	assert(false == Array_Equals(&a1, &a2));
 	
-	return OK(NULL);
+	return ok;
 }
-static Result(ref) ArrayEquals_DifferentLength_ReturnsFalse()
+static Result ArrayEquals_DifferentLength_ReturnsFalse()
 {
 	// Arrange
 	Array a1, a2;
-	ret (ref);
+	ret ();
 	run (Array_Constructor2(&a1, 2, 1));
 	run (Array_Constructor2(&a2, 2, 2));
 
 	// Act & Assert
 	assert(false == Array_Equals(&a1, &a2));
 	
-	return OK(NULL);
+	return ok;
 }
-static Result(ref) ArrayEquals_SameLengthAndSizeOfButDifferentData_ReturnsFalse()
+static Result ArrayEquals_SameLengthAndSizeOfButDifferentData_ReturnsFalse()
 {
 	// Arrange
 	Array a1, a2;
-	ret (ref);
+	ret ();
 	run (Array_Constructor2(&a1, 2, 2));
 	run (Array_Constructor2(&a2, 2, 2));
 	
@@ -192,13 +192,13 @@ static Result(ref) ArrayEquals_SameLengthAndSizeOfButDifferentData_ReturnsFalse(
 	// Act & Assert
 	assert(false == Array_Equals(&a1, &a2));
 	
-	return OK(NULL);
+	return ok;
 }
-static Result(ref) ArrayEquals_SameLengthAndSizeOfAndData_ReturnsTrue()
+static Result ArrayEquals_SameLengthAndSizeOfAndData_ReturnsTrue()
 {
 	// Arrange
 	Array a1, a2;
-	ret (ref);
+	ret ();
 	run (Array_Constructor2(&a1, 2, 2));
 	run (Array_Constructor2(&a2, 2, 2));
 	
@@ -209,13 +209,13 @@ static Result(ref) ArrayEquals_SameLengthAndSizeOfAndData_ReturnsTrue()
 	// Act & Assert
 	assert(true == Array_Equals(&a1, &a2));
 	
-	return OK(NULL);
+	return ok;
 }
 
-static Result(ref) Array_Clone_CreatesExactCopy()
+static Result Array_Clone_CreatesExactCopy()
 {
 	// Arrange
-	ret (ref);
+	ret ();
 	try (ref, r, new2(Array, sizeof(int), 5));
 	Array* a1 = r;
 
@@ -230,7 +230,7 @@ static Result(ref) Array_Clone_CreatesExactCopy()
 	// Assert
 	assert(Array_Equals(a1, cloned));
 	
-	return OK(NULL);
+	return ok;
 }
 
 #include "TestArray.c.gen"
