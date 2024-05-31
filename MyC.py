@@ -26,7 +26,7 @@ typedef void* ref;
 typedef struct Result(T) \\
 { \\
 	int code; \\
-	void* value; \\
+	T value; \\
 } \\
 Result(T);
 
