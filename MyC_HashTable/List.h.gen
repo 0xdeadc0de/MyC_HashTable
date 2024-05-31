@@ -10,7 +10,7 @@
 [[nodiscard]] Result List_Constructor1(List* self, size_t size);
 // Frees the resources held, and returns reference to self
 List* List_Destructor(List* self);
-// Returns the item at given index; or NULL if out of bounds
+// Returns the item at given index; or NULL if out_old of bounds
 Result List_At(List* self, size_t index);
 // Sets the Item at given index
 Result List_Set(List* self, size_t index, const void* item);
@@ -24,7 +24,7 @@ Result List_Insert(List* self, size_t index, const void* item);
 Result List_PushFront(List* self, const void* item);
 // Inserts the Item at end and returns it, or NULL if any error
 Result List_PushBack(List* self, const void* item);
-// Removes the Item at given index and returns removed. Returns NULL if out of bounds, or any error
+// Removes the Item at given index and returns removed. Returns NULL if out_old of bounds, or any error
 Result List_Remove(List* self, size_t index);
 // Removes the Item at front and returns removed, or NULL if any error
 Result List_RemoveFront(List* self);

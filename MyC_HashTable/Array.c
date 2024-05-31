@@ -60,7 +60,7 @@ Array* Array_Destructor(Array* self)
 {
 	if (self->Count <= index)
 	{
-		return (Result) {OutOfBounds};
+		return (Result) {out_oldOfBounds};
 	}
 
 	const size_t offset = self->SizeOfItem * index;
@@ -73,7 +73,7 @@ Array* Array_Destructor(Array* self)
 {
 	if (self->Count <= index)
 	{
-		return (Result) {OutOfBounds};
+		return (Result) {out_oldOfBounds};
 	}
 	
 	const size_t offset = self->SizeOfItem * index;

@@ -10,20 +10,20 @@ static Result Array_SetsItem_AbleToRetrieveByAtMethod()
 {
 	// Arrange
 	Array array;
-	try (Array_Constructor2(&array, sizeof(int), 1))
-	end
+	try_old (Array_Constructor2(&array, sizeof(int), 1))
+	end_old
 
 	// Act
 	int item = 42;
 	int* itemLocation = &item;
 
-	try (Array_Set(&array, 0, itemLocation))
-	end
+	try_old (Array_Set(&array, 0, itemLocation))
+	end_old
 	
 	// Assert
 	void* location;
-	try (Array_At(&array, 0))
-	out (location)
+	try_old (Array_At(&array, 0))
+	out_old (location)
 
 	int* intLocation = location;
 	int value = *intLocation;
@@ -37,22 +37,22 @@ static Result Array_SetsAllItems_AbleToRetrieveAllItems()
 	// Arrange
 	Array array;
 	const int length = 42;
-	try (Array_Constructor2(&array, sizeof(int), length))
-	end
+	try_old (Array_Constructor2(&array, sizeof(int), length))
+	end_old
 
 	// Act
 	for (int i = 0; i < length; i++)
 	{
-		try (Array_Set(&array, i, &i))
-		end
+		try_old (Array_Set(&array, i, &i))
+		end_old
 	}
 
 	// Assert
 	for (int i = 0; i < length; i++)
 	{
 		void* location;
-		try (Array_At(&array, i))
-		out (location)
+		try_old (Array_At(&array, i))
+		out_old (location)
 
 		int* intLocation = location;
 		int value = *intLocation;
@@ -68,22 +68,22 @@ static Result Array_AsStringType_WorksAsExpected()
 	Array array;
 	const char string[] = "hello testing string";
 	const int length = 20+1;
-	try (Array_Constructor2(&array, sizeof(char), length))
-	end
+	try_old (Array_Constructor2(&array, sizeof(char), length))
+	end_old
 
 	// Act
 	for (int i = 0; i < length; i++)
 	{
-		try (Array_Set(&array, i, &string[i]))
-		end
+		try_old (Array_Set(&array, i, &string[i]))
+		end_old
 	}
 
 	// Assert
 	for (int i = 0; i < length; i++)
 	{
 		void* location;
-		try (Array_At(&array, i))
-		out (location)
+		try_old (Array_At(&array, i))
+		out_old (location)
 
 		char* charLocation = location;
 		int value = *charLocation;
@@ -125,22 +125,22 @@ static Result Array_AsCustomType_WorksAsExpected()
 		},
 	};
 
-	try (Array_Constructor2(&array, sizeof(CustomType), length))
-	end
+	try_old (Array_Constructor2(&array, sizeof(CustomType), length))
+	end_old
 
 	// Act
 	for (int i = 0; i < length; i++)
 	{
-		try (Array_Set(&array, i, &customTypes[i]))
-		end
+		try_old (Array_Set(&array, i, &customTypes[i]))
+		end_old
 	}
 
 	// Assert
 	for (int i = 0; i < length; i++)
 	{
 		void* location;
-		try (Array_At(&array, i))
-		out (location)
+		try_old (Array_At(&array, i))
+		out_old (location)
 
 		CustomType* customTypeLocation = location;
 		CustomType value = *customTypeLocation;
@@ -159,10 +159,10 @@ static Result ArrayEquals_DifferentSizeOfItems_ReturnsFalse()
 {
 	// Arrange
 	Array a1, a2;
-	try (Array_Constructor2(&a1, 2, 2))
-	end
-	try (Array_Constructor2(&a1, 1, 2))
-	end
+	try_old (Array_Constructor2(&a1, 2, 2))
+	end_old
+	try_old (Array_Constructor2(&a1, 1, 2))
+	end_old
 
 	// Act & Assert
 	assert(false == Array_Equals(&a1, &a2));
@@ -171,10 +171,10 @@ static Result ArrayEquals_DifferentLength_ReturnsFalse()
 {
 	// Arrange
 	Array a1, a2;
-	try (Array_Constructor2(&a1, 2, 1))
-	end
-	try (Array_Constructor2(&a2, 2, 2))
-	end
+	try_old (Array_Constructor2(&a1, 2, 1))
+	end_old
+	try_old (Array_Constructor2(&a2, 2, 2))
+	end_old
 
 	// Act & Assert
 	assert(false == Array_Equals(&a1, &a2));
@@ -183,16 +183,16 @@ static Result ArrayEquals_SameLengthAndSizeOfButDifferentData_ReturnsFalse()
 {
 	// Arrange
 	Array a1, a2;
-	try (Array_Constructor2(&a1, 2, 2))
-	end
-	try (Array_Constructor2(&a2, 2, 2))
-	end
+	try_old (Array_Constructor2(&a1, 2, 2))
+	end_old
+	try_old (Array_Constructor2(&a2, 2, 2))
+	end_old
 	
 	int x = 1, y = 2;
-	try (Array_Set(&a1, 0, &x))
-	end
-	try (Array_Set(&a2, 0, &y))
-	end
+	try_old (Array_Set(&a1, 0, &x))
+	end_old
+	try_old (Array_Set(&a2, 0, &y))
+	end_old
 
 	// Act & Assert
 	assert(false == Array_Equals(&a1, &a2));
@@ -201,16 +201,16 @@ static Result ArrayEquals_SameLengthAndSizeOfAndData_ReturnsTrue()
 {
 	// Arrange
 	Array a1, a2;
-	try (Array_Constructor2(&a1, 2, 2))
-	end
-	try (Array_Constructor2(&a2, 2, 2))
-	end
+	try_old (Array_Constructor2(&a1, 2, 2))
+	end_old
+	try_old (Array_Constructor2(&a2, 2, 2))
+	end_old
 	
 	int x = 2, y = 2;
-	try (Array_Set(&a1, 0, &x))
-	end
-	try (Array_Set(&a2, 0, &y))
-	end
+	try_old (Array_Set(&a1, 0, &x))
+	end_old
+	try_old (Array_Set(&a2, 0, &y))
+	end_old
 
 	// Act & Assert
 	assert(true == Array_Equals(&a1, &a2));
@@ -220,19 +220,19 @@ static Result Array_Clone_CreatesExactCopy()
 {
 	// Arrange
 	Array* a1;
-	try (new2(Array, sizeof(int), 5))
-	out (a1)
+	try_old (new2(Array, sizeof(int), 5))
+	out_old (a1)
 
 	for (size_t i = 0; i < 5; i++)
 	{
-		try (Array_Set(a1, i, &i))
-		end
+		try_old (Array_Set(a1, i, &i))
+		end_old
 	}
 
 	// Act
 	Array* cloned;
-	try (Array_Clone(a1))
-	out (cloned)
+	try_old (Array_Clone(a1))
+	out_old (cloned)
 
 	// Assert
 	assert(Array_Equals(a1, cloned));

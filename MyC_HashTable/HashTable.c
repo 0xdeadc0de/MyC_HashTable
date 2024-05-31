@@ -74,8 +74,8 @@ static Result search(HashTable* self, const Array* key, bool findInsertLocation)
 		attempt++;
 
 		HashTableItem* item;
-		try (List_At(self->_list, index))
-		out (item)
+		try_old (List_At(self->_list, index))
+		out_old (item)
 
 		if (NULL == item)
 		{
@@ -115,14 +115,14 @@ static Result resize(HashTable* self, size_t newSize)
 
 	// Allocate a new table, and copy item pointers
 	HashTable* newTable;
-	try (new1(HashTable, newSize))
-	out (newTable);
+	try_old (new1(HashTable, newSize))
+	out_old (newTable);
 
 	for (size_t i = 0; i < self->_size; i++)
 	{
 		HashTableItem* item;
-		try (List_At(self->_list, i))
-		out (item)
+		try_old (List_At(self->_list, i))
+		out_old (item)
 		
 		// If an item is deleted or null, skip it
 		if (NULL == item || DELETED == item)
@@ -130,8 +130,8 @@ static Result resize(HashTable* self, size_t newSize)
 			continue;
 		}
 
-		try (HashTable_Upsert(newTable, item->Key, item->Value))
-		end
+		try_old (HashTable_Upsert(newTable, item->Key, item->Value))
+		end_old
 	}
 
 	// Swap tables so we can free memory on new table pointer
@@ -156,8 +156,8 @@ static Result resize(HashTable* self, size_t newSize)
 	size = findNextPrime(size);
 
 	List* list;
-	try (new1(List, size))
-	out (list)
+	try_old (new1(List, size))
+	out_old (list)
 
 	*self = (HashTable)
 	{
@@ -185,22 +185,22 @@ HashTable* HashTable_Destructor(HashTable* self)
 {
 	if (70 < self->Count * 100 / self->_size)
 	{
-		try (resize(self, self->_size * 2))
-		end
+		try_old (resize(self, self->_size * 2))
+		end_old
  	}
 
 	// Search an empty slot location to insert the new item
 	size_t index;
-	try (search(self, key, true))
-	out (index)
+	try_old (search(self, key, true))
+	out_old (index)
 
 	HashTableItem* newPair;
-	try (new2(HashTableItem, key, value))
-	out (newPair)
+	try_old (new2(HashTableItem, key, value))
+	out_old (newPair)
 
 	// Set item
-	try (List_Set(self->_list, index, newPair))
-	end
+	try_old (List_Set(self->_list, index, newPair))
+	end_old
 
 	// Increase the count of items in the table
 	self->Count++;
@@ -211,12 +211,12 @@ HashTable* HashTable_Destructor(HashTable* self)
 [[nodiscard]] Result HashTable_Delete(HashTable* self, const Array* key)
 {
 	size_t index;
-	try (search(self, key, false))
-	out (index)
+	try_old (search(self, key, false))
+	out_old (index)
 	
 	HashTableItem* item;
-	try (List_At(self->_list, index))
-	out (item)
+	try_old (List_At(self->_list, index))
+	out_old (item)
 	
 	// If search returned an empty slot location, we do nothing, this item doesn't exist in table already
 	if (NULL == item)
@@ -241,12 +241,12 @@ HashTable* HashTable_Destructor(HashTable* self)
 {
 	// Search for the item with the given key
 	size_t index;
-	try (search(self, key, false))
-	out (index)
+	try_old (search(self, key, false))
+	out_old (index)
 
 	HashTableItem* item;
-	try (List_At(self->_list, index))
-	out (item)
+	try_old (List_At(self->_list, index))
+	out_old (item)
 
 	// Return the value of the item found
 	return (Result) {OK, item->Value};

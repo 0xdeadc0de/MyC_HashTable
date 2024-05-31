@@ -7,8 +7,8 @@
 [[nodiscard]] Result HashTableItem_Constructor2(HashTableItem* self, const Array* key, void* value)
 {
 	Array* clone;
-	try (Array_Clone(key))
-	out (clone)
+	try_old (Array_Clone(key))
+	out_old (clone)
 
 	self->Key = clone;
 	self->Value = value;

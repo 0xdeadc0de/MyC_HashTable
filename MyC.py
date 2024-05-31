@@ -29,20 +29,20 @@ enum ResultCode
 {
     InvalidArgument = -3,
     AllocNull = -2,
-	OutOfBounds = -1,
+	out_oldOfBounds = -1,
 	OK = 0
 };
 
-#define	try(x) {\\
+#define	try_old(x) {\\
 	Result result = x; \\
 	if (result.code != 0) \\
 		return result;
 
-#define out(variable) \\
+#define out_old(variable) \\
 	variable = result.value;\\
 }
 
-#define end }
+#define end_old }
 
 #endif
 // Auto-generate end. Do not modify!"""
@@ -78,7 +78,7 @@ template_runAll = """\
 
 # Define named tuples
 Signature = namedtuple('Signature', ['returnType', 'name', 'parameters', 'comment'])
-FilePathName = namedtuple('FilePathName', ['path', 'nameWithoutExtension', 'headerExists', 'testing'])
+FilePathName = namedtuple('FilePathName', ['path', 'nameWithout_oldExtension', 'headerExists', 'testing'])
 
 signatureRunAll = Signature("void", "RunAll", "", "// Run all tests in this module")
 

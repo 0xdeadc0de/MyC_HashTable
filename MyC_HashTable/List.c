@@ -8,19 +8,19 @@
 	Array* oldArray = self->_array;
 	size_t oldCount = self->Count;
 	
-	try (List_Constructor1(self, size))
-	end 
+	try_old (List_Constructor1(self, size))
+	end_old 
 
 	self->Count = oldCount;
 
 	for (size_t i = 0; i < oldCount; i++)
 	{
 		void* oldItem; 
-		try (Array_At(oldArray, i))
-		out (oldItem)
+		try_old (Array_At(oldArray, i))
+		out_old (oldItem)
 
-		try (Array_Set(self->_array, i, oldItem))
-		end
+		try_old (Array_Set(self->_array, i, oldItem))
+		end_old
 	}
 
 	delete(Array, oldArray);
@@ -37,8 +37,8 @@
 	}
 
 	Array* array;
-	try (new2(Array, sizeof(void*), size))
-	out (array)
+	try_old (new2(Array, sizeof(void*), size))
+	out_old (array)
 
 	*self = (List)
 	{
@@ -54,17 +54,17 @@ List* List_Destructor(List* self)
 	delete(Array, self->_array);
 	return self;
 }
-// Returns the item at given index; or NULL if out of bounds
+// Returns the item at given index; or NULL if out_old of bounds
 Result List_At(List* self, size_t index)
 {
 	if (index < 0 || self->Count <= index)
 	{
-		return (Result) {OutOfBounds};
+		return (Result) {out_oldOfBounds};
 	}
 
 	void* location;
-	try (Array_At(self->_array, index))
-	out (location);
+	try_old (Array_At(self->_array, index))
+	out_old (location);
 
 	return (Result) {OK, *(void**)location};
 }
@@ -73,7 +73,7 @@ Result List_Set(List* self, size_t index, const void* item)
 {
 	if (index < 0 || self->Count <= index)
 	{
-		return (Result) {OutOfBounds};
+		return (Result) {out_oldOfBounds};
 	}
 
 	return Array_Set(self->_array, index, &item);
@@ -93,27 +93,27 @@ Result List_Insert(List* self, size_t index, const void* item)
 {
 	if (index < 0 || self->Count < index)
 	{
-		return (Result) {OutOfBounds};
+		return (Result) {out_oldOfBounds};
 	}
 
 	if (self->Count == self->_array->Count)
 	{
-		try (resize(self, self->_array->Count * 2))
-		end
+		try_old (resize(self, self->_array->Count * 2))
+		end_old
 	}
 
 	for (size_t i = self->Count; i > index; i--)
 	{
 		void* previous;
-		try (List_At(self, i - 1))
-		out (previous)
+		try_old (List_At(self, i - 1))
+		out_old (previous)
 
-		try (Array_Set(self->_array, i, &previous))
-		end
+		try_old (Array_Set(self->_array, i, &previous))
+		end_old
 	}
 
-	try (Array_Set(self->_array, index, &item))
-	end
+	try_old (Array_Set(self->_array, index, &item))
+	end_old
 
 	self->Count++;
 
@@ -129,32 +129,32 @@ Result List_PushBack(List* self, const void* item)
 {
 	return List_Insert(self, self->Count, item);
 }
-// Removes the Item at given index and returns removed. Returns NULL if out of bounds, or any error
+// Removes the Item at given index and returns removed. Returns NULL if out_old of bounds, or any error
 Result List_Remove(List* self, size_t index)
 {
-	try (List_At(self, index))
-	end
+	try_old (List_At(self, index))
+	end_old
 
 	void* removed;
-	try (List_At(self, index))
-	out (removed)
+	try_old (List_At(self, index))
+	out_old (removed)
 
 	for (size_t i = index; i < self->Count - 1; i++)
 	{
 		void* next;
-		try (List_At(self, i + 1))
-		out (next)
+		try_old (List_At(self, i + 1))
+		out_old (next)
 		
-		try (Array_Set(self->_array, i, &next))
-		end
+		try_old (Array_Set(self->_array, i, &next))
+		end_old
 	}
 
 	self->Count--;
 	
 	if (self->Count == self->_array->Count / 4)
 	{
-		try (resize(self, self->_array->Count / 2))
-		end
+		try_old (resize(self, self->_array->Count / 2))
+		end_old
 	}
 
 	return (Result) {OK, removed};
