@@ -5,7 +5,7 @@
 #include "Array.h"
 #include "HashTableItem.h"
 
-static Resultref HashTableItem_Constructor_CreatesExactCopyOfKeys()
+static Result(ref) HashTableItem_Constructor_CreatesExactCopyOfKeys()
 {
 	// Assert
 	Array* key1;

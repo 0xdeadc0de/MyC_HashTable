@@ -4,7 +4,7 @@
 
 #include "List.h"
 
-static Resultref List_Initialize_ShouldHaveZeroItems()
+static Result(ref) List_Initialize_ShouldHaveZeroItems()
 {
 	// Arrange
 	List list;
@@ -20,7 +20,7 @@ static Resultref List_Initialize_ShouldHaveZeroItems()
 	// Annihilate
 	List_Destructor(&list);
 }
-static Resultref List_At_ShouldReturnItemAtLocation()
+static Result(ref) List_At_ShouldReturnItemAtLocation()
 {
 	// Arrange
 	List list;
@@ -55,7 +55,7 @@ static Resultref List_At_ShouldReturnItemAtLocation()
 	// Annihilate
 	List_Destructor(&list);
 }
-static Resultref List_Set_ShouldSetItemAtLocation()
+static Result(ref) List_Set_ShouldSetItemAtLocation()
 {
 	// Arrange
 	List list;
@@ -93,7 +93,7 @@ static Resultref List_Set_ShouldSetItemAtLocation()
 	List_Destructor(&list);
 }
 
-static Resultref List_CapacityReached_ShouldDoubleSize()
+static Result(ref) List_CapacityReached_ShouldDoubleSize()
 {
 	// Arrange
 	List list;
@@ -128,7 +128,7 @@ static Resultref List_CapacityReached_ShouldDoubleSize()
 	// Annihilate
 	List_Destructor(&list);
 }
-static Resultref List_WhenHasLessItems_ShouldReduceSize()
+static Result(ref) List_WhenHasLessItems_ShouldReduceSize()
 {
 	// Arrange
 	List list;
@@ -184,7 +184,7 @@ static Resultref List_WhenHasLessItems_ShouldReduceSize()
 	List_Destructor(&list);
 }
 
-static Resultref List_Front_ShouldReturnItemAtFront()
+static Result(ref) List_Front_ShouldReturnItemAtFront()
 {
 	// Arrange
 	List list;
@@ -226,7 +226,7 @@ static Resultref List_Front_ShouldReturnItemAtFront()
 	// Annihilate
 	List_Destructor(&list);
 }
-static Resultref List_Back_ShouldReturnItemAtEnd()
+static Result(ref) List_Back_ShouldReturnItemAtEnd()
 {
 	// Arrange
 	List list;
@@ -263,7 +263,7 @@ static Resultref List_Back_ShouldReturnItemAtEnd()
 	// Annihilate
 	List_Destructor(&list);
 }
-static Resultref List_PushBack_ShouldAddItemToEnd()
+static Result(ref) List_PushBack_ShouldAddItemToEnd()
 {
 	// Arrange
 	List list;
@@ -296,7 +296,7 @@ static Resultref List_PushBack_ShouldAddItemToEnd()
 	// Annihilate
 	List_Destructor(&list);
 }
-static Resultref List_PushFront_ShouldAddItemToFront()
+static Result(ref) List_PushFront_ShouldAddItemToFront()
 {
 	// Arrange
 	List list;
@@ -329,7 +329,7 @@ static Resultref List_PushFront_ShouldAddItemToFront()
 	// Annihilate
 	List_Destructor(&list);
 }
-static Resultref List_RemoveFront_ShouldRemoveItemAtFront()
+static Result(ref) List_RemoveFront_ShouldRemoveItemAtFront()
 {
 	// Arrange
 	List list;
@@ -360,7 +360,7 @@ static Resultref List_RemoveFront_ShouldRemoveItemAtFront()
 	// Annihilate
 	List_Destructor(&list);
 }
-static Resultref List_RemoveBack_ShouldRemoveItemAtBack()
+static Result(ref) List_RemoveBack_ShouldRemoveItemAtBack()
 {
 	// Arrange
 	List list;
@@ -390,7 +390,7 @@ static Resultref List_RemoveBack_ShouldRemoveItemAtBack()
 	// Annihilate
 	List_Destructor(&list);
 }
-static Resultref List_Remove_ShouldRemoveItemAtGivenIndex()
+static Result(ref) List_Remove_ShouldRemoveItemAtGivenIndex()
 {
 	// Arrange
 	List list;
@@ -427,7 +427,7 @@ static Resultref List_Remove_ShouldRemoveItemAtGivenIndex()
 	// Annihilate
 	List_Destructor(&list);
 }
-static Resultref List_Insert_ShouldInsertItemAtGivenIndex()
+static Result(ref) List_Insert_ShouldInsertItemAtGivenIndex()
 {
 	// Arrange
 	List list;

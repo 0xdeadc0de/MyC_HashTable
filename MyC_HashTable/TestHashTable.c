@@ -5,7 +5,7 @@
 
 #include "HashTable.h"
 
-static Resultref HashTable_InsertItem_AbleToGetBack()
+static Result(ref) HashTable_InsertItem_AbleToGetBack()
 {
 	// Arrange
 	HashTable* table;

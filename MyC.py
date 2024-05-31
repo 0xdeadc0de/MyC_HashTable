@@ -194,7 +194,7 @@ def ParseSignatures(path: str, testing: bool) -> Generator[Signature, None, None
     
     # match form '// comment\n void MethodName(type1 name1, type2 name2)'
     r  = "" if testing else "(\/\/.+?)\r?\n"
-    r += "((?:\[\[nodiscard\]\] )?\w+\s*\*?)\s+([A-Z]\w*)\(((?:,?\s*(?:\w+\s*\*?)\s+\w+)*)\)"
+    r += "((?:\[\[nodiscard\]\] )?[\w\(\)]+\s*\*?)\s+([A-Z]\w*)\(((?:,?\s*(?:\w+\s*\*?)\s+\w+)*)\)"
     for found in re.finditer(r, lines, flags=re.MULTILINE):
         if testing:
             yield Signature(found.group(1), found.group(2), found.group(3), "")
