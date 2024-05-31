@@ -6,6 +6,8 @@
 #include "HashTable.h"
 #include "HashTableItem.h"
 
+TypedefResult(size_t);
+
 // Allocate a memory location to use as a sentinel value for items marked as deleted (similar to NULL pointer)
 static void* DELETED = &DELETED;
 
@@ -64,7 +66,7 @@ static size_t doubleHash(const Array* key, size_t size, size_t attempt)
 
 	return finalHash;
 }
-static Resultref search(HashTable* self, const Array* key, bool findInsertLocation)
+static Result(size_t) search(HashTable* self, const Array* key, bool findInsertLocation)
 {
 	size_t attempt = 0;
 	// Search until we find the key matching or we find an empty slot
@@ -73,20 +75,19 @@ static Resultref search(HashTable* self, const Array* key, bool findInsertLocati
 		size_t index = doubleHash(key, self->_size, attempt);
 		attempt++;
 
-		HashTableItem* item;
-		try_old (List_At(self->_list, index))
-		out_old (item)
+		ret (size_t);
+		try (ref, item, List_At(self->_list, index));
 
 		if (NULL == item)
 		{
-			return (Resultref) {OK, index};
+			return OK(index);
 		}
 
 		if (DELETED == item)
 		{
 			if (findInsertLocation)
 			{
-				return (Resultref) {OK, index};
+				return OK(index);
 			}
 
 			// We assume deleted items as legitimate items in the table to avoid breaking the chain of double hashing
@@ -100,9 +101,10 @@ static Resultref search(HashTable* self, const Array* key, bool findInsertLocati
 			continue;
 		}
 		
-		if (Array_Equals(key, item->Key))
+		HashTableItem* hashTableItem = item;
+		if (Array_Equals(key, hashTableItem->Key))
 		{
-			return (Resultref) {OK, index};;
+			return OK(index);
 		}
 	}
 }
@@ -190,9 +192,8 @@ HashTable* HashTable_Destructor(HashTable* self)
  	}
 
 	// Search an empty slot location to insert the new item
-	size_t index;
-	try_old (search(self, key, true))
-	out_old (index)
+	ret (ref);
+	try (size_t, index, search(self, key, true));
 
 	HashTableItem* newPair;
 	try_old (new2(HashTableItem, key, value))
@@ -210,9 +211,8 @@ HashTable* HashTable_Destructor(HashTable* self)
 // Deletes the key from the hash table and returns self
 [[nodiscard]] Resultref HashTable_Delete(HashTable* self, const Array* key)
 {
-	size_t index;
-	try_old (search(self, key, false))
-	out_old (index)
+	ret (ref);
+	try (size_t, index, search(self, key, false));
 	
 	HashTableItem* item;
 	try_old (List_At(self->_list, index))
@@ -240,9 +240,8 @@ HashTable* HashTable_Destructor(HashTable* self)
 [[nodiscard]] Resultref HashTable_Search(HashTable* self, const Array* key)
 {
 	// Search for the item with the given key
-	size_t index;
-	try_old (search(self, key, false))
-	out_old (index)
+	ret (ref);
+	try (size_t, index, search(self, key, false));
 
 	HashTableItem* item;
 	try_old (List_At(self->_list, index))

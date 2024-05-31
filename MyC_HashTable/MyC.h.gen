@@ -11,17 +11,20 @@
 
 #define delete(typename,self) free(typename##_Destructor(self))
 
+
 // Result related definitions
+typedef void* ref;
 
 #define Result(T) Result##T
+#define TypedefResult(T) \
+typedef struct Result(T) \
+{ \
+	int code; \
+	void* value; \
+} \
+Result(T);
 
-typedef struct Resultref
-{
-	// A value set to zero when operation was successful and result is set properly
-	int code;
-	void* value;
-}
-Resultref;
+TypedefResult(ref);
 
 enum ResultCode
 {
@@ -42,12 +45,36 @@ enum ResultCode
 
 #define end_old }
 
-#define set(T) T _MyC_try_return_value
+// New result system
+
+#define CONCAT(a, b) a##b
+#define UNIQUE_NAME(base) CONCAT(base, __COUNTER__)
+
+#define ret(T) Result(T) _MyC_try_return_value
 
 #define try(T, x, statement) _MyC_try(T, statement, UNIQUE_NAME(temp_result), x)
-#define	_MyC_try(T, statement, result, x) 	Result(T) result = statement; 	if (result.code != 0) 	{ 		_MyC_try_return_value.code = result.code; 		return _MyC_try_return_value; 	} 	T x = result.value;
+#define	_MyC_try(T, statement, result, x) \
+	Result(T) result = statement; \
+	if (result.code != 0) \
+	{ \
+		_MyC_try_return_value.code = result.code; \
+		return _MyC_try_return_value; \
+	} \
+	T x = result.value
 
 #define run(statement) _MyC_run(statement, UNIQUE_NAME(temp_code))
-#define _MyC_run(statement, temp) 	int temp = statement.code; 	if (temp != 0) 	{ 		_MyC_try_return_value.code = temp; 		return _MyC_try_return_value; 	} 
+#define _MyC_run(statement, temp) \
+	int temp = statement.code; \
+	if (temp != 0) \
+	{ \
+		_MyC_try_return_value.code = temp; \
+		return _MyC_try_return_value; \
+	} \
+    
+#define OK(x) \
+    _MyC_try_return_value.code = OK, \
+    _MyC_try_return_value.value = x, \
+    _MyC_try_return_value
+
 #endif
 // Auto-generate end. Do not modify!
