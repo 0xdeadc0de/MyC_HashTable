@@ -18,6 +18,8 @@ static Result(ref) HashTableItem_Constructor_CreatesExactCopyOfKeys()
 
 	// Assert
 	assert(Array_Equals(a1, h->Key));
+	
+	return OK(NULL);
 }
 
 #include "TestHashTableItem.c.gen"

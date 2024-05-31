@@ -9,16 +9,28 @@
 
 #include "List.h"
 
+	
+
 int main()
 {
+	int code;
 	puts("Start");
 
-	TestArray_RunAll();
-	TestList_RunAll();
-	TestHashTableItem_RunAll();
-	TestHashTable_RunAll();
-
+	Result(ref) (*runAlls[])(void) = {
+		TestArray_RunAll,
+		TestList_RunAll,
+		TestHashTableItem_RunAll,
+		TestHashTable_RunAll
+	};
+	for (size_t i = 0; i < 4; i++) 
+	{
+		if (code = runAlls[i]().code) 
+		{
+			printf("failed with Result.code = %d", code);
+			return code; 
+		}
+	}
+		
 	puts("OK");
-	
 	return 0;
 }

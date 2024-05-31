@@ -1,18 +1,19 @@
 // Auto-generate begin. Do not modify!
 #include "TestArray.h.gen"
 #include <stdio.h>
-void TestArray_RunAll()
+Result(ref) TestArray_RunAll()
 {
     size_t i = 0;
-	printf("Executing test case `Array_SetsItem_AbleToRetrieveByAtMethod` ..."); Array_SetsItem_AbleToRetrieveByAtMethod(); puts("OK"); i++;
-	printf("Executing test case `Array_SetsAllItems_AbleToRetrieveAllItems` ..."); Array_SetsAllItems_AbleToRetrieveAllItems(); puts("OK"); i++;
-	printf("Executing test case `Array_AsStringType_WorksAsExpected` ..."); Array_AsStringType_WorksAsExpected(); puts("OK"); i++;
-	printf("Executing test case `Array_AsCustomType_WorksAsExpected` ..."); Array_AsCustomType_WorksAsExpected(); puts("OK"); i++;
-	printf("Executing test case `ArrayEquals_DifferentSizeOfItems_ReturnsFalse` ..."); ArrayEquals_DifferentSizeOfItems_ReturnsFalse(); puts("OK"); i++;
-	printf("Executing test case `ArrayEquals_DifferentLength_ReturnsFalse` ..."); ArrayEquals_DifferentLength_ReturnsFalse(); puts("OK"); i++;
-	printf("Executing test case `ArrayEquals_SameLengthAndSizeOfButDifferentData_ReturnsFalse` ..."); ArrayEquals_SameLengthAndSizeOfButDifferentData_ReturnsFalse(); puts("OK"); i++;
-	printf("Executing test case `ArrayEquals_SameLengthAndSizeOfAndData_ReturnsTrue` ..."); ArrayEquals_SameLengthAndSizeOfAndData_ReturnsTrue(); puts("OK"); i++;
-	printf("Executing test case `Array_Clone_CreatesExactCopy` ..."); Array_Clone_CreatesExactCopy(); puts("OK"); i++;
+    ret (ref);
+	printf("Executing test case `Array_SetsItem_AbleToRetrieveByAtMethod` ..."); run (Array_SetsItem_AbleToRetrieveByAtMethod()); puts("OK"); i++;
+	printf("Executing test case `Array_SetsAllItems_AbleToRetrieveAllItems` ..."); run (Array_SetsAllItems_AbleToRetrieveAllItems()); puts("OK"); i++;
+	printf("Executing test case `Array_AsStringType_WorksAsExpected` ..."); run (Array_AsStringType_WorksAsExpected()); puts("OK"); i++;
+	printf("Executing test case `Array_AsCustomType_WorksAsExpected` ..."); run (Array_AsCustomType_WorksAsExpected()); puts("OK"); i++;
+	printf("Executing test case `ArrayEquals_DifferentSizeOfItems_ReturnsFalse` ..."); run (ArrayEquals_DifferentSizeOfItems_ReturnsFalse()); puts("OK"); i++;
+	printf("Executing test case `ArrayEquals_DifferentLength_ReturnsFalse` ..."); run (ArrayEquals_DifferentLength_ReturnsFalse()); puts("OK"); i++;
+	printf("Executing test case `ArrayEquals_SameLengthAndSizeOfButDifferentData_ReturnsFalse` ..."); run (ArrayEquals_SameLengthAndSizeOfButDifferentData_ReturnsFalse()); puts("OK"); i++;
+	printf("Executing test case `ArrayEquals_SameLengthAndSizeOfAndData_ReturnsTrue` ..."); run (ArrayEquals_SameLengthAndSizeOfAndData_ReturnsTrue()); puts("OK"); i++;
+	printf("Executing test case `Array_Clone_CreatesExactCopy` ..."); run (Array_Clone_CreatesExactCopy()); puts("OK"); i++;
     printf("\n%d test cases on TestArray has successfully run.\n\n\n", i);
 }
 

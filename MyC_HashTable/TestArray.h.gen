@@ -6,7 +6,7 @@
 
 
 // Run all tests in this module
-void TestArray_RunAll();
+Result(ref) TestArray_RunAll();
 
 #endif
 // Auto-generate end. Do not modify!

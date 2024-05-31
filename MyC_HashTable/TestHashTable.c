@@ -30,13 +30,13 @@ static Result(ref) HashTable_InsertItem_AbleToGetBack()
 	delete(HashTable, table);
 	delete(Array, key);
 	delete(Array, key2);
+	
+	return OK(NULL);
 }
-static void HashTable_InsertItemTwice_WHAT_TO_DO()
-{
+// HashTable_InsertItemTwice_WHAT_TO_DO()
 	// Two strategies:
 	// 1. multiple same keys exist
 	//		Problem: which key to update afterwards? first one?
 	// 2. upsert the key if exists (update)
-}
 
 #include "TestHashTable.c.gen"

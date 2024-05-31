@@ -28,6 +28,8 @@ static Result(ref) Array_SetsItem_AbleToRetrieveByAtMethod()
 	
 	// Annihilate
 	Array_Destructor(&array);
+
+	return OK(NULL);
 }
 static Result(ref) Array_SetsAllItems_AbleToRetrieveAllItems()
 {
@@ -55,6 +57,8 @@ static Result(ref) Array_SetsAllItems_AbleToRetrieveAllItems()
 	
 	// Annihilate
 	Array_Destructor(&array);
+
+	return OK(NULL);
 }
 static Result(ref) Array_AsStringType_WorksAsExpected()
 {
@@ -84,6 +88,8 @@ static Result(ref) Array_AsStringType_WorksAsExpected()
 	
 	// Annihilate
 	Array_Destructor(&array);
+
+	return OK(NULL);
 }
 static Result(ref) Array_AsCustomType_WorksAsExpected()
 {
@@ -141,6 +147,8 @@ static Result(ref) Array_AsCustomType_WorksAsExpected()
 	
 	// Annihilate
 	Array_Destructor(&array);
+	
+	return OK(NULL);
 }
 
 static Result(ref) ArrayEquals_DifferentSizeOfItems_ReturnsFalse()
@@ -153,6 +161,8 @@ static Result(ref) ArrayEquals_DifferentSizeOfItems_ReturnsFalse()
 
 	// Act & Assert
 	assert(false == Array_Equals(&a1, &a2));
+	
+	return OK(NULL);
 }
 static Result(ref) ArrayEquals_DifferentLength_ReturnsFalse()
 {
@@ -164,6 +174,8 @@ static Result(ref) ArrayEquals_DifferentLength_ReturnsFalse()
 
 	// Act & Assert
 	assert(false == Array_Equals(&a1, &a2));
+	
+	return OK(NULL);
 }
 static Result(ref) ArrayEquals_SameLengthAndSizeOfButDifferentData_ReturnsFalse()
 {
@@ -179,6 +191,8 @@ static Result(ref) ArrayEquals_SameLengthAndSizeOfButDifferentData_ReturnsFalse(
 
 	// Act & Assert
 	assert(false == Array_Equals(&a1, &a2));
+	
+	return OK(NULL);
 }
 static Result(ref) ArrayEquals_SameLengthAndSizeOfAndData_ReturnsTrue()
 {
@@ -194,6 +208,8 @@ static Result(ref) ArrayEquals_SameLengthAndSizeOfAndData_ReturnsTrue()
 
 	// Act & Assert
 	assert(true == Array_Equals(&a1, &a2));
+	
+	return OK(NULL);
 }
 
 static Result(ref) Array_Clone_CreatesExactCopy()
@@ -213,6 +229,8 @@ static Result(ref) Array_Clone_CreatesExactCopy()
 
 	// Assert
 	assert(Array_Equals(a1, cloned));
+	
+	return OK(NULL);
 }
 
 #include "TestArray.c.gen"

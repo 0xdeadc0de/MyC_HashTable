@@ -114,6 +114,7 @@ template_runAll = """\
 {signature}
 {{
     size_t i = 0;
+    ret (ref);
 {calls}
     printf("\\n%d test cases on {structName} has successfully run.\\n\\n\\n", i);
 }}
@@ -122,12 +123,14 @@ template_runAll = """\
 template_field = \
 "static inline {fieldType} {fieldName}({structType}* self) {{ return self->{fieldName}; }};"
 
+template_runCase = "\tprintf(\"Executing test case `{methodName}` ...\"); run ({methodName}()); puts(\"OK\"); i++;"
+
 # Define named tuples
 Field = namedtuple("Field", ["fieldType", "fieldName", "structType"])
 Signature = namedtuple('Signature', ['returnType', 'name', 'parameters', 'comment'])
 FilePathName = namedtuple('FilePathName', ['path', 'nameWithout_oldExtension', 'headerExists', 'testing'])
 
-signatureRunAll = Signature("void", "RunAll", "", "// Run all tests in this module")
+signatureRunAll = Signature("Result(ref)", "RunAll", "", "// Run all tests in this module")
 
 def GenerateHeader(structName: str, signatures: list[Signature], headerExists: bool, testing: bool) -> str:
 
@@ -152,7 +155,7 @@ def GenerateMacroFile() -> str:
 def GenerateCFile(structName: str, signatures: list[Signature], headerExists: bool) -> str:
     
     runAll = ""
-    calls = "\n".join(f"\tprintf(\"Executing test case `{methodName}` ...\"); {methodName}(); puts(\"OK\"); i++;" for _, methodName, _, _ in signatures)
+    calls = "\n".join(template_runCase.format(methodName = methodName) for _, methodName, _, _ in signatures)
     runAll = template_runAll.format(
         signature = f"{signatureRunAll.returnType} {structName}_{signatureRunAll.name}({signatureRunAll.parameters})",
         calls = calls,

@@ -19,6 +19,8 @@ static Result(ref) List_Initialize_ShouldHaveZeroItems()
 	
 	// Annihilate
 	List_Destructor(&list);
+	
+	return OK(NULL);
 }
 static Result(ref) List_At_ShouldReturnItemAtLocation()
 {
@@ -48,6 +50,8 @@ static Result(ref) List_At_ShouldReturnItemAtLocation()
 
 	// Annihilate
 	List_Destructor(&list);
+	
+	return OK(NULL);
 }
 static Result(ref) List_Set_ShouldSetItemAtLocation()
 {
@@ -78,6 +82,8 @@ static Result(ref) List_Set_ShouldSetItemAtLocation()
 
 	// Annihilate
 	List_Destructor(&list);
+	
+	return OK(NULL);
 }
 
 static Result(ref) List_CapacityReached_ShouldDoubleSize()
@@ -109,6 +115,8 @@ static Result(ref) List_CapacityReached_ShouldDoubleSize()
 
 	// Annihilate
 	List_Destructor(&list);
+	
+	return OK(NULL);
 }
 static Result(ref) List_WhenHasLessItems_ShouldReduceSize()
 {
@@ -154,6 +162,8 @@ static Result(ref) List_WhenHasLessItems_ShouldReduceSize()
 
 	// Annihilate
 	List_Destructor(&list);
+	
+	return OK(NULL);
 }
 
 static Result(ref) List_Front_ShouldReturnItemAtFront()
@@ -189,6 +199,8 @@ static Result(ref) List_Front_ShouldReturnItemAtFront()
 
 	// Annihilate
 	List_Destructor(&list);
+	
+	return OK(NULL);
 }
 static Result(ref) List_Back_ShouldReturnItemAtEnd()
 {
@@ -218,6 +230,8 @@ static Result(ref) List_Back_ShouldReturnItemAtEnd()
 
 	// Annihilate
 	List_Destructor(&list);
+	
+	return OK(NULL);
 }
 static Result(ref) List_PushBack_ShouldAddItemToEnd()
 {
@@ -245,6 +259,8 @@ static Result(ref) List_PushBack_ShouldAddItemToEnd()
 
 	// Annihilate
 	List_Destructor(&list);
+	
+	return OK(NULL);
 }
 static Result(ref) List_PushFront_ShouldAddItemToFront()
 {
@@ -272,6 +288,8 @@ static Result(ref) List_PushFront_ShouldAddItemToFront()
 	
 	// Annihilate
 	List_Destructor(&list);
+	
+	return OK(NULL);
 }
 static Result(ref) List_RemoveFront_ShouldRemoveItemAtFront()
 {
@@ -298,6 +316,8 @@ static Result(ref) List_RemoveFront_ShouldRemoveItemAtFront()
 
 	// Annihilate
 	List_Destructor(&list);
+	
+	return OK(NULL);
 }
 static Result(ref) List_RemoveBack_ShouldRemoveItemAtBack()
 {
@@ -323,6 +343,8 @@ static Result(ref) List_RemoveBack_ShouldRemoveItemAtBack()
 
 	// Annihilate
 	List_Destructor(&list);
+	
+	return OK(NULL);
 }
 static Result(ref) List_Remove_ShouldRemoveItemAtGivenIndex()
 {
@@ -352,6 +374,8 @@ static Result(ref) List_Remove_ShouldRemoveItemAtGivenIndex()
 	
 	// Annihilate
 	List_Destructor(&list);
+	
+	return OK(NULL);
 }
 static Result(ref) List_Insert_ShouldInsertItemAtGivenIndex()
 {
@@ -387,6 +411,8 @@ static Result(ref) List_Insert_ShouldInsertItemAtGivenIndex()
 
 	// Annihilate
 	List_Destructor(&list);
+	
+	return OK(NULL);
 }
 
 #include "TestList.c.gen"

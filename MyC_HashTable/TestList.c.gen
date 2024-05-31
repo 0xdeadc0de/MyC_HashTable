@@ -1,22 +1,23 @@
 // Auto-generate begin. Do not modify!
 #include "TestList.h.gen"
 #include <stdio.h>
-void TestList_RunAll()
+Result(ref) TestList_RunAll()
 {
     size_t i = 0;
-	printf("Executing test case `List_Initialize_ShouldHaveZeroItems` ..."); List_Initialize_ShouldHaveZeroItems(); puts("OK"); i++;
-	printf("Executing test case `List_At_ShouldReturnItemAtLocation` ..."); List_At_ShouldReturnItemAtLocation(); puts("OK"); i++;
-	printf("Executing test case `List_Set_ShouldSetItemAtLocation` ..."); List_Set_ShouldSetItemAtLocation(); puts("OK"); i++;
-	printf("Executing test case `List_CapacityReached_ShouldDoubleSize` ..."); List_CapacityReached_ShouldDoubleSize(); puts("OK"); i++;
-	printf("Executing test case `List_WhenHasLessItems_ShouldReduceSize` ..."); List_WhenHasLessItems_ShouldReduceSize(); puts("OK"); i++;
-	printf("Executing test case `List_Front_ShouldReturnItemAtFront` ..."); List_Front_ShouldReturnItemAtFront(); puts("OK"); i++;
-	printf("Executing test case `List_Back_ShouldReturnItemAtEnd` ..."); List_Back_ShouldReturnItemAtEnd(); puts("OK"); i++;
-	printf("Executing test case `List_PushBack_ShouldAddItemToEnd` ..."); List_PushBack_ShouldAddItemToEnd(); puts("OK"); i++;
-	printf("Executing test case `List_PushFront_ShouldAddItemToFront` ..."); List_PushFront_ShouldAddItemToFront(); puts("OK"); i++;
-	printf("Executing test case `List_RemoveFront_ShouldRemoveItemAtFront` ..."); List_RemoveFront_ShouldRemoveItemAtFront(); puts("OK"); i++;
-	printf("Executing test case `List_RemoveBack_ShouldRemoveItemAtBack` ..."); List_RemoveBack_ShouldRemoveItemAtBack(); puts("OK"); i++;
-	printf("Executing test case `List_Remove_ShouldRemoveItemAtGivenIndex` ..."); List_Remove_ShouldRemoveItemAtGivenIndex(); puts("OK"); i++;
-	printf("Executing test case `List_Insert_ShouldInsertItemAtGivenIndex` ..."); List_Insert_ShouldInsertItemAtGivenIndex(); puts("OK"); i++;
+    ret (ref);
+	printf("Executing test case `List_Initialize_ShouldHaveZeroItems` ..."); run (List_Initialize_ShouldHaveZeroItems()); puts("OK"); i++;
+	printf("Executing test case `List_At_ShouldReturnItemAtLocation` ..."); run (List_At_ShouldReturnItemAtLocation()); puts("OK"); i++;
+	printf("Executing test case `List_Set_ShouldSetItemAtLocation` ..."); run (List_Set_ShouldSetItemAtLocation()); puts("OK"); i++;
+	printf("Executing test case `List_CapacityReached_ShouldDoubleSize` ..."); run (List_CapacityReached_ShouldDoubleSize()); puts("OK"); i++;
+	printf("Executing test case `List_WhenHasLessItems_ShouldReduceSize` ..."); run (List_WhenHasLessItems_ShouldReduceSize()); puts("OK"); i++;
+	printf("Executing test case `List_Front_ShouldReturnItemAtFront` ..."); run (List_Front_ShouldReturnItemAtFront()); puts("OK"); i++;
+	printf("Executing test case `List_Back_ShouldReturnItemAtEnd` ..."); run (List_Back_ShouldReturnItemAtEnd()); puts("OK"); i++;
+	printf("Executing test case `List_PushBack_ShouldAddItemToEnd` ..."); run (List_PushBack_ShouldAddItemToEnd()); puts("OK"); i++;
+	printf("Executing test case `List_PushFront_ShouldAddItemToFront` ..."); run (List_PushFront_ShouldAddItemToFront()); puts("OK"); i++;
+	printf("Executing test case `List_RemoveFront_ShouldRemoveItemAtFront` ..."); run (List_RemoveFront_ShouldRemoveItemAtFront()); puts("OK"); i++;
+	printf("Executing test case `List_RemoveBack_ShouldRemoveItemAtBack` ..."); run (List_RemoveBack_ShouldRemoveItemAtBack()); puts("OK"); i++;
+	printf("Executing test case `List_Remove_ShouldRemoveItemAtGivenIndex` ..."); run (List_Remove_ShouldRemoveItemAtGivenIndex()); puts("OK"); i++;
+	printf("Executing test case `List_Insert_ShouldInsertItemAtGivenIndex` ..."); run (List_Insert_ShouldInsertItemAtGivenIndex()); puts("OK"); i++;
     printf("\n%d test cases on TestList has successfully run.\n\n\n", i);
 }
 
