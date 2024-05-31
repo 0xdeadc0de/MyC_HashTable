@@ -8,8 +8,8 @@
 	Array* oldArray = self->_array;
 	size_t oldCount = self->Count;
 	
-	try_old (List_Constructor1(self, size))
-	end_old 
+	ret (ref);
+	run (List_Constructor1(self, size)); 
 
 	self->Count = oldCount;
 
@@ -19,8 +19,7 @@
 		try_old (Array_At(oldArray, i))
 		out_old (oldItem)
 
-		try_old (Array_Set(self->_array, i, oldItem))
-		end_old
+		run (Array_Set(self->_array, i, oldItem));
 	}
 
 	delete(Array, oldArray);
@@ -91,6 +90,8 @@ Result(ref) List_Back(List* self)
 // Inserts the Item at given index and returns it
 Result(ref) List_Insert(List* self, size_t index, const void* item)
 {
+	ret (ref);
+	
 	if (index < 0 || self->Count < index)
 	{
 		return (Result(ref)) {out_oldOfBounds};
@@ -98,8 +99,7 @@ Result(ref) List_Insert(List* self, size_t index, const void* item)
 
 	if (self->Count == self->_array->Count)
 	{
-		try_old (resize(self, self->_array->Count * 2))
-		end_old
+		run (resize(self, self->_array->Count * 2));
 	}
 
 	for (size_t i = self->Count; i > index; i--)
@@ -108,12 +108,10 @@ Result(ref) List_Insert(List* self, size_t index, const void* item)
 		try_old (List_At(self, i - 1))
 		out_old (previous)
 
-		try_old (Array_Set(self->_array, i, &previous))
-		end_old
+		run (Array_Set(self->_array, i, &previous));
 	}
 
-	try_old (Array_Set(self->_array, index, &item))
-	end_old
+	run (Array_Set(self->_array, index, &item));
 
 	self->Count++;
 
@@ -132,8 +130,8 @@ Result(ref) List_PushBack(List* self, const void* item)
 // Removes the Item at given index and returns removed. Returns NULL if out_old of bounds, or any error
 Result(ref) List_Remove(List* self, size_t index)
 {
-	try_old (List_At(self, index))
-	end_old
+	ret (ref);
+	run (List_At(self, index));
 
 	void* removed;
 	try_old (List_At(self, index))
@@ -145,16 +143,14 @@ Result(ref) List_Remove(List* self, size_t index)
 		try_old (List_At(self, i + 1))
 		out_old (next)
 		
-		try_old (Array_Set(self->_array, i, &next))
-		end_old
+		run (Array_Set(self->_array, i, &next));
 	}
 
 	self->Count--;
 	
 	if (self->Count == self->_array->Count / 4)
 	{
-		try_old (resize(self, self->_array->Count / 2))
-		end_old
+		run (resize(self, self->_array->Count / 2));
 	}
 
 	return (Result(ref)) {OK, removed};

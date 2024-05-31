@@ -132,8 +132,8 @@ static Result(ref) resize(HashTable* self, size_t newSize)
 			continue;
 		}
 
-		try_old (HashTable_Upsert(newTable, item->Key, item->Value))
-		end_old
+		ret (ref);
+		run (HashTable_Upsert(newTable, item->Key, item->Value));
 	}
 
 	// Swap tables so we can free memory on new table pointer
@@ -185,14 +185,14 @@ HashTable* HashTable_Destructor(HashTable* self)
 // Inserts key, value returns self. If key exists, updates the value. Returns NULL if any error
 [[nodiscard]] Result(ref) HashTable_Upsert(HashTable* self, const Array* key, void* value)
 {
+	ret (ref);
+
 	if (70 < self->Count * 100 / self->_size)
 	{
-		try_old (resize(self, self->_size * 2))
-		end_old
+		run (resize(self, self->_size * 2));
  	}
 
 	// Search an empty slot location to insert the new item
-	ret (ref);
 	try (size_t, index, search(self, key, true));
 
 	HashTableItem* newPair;
@@ -200,8 +200,7 @@ HashTable* HashTable_Destructor(HashTable* self)
 	out_old (newPair)
 
 	// Set item
-	try_old (List_Set(self->_list, index, newPair))
-	end_old
+	run (List_Set(self->_list, index, newPair));
 
 	// Increase the count of items in the table
 	self->Count++;

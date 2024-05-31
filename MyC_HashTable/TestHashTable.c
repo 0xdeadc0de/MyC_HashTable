@@ -23,18 +23,15 @@ static Result(ref) HashTable_InsertItem_AbleToGetBack()
 	int keyValue = 48;
 	int value = 42;
 
-	try_old (Array_Set(key, 0, &keyValue))
-	end_old;
+	ret (ref);
+	run (Array_Set(key, 0, &keyValue));;
 
 	// Act
-	try_old (HashTable_Upsert(table, key, &value))
-	end_old;
+	run (HashTable_Upsert(table, key, &value));;
 
 	// Assert
-	try_old (Array_Set(key2, 0, &keyValue))
-	end_old
-	try_old (HashTable_Search(table, key2))
-	end_old
+	run (Array_Set(key2, 0, &keyValue));
+	run (HashTable_Search(table, key2));
 	assert(value == 42);
 
 	// Annihilate

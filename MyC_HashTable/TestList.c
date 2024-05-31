@@ -10,8 +10,8 @@ static Result(ref) List_Initialize_ShouldHaveZeroItems()
 	List list;
 
 	// Act
-	try_old (List_Constructor1(&list, 42))
-	end_old;
+	ret (ref);
+	run (List_Constructor1(&list, 42));;
 	
 	// Assert
 	assert(list._array->Count == 42);
@@ -24,14 +24,13 @@ static Result(ref) List_At_ShouldReturnItemAtLocation()
 {
 	// Arrange
 	List list;
-	try_old (List_Constructor1(&list, 1))
-	end_old
+	ret (ref);
+	run (List_Constructor1(&list, 1));
 	
 	int item = 42;
 	int* itemLocation = &item;
 	// Act
-	try_old (List_PushBack(&list, itemLocation))
-	end_old
+	run (List_PushBack(&list, itemLocation));
 	
 	// Assert
 	assert(list._array->Count == 1);
@@ -57,20 +56,18 @@ static Result(ref) List_At_ShouldReturnItemAtLocation()
 }
 static Result(ref) List_Set_ShouldSetItemAtLocation()
 {
+	ret (ref);
 	// Arrange
 	List list;
-	try_old (List_Constructor1(&list, 1))
-	end_old
+	run (List_Constructor1(&list, 1));
 	
 	int item = 42;
 	int* itemLocation = &item;
 	// Act
-	try_old (List_PushBack(&list, itemLocation))
-	end_old
+	run (List_PushBack(&list, itemLocation));
 	int newItem = 38;
 	int* newLocation = &newItem;
-	try_old (List_Set(&list, 0, newLocation))
-	end_old
+	run (List_Set(&list, 0, newLocation));
 	
 	// Assert
 	assert(list._array->Count == 1);
@@ -97,8 +94,8 @@ static Result(ref) List_CapacityReached_ShouldDoubleSize()
 {
 	// Arrange
 	List list;
-	try_old (List_Constructor1(&list, 1))
-	end_old
+	ret (ref);
+	run (List_Constructor1(&list, 1));
 	
 	int item;
 
@@ -106,22 +103,17 @@ static Result(ref) List_CapacityReached_ShouldDoubleSize()
 	assert(list._array->Count == 1);
 	assert(list.Count == 0);
 	
-	try_old (List_PushBack(&list, &item))
-	end_old
-	try_old (List_PushBack(&list, &item))
-	end_old
+	run (List_PushBack(&list, &item));
+	run (List_PushBack(&list, &item));
 	assert(list._array->Count == 2);
 	assert(list.Count == 2);
 	
-	try_old (List_PushBack(&list, &item))
-	end_old
+	run (List_PushBack(&list, &item));
 	assert(list._array->Count == 4);
 	assert(list.Count == 3);
 	
-	try_old (List_PushBack(&list, &item))
-	end_old
-	try_old (List_PushBack(&list, &item))
-	end_old
+	run (List_PushBack(&list, &item));
+	run (List_PushBack(&list, &item));
 	assert(list._array->Count == 8);
 	assert(list.Count == 5);
 
@@ -132,8 +124,8 @@ static Result(ref) List_WhenHasLessItems_ShouldReduceSize()
 {
 	// Arrange
 	List list;
-	try_old (List_Constructor1(&list, 1))
-	end_old
+	ret (ref);
+	run (List_Constructor1(&list, 1));
 	
 	int item;
 
@@ -141,37 +133,27 @@ static Result(ref) List_WhenHasLessItems_ShouldReduceSize()
 	assert(list._array->Count == 1);
 	assert(list.Count == 0);
 	
-	try_old (List_PushBack(&list, &item))
-	end_old
-	try_old (List_PushBack(&list, &item))
-	end_old
-	try_old (List_PushBack(&list, &item))
-	end_old
-	try_old (List_PushBack(&list, &item))
-	end_old
-	try_old (List_PushBack(&list, &item))
-	end_old
+	run (List_PushBack(&list, &item));
+	run (List_PushBack(&list, &item));
+	run (List_PushBack(&list, &item));
+	run (List_PushBack(&list, &item));
+	run (List_PushBack(&list, &item));
 	assert(list._array->Count == 8);
 	assert(list.Count == 5);
 
-	try_old (List_RemoveBack(&list))
-	end_old
-	try_old (List_RemoveBack(&list))
-	end_old
+	run (List_RemoveBack(&list));
+	run (List_RemoveBack(&list));
 	assert(list._array->Count == 8);
 
-	try_old (List_RemoveBack(&list))
-	end_old
+	run (List_RemoveBack(&list));
 	assert(list._array->Count == 4);
 	assert(list.Count == 2);
 
-	try_old (List_RemoveBack(&list))
-	end_old
+	run (List_RemoveBack(&list));
 	assert(list._array->Count == 2);
 	assert(list.Count == 1);
 
-	try_old (List_RemoveBack(&list))
-	end_old
+	run (List_RemoveBack(&list));
 	assert(list._array->Count == 1);
 	assert(list.Count == 0);
 
@@ -188,16 +170,14 @@ static Result(ref) List_Front_ShouldReturnItemAtFront()
 {
 	// Arrange
 	List list;
-	try_old (List_Constructor1(&list, 1))
-	end_old
+	ret (ref);
+	run (List_Constructor1(&list, 1));
 	
 	int item0, item1;
 
 	// Act
-	try_old (List_PushBack(&list, &item0))
-	end_old
-	try_old (List_PushBack(&list, &item1))
-	end_old
+	run (List_PushBack(&list, &item0));
+	run (List_PushBack(&list, &item1));
 	
 	// Assert
 	assert(list._array->Count == 2);
@@ -230,16 +210,14 @@ static Result(ref) List_Back_ShouldReturnItemAtEnd()
 {
 	// Arrange
 	List list;
-	try_old (List_Constructor1(&list, 1))
-	end_old
+	ret (ref);
+	run (List_Constructor1(&list, 1));
 	
 	int item0, item1;
 
 	// Act
-	try_old (List_PushBack(&list, &item0))
-	end_old
-	try_old (List_PushBack(&list, &item1))
-	end_old
+	run (List_PushBack(&list, &item0));
+	run (List_PushBack(&list, &item1));
 	
 	// Assert
 	void* listBack;
@@ -267,16 +245,14 @@ static Result(ref) List_PushBack_ShouldAddItemToEnd()
 {
 	// Arrange
 	List list;
-	try_old (List_Constructor1(&list, 1))
-	end_old
+	ret (ref);
+	run (List_Constructor1(&list, 1));
 	
 	int item0, item1;
 
 	// Act
-	try_old (List_PushBack(&list, &item0))
-	end_old
-	try_old (List_PushBack(&list, &item1))
-	end_old
+	run (List_PushBack(&list, &item0));
+	run (List_PushBack(&list, &item1));
 	
 	// Assert
 	assert(list._array->Count == 2);
@@ -300,16 +276,14 @@ static Result(ref) List_PushFront_ShouldAddItemToFront()
 {
 	// Arrange
 	List list;
-	try_old (List_Constructor1(&list, 1))
-	end_old
+	ret (ref);
+	run (List_Constructor1(&list, 1));
 	
 	int item0, item1;
 
 	// Act
-	try_old (List_PushFront(&list, &item0))
-	end_old
-	try_old (List_PushFront(&list, &item1))
-	end_old
+	run (List_PushFront(&list, &item0));
+	run (List_PushFront(&list, &item1));
 	
 	// Assert
 	assert(list._array->Count == 2);
@@ -333,18 +307,15 @@ static Result(ref) List_RemoveFront_ShouldRemoveItemAtFront()
 {
 	// Arrange
 	List list;
-	try_old (List_Constructor1(&list, 1))
-	end_old
+	ret (ref);
+	run (List_Constructor1(&list, 1));
 	
 	int item0, item1;
 
 	// Act
-	try_old (List_PushBack(&list, &item0))
-	end_old
-	try_old (List_PushBack(&list, &item1))
-	end_old
-	try_old (List_RemoveFront(&list))
-	end_old
+	run (List_PushBack(&list, &item0));
+	run (List_PushBack(&list, &item1));
+	run (List_RemoveFront(&list));
 	
 	// Assert
 	assert(list._array->Count == 2);
@@ -364,18 +335,15 @@ static Result(ref) List_RemoveBack_ShouldRemoveItemAtBack()
 {
 	// Arrange
 	List list;
-	try_old (List_Constructor1(&list, 1))
-	end_old
+	ret (ref);
+	run (List_Constructor1(&list, 1));
 	
 	int item0, item1;
 
 	// Act
-	try_old (List_PushBack(&list, &item0))
-	end_old
-	try_old (List_PushBack(&list, &item1))
-	end_old
-	try_old (List_RemoveBack(&list))
-	end_old
+	run (List_PushBack(&list, &item0));
+	run (List_PushBack(&list, &item1));
+	run (List_RemoveBack(&list));
 	
 	// Assert
 	assert(list._array->Count == 2);
@@ -394,20 +362,16 @@ static Result(ref) List_Remove_ShouldRemoveItemAtGivenIndex()
 {
 	// Arrange
 	List list;
-	try_old (List_Constructor1(&list, 1))
-	end_old
+	ret (ref);
+	run (List_Constructor1(&list, 1));
 	
 	int item0, item1, item2;
 
 	// Act
-	try_old (List_PushBack(&list, &item0))
-	end_old
-	try_old (List_PushBack(&list, &item1))
-	end_old
-	try_old (List_PushBack(&list, &item2))
-	end_old
-	try_old (List_Remove(&list, 1))
-	end_old
+	run (List_PushBack(&list, &item0));
+	run (List_PushBack(&list, &item1));
+	run (List_PushBack(&list, &item2));
+	run (List_Remove(&list, 1));
 	
 	// Assert
 	assert(list._array->Count == 4);
@@ -431,20 +395,16 @@ static Result(ref) List_Insert_ShouldInsertItemAtGivenIndex()
 {
 	// Arrange
 	List list;
-	try_old (List_Constructor1(&list, 1))
-	end_old
+	ret (ref);
+	run (List_Constructor1(&list, 1));
 	
 	int item0, item1, item2, itemX;
 
 	// Act
-	try_old (List_PushBack(&list, &item0))
-	end_old
-	try_old (List_PushBack(&list, &item1))
-	end_old
-	try_old (List_PushBack(&list, &item2))
-	end_old
-	try_old (List_Insert(&list, 1, &itemX))
-	end_old
+	run (List_PushBack(&list, &item0));
+	run (List_PushBack(&list, &item1));
+	run (List_PushBack(&list, &item2));
+	run (List_Insert(&list, 1, &itemX));
 	
 	// Assert
 	assert(list._array->Count == 4);

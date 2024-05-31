@@ -47,7 +47,8 @@ enum ResultCode
 
 // New result system
 
-#define CONCAT(a, b) a##b
+#define _MyC_CONCAT(a, b) a##b
+#define CONCAT(a, b) _MyC_CONCAT(a, b)
 #define UNIQUE_NAME(base) CONCAT(base, __COUNTER__)
 
 #define ret(T) Result(T) _MyC_try_return_value
@@ -66,10 +67,7 @@ enum ResultCode
 #define _MyC_run(statement, temp) \
 	int temp = statement.code; \
 	if (temp != 0) \
-	{ \
-		_MyC_try_return_value.code = temp; \
-		return _MyC_try_return_value; \
-	} \
+        return _MyC_try_return_value.code = temp, _MyC_try_return_value
     
 #define OK(x) \
     _MyC_try_return_value.code = OK, \
