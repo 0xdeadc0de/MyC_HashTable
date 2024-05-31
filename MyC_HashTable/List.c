@@ -7,7 +7,7 @@
 // Resizes the List (modifies given pointer), returns self
 static Result(ref) resize(List* self, size_t size)
 {
-	Array* oldArray = self->_array;
+	Array* oldArray = getArray(self);
 	size_t oldCount = self->Count;
 	
 	ret (ref);
@@ -19,7 +19,7 @@ static Result(ref) resize(List* self, size_t size)
 	{
 		try (ref, oldItem, Array_At(oldArray, i));
 
-		run (Array_Set(self->_array, i, oldItem));
+		run (Array_Set(getArray(self), i, oldItem));
 	}
 
 	delete(Array, oldArray);
@@ -49,7 +49,7 @@ Result(ref) List_Constructor1(List* self, size_t size)
 // Frees the resources held, and returns reference to self
 List* List_Destructor(List* self)
 {
-	delete(Array, self->_array);
+	delete(Array, getArray(self));
 	return self;
 }
 // Returns the item at given index
@@ -61,7 +61,7 @@ Result(ref) List_At(List* self, size_t index)
 	}
 
 	ret (ref);
-	try (ref, location, Array_At(self->_array, index));
+	try (ref, location, Array_At(getArray(self), index));
 
 	return (Result(ref)) {OK, *(void**)location};
 }
@@ -73,7 +73,7 @@ Result(ref) List_Set(List* self, size_t index, const void* item)
 		return (Result(ref)) {OutOfBounds};
 	}
 
-	return Array_Set(self->_array, index, &item);
+	return Array_Set(getArray(self), index, &item);
 }
 // Returns the first Item
 Result(ref) List_Front(List* self)
@@ -95,19 +95,19 @@ Result(ref) List_Insert(List* self, size_t index, const void* item)
 		return (Result(ref)) {OutOfBounds};
 	}
 
-	if (self->Count == self->_array->Count)
+	if (self->Count == getArray(self)->Count)
 	{
-		run (resize(self, self->_array->Count * 2));
+		run (resize(self, getArray(self)->Count * 2));
 	}
 
 	for (size_t i = self->Count; i > index; i--)
 	{
 		try (ref, previous, List_At(self, i - 1));
 
-		run (Array_Set(self->_array, i, &previous));
+		run (Array_Set(getArray(self), i, &previous));
 	}
 
-	run (Array_Set(_array(self), index, &item));
+	run (Array_Set(getArray(self), index, &item));
 
 	self->Count++;
 
@@ -135,14 +135,14 @@ Result(ref) List_Remove(List* self, size_t index)
 	{
 		try (ref, next, List_At(self, i + 1));
 		
-		run (Array_Set(self->_array, i, &next));
+		run (Array_Set(getArray(self), i, &next));
 	}
 
 	self->Count--;
 	
-	if (self->Count == self->_array->Count / 4)
+	if (self->Count == getArray(self)->Count / 4)
 	{
-		run (resize(self, self->_array->Count / 2));
+		run (resize(self, getArray(self)->Count / 2));
 	}
 
 	return (Result(ref)) {OK, removed};

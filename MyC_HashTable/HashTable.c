@@ -74,11 +74,11 @@ static Result(size_t) search(HashTable* self, const Array* key, bool findInsertL
 	// Search until we find the key matching or we find an empty slot
 	for (;;)
 	{
-		size_t index = doubleHash(key, self->_size, attempt);
+		size_t index = doubleHash(key, getSize(self), attempt);
 		attempt++;
 
 		ret (size_t);
-		try (ref, item, List_At(self->_list, index));
+		try (ref, item, List_At(getList(self), index));
 
 		if (NULL == item)
 		{
@@ -122,9 +122,9 @@ static Result(ref) resize(HashTable* self, size_t newSize)
 	try (ref, r, new1(HashTable, newSize));
 	HashTable* newTable = r;
 
-	for (size_t i = 0; i < self->_size; i++)
+	for (size_t i = 0; i < getSize(self); i++)
 	{
-		try (ref, r, List_At(self->_list, i));
+		try (ref, r, List_At(getList(self), i));
 		HashTableItem* item = r;
 		
 		// If an item is deleted or null, skip it
@@ -137,13 +137,13 @@ static Result(ref) resize(HashTable* self, size_t newSize)
 	}
 
 	// Swap tables so we can free memory on new table pointer
-	size_t tempSize = self->_size; 
-	self->_size = newTable->_size;
-	newTable->_size = tempSize;
+	size_t tempSize = getSize(self); 
+	setSize(self, getSize(newTable));
+	setSize(newTable, tempSize);
 
-	List* tempList = self->_list;
-	self->_list = newTable->_list;
-	newTable->_list = tempList;
+	List* tempList = getList(self);
+	setList(self, getList(newTable));
+	setList(newTable, tempList);
 
 	// The strategy is we modify the table passed as argument
 	// And free the new table with swapped memory locations
@@ -171,7 +171,7 @@ Result(ref) HashTable_Constructor1(HashTable* self, size_t size)
 	
 	for (size_t i = 0; i < size; i++)
 	{
-		List_PushBack(self->_list, NULL);
+		run (List_PushBack(getList(self), NULL));
 	}
 
 	return (Result(ref)) {OK, self};
@@ -179,7 +179,7 @@ Result(ref) HashTable_Constructor1(HashTable* self, size_t size)
 // Frees the resources held, and returns reference to self
 HashTable* HashTable_Destructor(HashTable* self)
 {
-	delete(List, self->_list);
+	delete(List, getList(self));
 	return self;
 }
 // Inserts key, value returns self. If key exists, updates the value
@@ -187,9 +187,9 @@ Result(ref) HashTable_Upsert(HashTable* self, const Array* key, void* value)
 {
 	ret (ref);
 
-	if (70 < self->Count * 100 / self->_size)
+	if (70 < self->Count * 100 / getSize(self))
 	{
-		run (resize(self, self->_size * 2));
+		run (resize(self, getSize(self) * 2));
  	}
 
 	// Search an empty slot location to insert the new item
@@ -198,7 +198,7 @@ Result(ref) HashTable_Upsert(HashTable* self, const Array* key, void* value)
 	try (ref, newPair, new2(HashTableItem, key, value));
 
 	// Set item
-	run (List_Set(self->_list, index, newPair));
+	run (List_Set(getList(self), index, newPair));
 
 	// Increase the count of items in the table
 	self->Count++;
@@ -211,7 +211,7 @@ Result(ref) HashTable_Delete(HashTable* self, const Array* key)
 	ret (ref);
 	try (size_t, index, search(self, key, false));
 	
-	try (ref, item, List_At(self->_list, index));
+	try (ref, item, List_At(getList(self), index));
 	
 	// If search returned an empty slot location, we do nothing, this item doesn't exist in table already
 	if (NULL == item)
@@ -219,14 +219,14 @@ Result(ref) HashTable_Delete(HashTable* self, const Array* key)
 		return (Result(ref)) {OK, self};
 	}
 
-	List_Set(self->_list, index, DELETED);
+	run (List_Set(getList(self), index, DELETED));
 	delete(HashTableItem, item);
 
 	self->Count--;
 
-	if (10 > self->Count * 100 / self->_size)
+	if (10 > self->Count * 100 / getSize(self))
 	{
-		return resize(self, self->_size / 2);
+		return resize(self, getSize(self) / 2);
 	}
 
 	return (Result(ref)) {OK, self};
@@ -238,7 +238,7 @@ Result(ref) HashTable_Search(HashTable* self, const Array* key)
 	ret (ref);
 	try (size_t, index, search(self, key, false));
 
-	try (ref, r, List_At(self->_list, index));
+	try (ref, r, List_At(getList(self), index));
 	HashTableItem* item = r;
 
 	// Return the value of the item found

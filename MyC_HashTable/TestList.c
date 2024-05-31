@@ -4,6 +4,9 @@
 
 #include "List.h"
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 static Result(ref) List_Initialize_ShouldHaveZeroItems()
 {
 	// Arrange
@@ -414,5 +417,7 @@ static Result(ref) List_Insert_ShouldInsertItemAtGivenIndex()
 	
 	return OK(NULL);
 }
+
+#pragma GCC diagnostic pop
 
 #include "TestList.c.gen"

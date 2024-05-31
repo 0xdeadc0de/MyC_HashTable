@@ -5,12 +5,6 @@
 #include "TestHashTable.h.gen"
 #include "TestHashTableItem.h.gen"
 
-#include "Array.h"
-
-#include "List.h"
-
-	
-
 int main()
 {
 	int code;

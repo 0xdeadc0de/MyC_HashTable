@@ -1,6 +1,7 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
-static inline Array* _array(List* self) { return self->_array; };
+static inline Array* getArray(List* self) { return self->_array; }
+static inline void setArray(List* self, Array* value) { self->_array = value; }
 
 #pragma GCC diagnostic pop

@@ -120,13 +120,14 @@ template_runAll = """\
 }}
 """
 
-template_field = \
-"static inline {fieldType} {fieldName}({structType}* self) {{ return self->{fieldName}; }};"
+template_field = """\
+static inline {fieldType} {getField}({structType}* self) {{ return self->{fieldName}; }}
+static inline void {setField}({structType}* self, {fieldType} value) {{ self->{fieldName} = value; }}"""
 
 template_runCase = "\tprintf(\"Executing test case `{methodName}` ...\"); run ({methodName}()); puts(\"OK\"); i++;"
 
 # Define named tuples
-Field = namedtuple("Field", ["fieldType", "fieldName", "structType"])
+Field = namedtuple("Field", ["fieldType", "fieldName", "structType", "getField", "setField"])
 Signature = namedtuple('Signature', ['returnType', 'name', 'parameters', 'comment'])
 FilePathName = namedtuple('FilePathName', ['path', 'nameWithout_oldExtension', 'headerExists', 'testing'])
 
@@ -229,6 +230,8 @@ def ParseFields(structName: str, pathHeader: str) -> Generator[Field, None, None
 
     for match in re.finditer("(?:[\s]*(?:\[\[deprecated\(\"private\"\)\]\])[\s](\w+\*?)[\s](\w+);)", lines):
         yield Field(
+            getField = "get"+match[2][1].upper()+match[2][2:],
+            setField = "set"+match[2][1].upper()+match[2][2:],
             fieldType = match[1], 
             fieldName = match[2], 
             structType = structName

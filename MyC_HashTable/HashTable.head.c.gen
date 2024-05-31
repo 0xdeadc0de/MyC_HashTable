@@ -1,7 +1,9 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
-static inline size_t _size(HashTable* self) { return self->_size; };
-static inline List* _list(HashTable* self) { return self->_list; };
+static inline size_t getSize(HashTable* self) { return self->_size; }
+static inline void setSize(HashTable* self, size_t value) { self->_size = value; }
+static inline List* getList(HashTable* self) { return self->_list; }
+static inline void setList(HashTable* self, List* value) { self->_list = value; }
 
 #pragma GCC diagnostic pop
