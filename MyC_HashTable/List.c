@@ -3,7 +3,7 @@
 #include "List.h"
 
 // Resizes the List (modifies given pointer), returns self
-[[nodiscard]] static Result resize(List* self, size_t size)
+[[nodiscard]] static Resultref resize(List* self, size_t size)
 {
 	Array* oldArray = self->_array;
 	size_t oldCount = self->Count;
@@ -25,15 +25,15 @@
 
 	delete(Array, oldArray);
 
-	return (Result) {OK, self};
+	return (Resultref) {OK, self};
 }
 
 // Constructs a List of size and returns the self pointer
-[[nodiscard]] Result List_Constructor1(List* self, size_t size)
+[[nodiscard]] Resultref List_Constructor1(List* self, size_t size)
 {
 	if (size <= 0)
 	{
-		return (Result) {InvalidArgument};
+		return (Resultref) {InvalidArgument};
 	}
 
 	Array* array;
@@ -46,7 +46,7 @@
 		._array = array
 	};
 
-	return (Result) {OK, self};
+	return (Resultref) {OK, self};
 }
 // Frees the resources held, and returns reference to self
 List* List_Destructor(List* self)
@@ -55,45 +55,45 @@ List* List_Destructor(List* self)
 	return self;
 }
 // Returns the item at given index; or NULL if out_old of bounds
-Result List_At(List* self, size_t index)
+Resultref List_At(List* self, size_t index)
 {
 	if (index < 0 || self->Count <= index)
 	{
-		return (Result) {out_oldOfBounds};
+		return (Resultref) {out_oldOfBounds};
 	}
 
 	void* location;
 	try_old (Array_At(self->_array, index))
 	out_old (location);
 
-	return (Result) {OK, *(void**)location};
+	return (Resultref) {OK, *(void**)location};
 }
 // Sets the Item at given index
-Result List_Set(List* self, size_t index, const void* item)
+Resultref List_Set(List* self, size_t index, const void* item)
 {
 	if (index < 0 || self->Count <= index)
 	{
-		return (Result) {out_oldOfBounds};
+		return (Resultref) {out_oldOfBounds};
 	}
 
 	return Array_Set(self->_array, index, &item);
 }
 // Returns the first Item
-Result List_Front(List* self)
+Resultref List_Front(List* self)
 {
 	return List_At(self, 0);
 }
 // Returns the last Item
-Result List_Back(List* self)
+Resultref List_Back(List* self)
 {
 	return List_At(self, self->Count - 1);
 }
 // Inserts the Item at given index and returns it
-Result List_Insert(List* self, size_t index, const void* item)
+Resultref List_Insert(List* self, size_t index, const void* item)
 {
 	if (index < 0 || self->Count < index)
 	{
-		return (Result) {out_oldOfBounds};
+		return (Resultref) {out_oldOfBounds};
 	}
 
 	if (self->Count == self->_array->Count)
@@ -120,17 +120,17 @@ Result List_Insert(List* self, size_t index, const void* item)
 	return List_At(self, index);
 }
 // Inserts the Item at front and returns it, or NULL if any error
-Result List_PushFront(List* self, const void* item)
+Resultref List_PushFront(List* self, const void* item)
 {
 	return List_Insert(self, 0, item);
 }
 // Inserts the Item at end and returns it, or NULL if any error
-Result List_PushBack(List* self, const void* item)
+Resultref List_PushBack(List* self, const void* item)
 {
 	return List_Insert(self, self->Count, item);
 }
 // Removes the Item at given index and returns removed. Returns NULL if out_old of bounds, or any error
-Result List_Remove(List* self, size_t index)
+Resultref List_Remove(List* self, size_t index)
 {
 	try_old (List_At(self, index))
 	end_old
@@ -157,15 +157,15 @@ Result List_Remove(List* self, size_t index)
 		end_old
 	}
 
-	return (Result) {OK, removed};
+	return (Resultref) {OK, removed};
 }
 // Removes the Item at front and returns removed, or NULL if any error
-Result List_RemoveFront(List* self)
+Resultref List_RemoveFront(List* self)
 {
 	return List_Remove(self, 0);
 }
 // Removes the Item at end and returns removed, or NULL if any error
-Result List_RemoveBack(List* self)
+Resultref List_RemoveBack(List* self)
 {
 	return List_Remove(self, self->Count - 1);
 }

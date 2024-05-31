@@ -21,13 +21,13 @@ template_macro = """\
 
 #define Result(T) Result##T
 
-typedef struct Result
+typedef struct Resultref
 {
 	// A value set to zero when operation was successful and result is set properly
 	int code;
 	void* value;
 }
-Result;
+Resultref;
 
 enum ResultCode
 {
@@ -38,7 +38,7 @@ enum ResultCode
 };
 
 #define	try_old(x) {\\
-	Result result = x; \\
+	Resultref result = x; \\
 	if (result.code != 0) \\
 		return result;
 

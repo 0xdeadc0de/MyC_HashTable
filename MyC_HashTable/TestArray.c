@@ -6,7 +6,7 @@
 
 #include "Array.h"
 
-static Result Array_SetsItem_AbleToRetrieveByAtMethod()
+static Resultref Array_SetsItem_AbleToRetrieveByAtMethod()
 {
 	// Arrange
 	Array array;
@@ -32,7 +32,7 @@ static Result Array_SetsItem_AbleToRetrieveByAtMethod()
 	// Annihilate
 	Array_Destructor(&array);
 }
-static Result Array_SetsAllItems_AbleToRetrieveAllItems()
+static Resultref Array_SetsAllItems_AbleToRetrieveAllItems()
 {
 	// Arrange
 	Array array;
@@ -62,7 +62,7 @@ static Result Array_SetsAllItems_AbleToRetrieveAllItems()
 	// Annihilate
 	Array_Destructor(&array);
 }
-static Result Array_AsStringType_WorksAsExpected()
+static Resultref Array_AsStringType_WorksAsExpected()
 {
 	// Arrange
 	Array array;
@@ -94,7 +94,7 @@ static Result Array_AsStringType_WorksAsExpected()
 	// Annihilate
 	Array_Destructor(&array);
 }
-static Result Array_AsCustomType_WorksAsExpected()
+static Resultref Array_AsCustomType_WorksAsExpected()
 {
 	// Arrange
 	typedef struct
@@ -155,7 +155,7 @@ static Result Array_AsCustomType_WorksAsExpected()
 	Array_Destructor(&array);
 }
 
-static Result ArrayEquals_DifferentSizeOfItems_ReturnsFalse()
+static Resultref ArrayEquals_DifferentSizeOfItems_ReturnsFalse()
 {
 	// Arrange
 	Array a1, a2;
@@ -167,7 +167,7 @@ static Result ArrayEquals_DifferentSizeOfItems_ReturnsFalse()
 	// Act & Assert
 	assert(false == Array_Equals(&a1, &a2));
 }
-static Result ArrayEquals_DifferentLength_ReturnsFalse()
+static Resultref ArrayEquals_DifferentLength_ReturnsFalse()
 {
 	// Arrange
 	Array a1, a2;
@@ -179,7 +179,7 @@ static Result ArrayEquals_DifferentLength_ReturnsFalse()
 	// Act & Assert
 	assert(false == Array_Equals(&a1, &a2));
 }
-static Result ArrayEquals_SameLengthAndSizeOfButDifferentData_ReturnsFalse()
+static Resultref ArrayEquals_SameLengthAndSizeOfButDifferentData_ReturnsFalse()
 {
 	// Arrange
 	Array a1, a2;
@@ -197,7 +197,7 @@ static Result ArrayEquals_SameLengthAndSizeOfButDifferentData_ReturnsFalse()
 	// Act & Assert
 	assert(false == Array_Equals(&a1, &a2));
 }
-static Result ArrayEquals_SameLengthAndSizeOfAndData_ReturnsTrue()
+static Resultref ArrayEquals_SameLengthAndSizeOfAndData_ReturnsTrue()
 {
 	// Arrange
 	Array a1, a2;
@@ -216,7 +216,7 @@ static Result ArrayEquals_SameLengthAndSizeOfAndData_ReturnsTrue()
 	assert(true == Array_Equals(&a1, &a2));
 }
 
-static Result Array_Clone_CreatesExactCopy()
+static Resultref Array_Clone_CreatesExactCopy()
 {
 	// Arrange
 	Array* a1;

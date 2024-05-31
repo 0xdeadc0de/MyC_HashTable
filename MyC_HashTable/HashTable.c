@@ -64,7 +64,7 @@ static size_t doubleHash(const Array* key, size_t size, size_t attempt)
 
 	return finalHash;
 }
-static Result search(HashTable* self, const Array* key, bool findInsertLocation)
+static Resultref search(HashTable* self, const Array* key, bool findInsertLocation)
 {
 	size_t attempt = 0;
 	// Search until we find the key matching or we find an empty slot
@@ -79,14 +79,14 @@ static Result search(HashTable* self, const Array* key, bool findInsertLocation)
 
 		if (NULL == item)
 		{
-			return (Result) {OK, index};
+			return (Resultref) {OK, index};
 		}
 
 		if (DELETED == item)
 		{
 			if (findInsertLocation)
 			{
-				return (Result) {OK, index};
+				return (Resultref) {OK, index};
 			}
 
 			// We assume deleted items as legitimate items in the table to avoid breaking the chain of double hashing
@@ -102,15 +102,15 @@ static Result search(HashTable* self, const Array* key, bool findInsertLocation)
 		
 		if (Array_Equals(key, item->Key))
 		{
-			return (Result) {OK, index};;
+			return (Resultref) {OK, index};;
 		}
 	}
 }
-static Result resize(HashTable* self, size_t newSize)
+static Resultref resize(HashTable* self, size_t newSize)
 {
 	if (newSize < 50)
 	{
-		return (Result) {OK, self};
+		return (Resultref) {OK, self};
 	}
 
 	// Allocate a new table, and copy item pointers
@@ -147,11 +147,11 @@ static Result resize(HashTable* self, size_t newSize)
 	// And free the new table with swapped memory locations
 	delete(HashTable, newTable);
 
-	return (Result) {OK, self};
+	return (Resultref) {OK, self};
 }
 
 // Constructs a HashTable and returns the pointer, or NULL if any error
-[[nodiscard]] Result HashTable_Constructor1(HashTable* self, size_t size)
+[[nodiscard]] Resultref HashTable_Constructor1(HashTable* self, size_t size)
 {
 	size = findNextPrime(size);
 
@@ -172,7 +172,7 @@ static Result resize(HashTable* self, size_t newSize)
 		List_PushBack(self->_list, NULL);
 	}
 
-	return (Result) {OK, self};
+	return (Resultref) {OK, self};
 }
 // Frees the resources held, and returns reference to self
 HashTable* HashTable_Destructor(HashTable* self)
@@ -181,7 +181,7 @@ HashTable* HashTable_Destructor(HashTable* self)
 	return self;
 }
 // Inserts key, value returns self. If key exists, updates the value. Returns NULL if any error
-[[nodiscard]] Result HashTable_Upsert(HashTable* self, const Array* key, void* value)
+[[nodiscard]] Resultref HashTable_Upsert(HashTable* self, const Array* key, void* value)
 {
 	if (70 < self->Count * 100 / self->_size)
 	{
@@ -205,10 +205,10 @@ HashTable* HashTable_Destructor(HashTable* self)
 	// Increase the count of items in the table
 	self->Count++;
 
-	return (Result) {OK, self};
+	return (Resultref) {OK, self};
 }
 // Deletes the key from the hash table and returns self
-[[nodiscard]] Result HashTable_Delete(HashTable* self, const Array* key)
+[[nodiscard]] Resultref HashTable_Delete(HashTable* self, const Array* key)
 {
 	size_t index;
 	try_old (search(self, key, false))
@@ -221,7 +221,7 @@ HashTable* HashTable_Destructor(HashTable* self)
 	// If search returned an empty slot location, we do nothing, this item doesn't exist in table already
 	if (NULL == item)
 	{
-		return (Result) {OK, self};
+		return (Resultref) {OK, self};
 	}
 
 	List_Set(self->_list, index, DELETED);
@@ -234,10 +234,10 @@ HashTable* HashTable_Destructor(HashTable* self)
 		return resize(self, self->_size / 2);
 	}
 
-	return (Result) {OK, self};
+	return (Resultref) {OK, self};
 }
 // Searches and retrieves the value from given key if exists
-[[nodiscard]] Result HashTable_Search(HashTable* self, const Array* key)
+[[nodiscard]] Resultref HashTable_Search(HashTable* self, const Array* key)
 {
 	// Search for the item with the given key
 	size_t index;
@@ -249,5 +249,5 @@ HashTable* HashTable_Destructor(HashTable* self)
 	out_old (item)
 
 	// Return the value of the item found
-	return (Result) {OK, item->Value};
+	return (Resultref) {OK, item->Value};
 }

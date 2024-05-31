@@ -11,13 +11,17 @@
 
 #define delete(typename,self) free(typename##_Destructor(self))
 
-typedef struct Result
+// Result related definitions
+
+#define Result(T) Result##T
+
+typedef struct Resultref
 {
 	// A value set to zero when operation was successful and result is set properly
 	int code;
 	void* value;
 }
-Result;
+Resultref;
 
 enum ResultCode
 {
@@ -28,7 +32,7 @@ enum ResultCode
 };
 
 #define	try_old(x) {\
-	Result result = x; \
+	Resultref result = x; \
 	if (result.code != 0) \
 		return result;
 
@@ -36,7 +40,14 @@ enum ResultCode
 	variable = result.value;\
 }
 
-#define end }
+#define end_old }
 
+#define set(T) T _MyC_try_return_value
+
+#define try(T, x, statement) _MyC_try(T, statement, UNIQUE_NAME(temp_result), x)
+#define	_MyC_try(T, statement, result, x) 	Result(T) result = statement; 	if (result.code != 0) 	{ 		_MyC_try_return_value.code = result.code; 		return _MyC_try_return_value; 	} 	T x = result.value;
+
+#define run(statement) _MyC_run(statement, UNIQUE_NAME(temp_code))
+#define _MyC_run(statement, temp) 	int temp = statement.code; 	if (temp != 0) 	{ 		_MyC_try_return_value.code = temp; 		return _MyC_try_return_value; 	} 
 #endif
 // Auto-generate end. Do not modify!
