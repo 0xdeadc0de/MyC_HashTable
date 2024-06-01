@@ -4,7 +4,7 @@
 Result(ref) TestArray_RunAll()
 {
     size_t i = 0;
-    ret (ref);
+    setup(ref);
 	printf("Executing test case `Array_SetsItem_AbleToRetrieveByAtMethod` ..."); run (Array_SetsItem_AbleToRetrieveByAtMethod()); puts("OK"); i++;
 	printf("Executing test case `Array_SetsAllItems_AbleToRetrieveAllItems` ..."); run (Array_SetsAllItems_AbleToRetrieveAllItems()); puts("OK"); i++;
 	printf("Executing test case `Array_AsStringType_WorksAsExpected` ..."); run (Array_AsStringType_WorksAsExpected()); puts("OK"); i++;

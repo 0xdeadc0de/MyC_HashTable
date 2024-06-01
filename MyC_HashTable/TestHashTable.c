@@ -8,7 +8,7 @@
 static Result HashTable_InsertItem_AbleToGetBack()
 {
 	// Arrange
-	ret ();
+	setup();
 	try (ref, table, new1(HashTable, 50));
 	try (ref, key, new2(Array, 4, 1));
 	try (ref, key2, new2(Array, 4, 1));

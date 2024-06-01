@@ -4,7 +4,7 @@
 Result(ref) TestHashTable_RunAll()
 {
     size_t i = 0;
-    ret (ref);
+    setup(ref);
 	printf("Executing test case `HashTable_InsertItem_AbleToGetBack` ..."); run (HashTable_InsertItem_AbleToGetBack()); puts("OK"); i++;
     printf("\n%d test cases on TestHashTable has successfully run.\n\n\n", i);
 }

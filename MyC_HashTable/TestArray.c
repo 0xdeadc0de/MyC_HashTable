@@ -10,7 +10,7 @@ static Result Array_SetsItem_AbleToRetrieveByAtMethod()
 {
 	// Arrange
 	Array array;
-	ret ();
+	setup();
 	run (Array_Constructor2(&array, sizeof(int), 1));
 
 	// Act
@@ -36,7 +36,7 @@ static Result Array_SetsAllItems_AbleToRetrieveAllItems()
 	// Arrange
 	Array array;
 	const int length = 42;
-	ret ();
+	setup();
 	run (Array_Constructor2(&array, sizeof(int), length));
 
 	// Act
@@ -66,7 +66,7 @@ static Result Array_AsStringType_WorksAsExpected()
 	Array array;
 	const char string[] = "hello testing string";
 	const int length = 20+1;
-	ret ();
+	setup();
 	run (Array_Constructor2(&array, sizeof(char), length));
 
 	// Act
@@ -122,7 +122,7 @@ static Result Array_AsCustomType_WorksAsExpected()
 		},
 	};
 
-	ret ();
+	setup();
 	run (Array_Constructor2(&array, sizeof(CustomType), length));
 
 	// Act
@@ -155,7 +155,7 @@ static Result ArrayEquals_DifferentSizeOfItems_ReturnsFalse()
 {
 	// Arrange
 	Array a1, a2;
-	ret ();
+	setup();
 	run (Array_Constructor2(&a1, 2, 2));
 	run (Array_Constructor2(&a1, 1, 2));
 
@@ -168,7 +168,7 @@ static Result ArrayEquals_DifferentLength_ReturnsFalse()
 {
 	// Arrange
 	Array a1, a2;
-	ret ();
+	setup();
 	run (Array_Constructor2(&a1, 2, 1));
 	run (Array_Constructor2(&a2, 2, 2));
 
@@ -181,7 +181,7 @@ static Result ArrayEquals_SameLengthAndSizeOfButDifferentData_ReturnsFalse()
 {
 	// Arrange
 	Array a1, a2;
-	ret ();
+	setup();
 	run (Array_Constructor2(&a1, 2, 2));
 	run (Array_Constructor2(&a2, 2, 2));
 	
@@ -198,7 +198,7 @@ static Result ArrayEquals_SameLengthAndSizeOfAndData_ReturnsTrue()
 {
 	// Arrange
 	Array a1, a2;
-	ret ();
+	setup();
 	run (Array_Constructor2(&a1, 2, 2));
 	run (Array_Constructor2(&a2, 2, 2));
 	
@@ -215,7 +215,7 @@ static Result ArrayEquals_SameLengthAndSizeOfAndData_ReturnsTrue()
 static Result Array_Clone_CreatesExactCopy()
 {
 	// Arrange
-	ret ();
+	setup();
 	try (ref, r, new2(Array, sizeof(int), 5));
 	Array* a1 = r;
 

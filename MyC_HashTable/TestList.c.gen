@@ -4,7 +4,7 @@
 Result(ref) TestList_RunAll()
 {
     size_t i = 0;
-    ret (ref);
+    setup(ref);
 	printf("Executing test case `List_Initialize_ShouldHaveZeroItems` ..."); run (List_Initialize_ShouldHaveZeroItems()); puts("OK"); i++;
 	printf("Executing test case `List_At_ShouldReturnItemAtLocation` ..."); run (List_At_ShouldReturnItemAtLocation()); puts("OK"); i++;
 	printf("Executing test case `List_Set_ShouldSetItemAtLocation` ..."); run (List_Set_ShouldSetItemAtLocation()); puts("OK"); i++;

@@ -10,7 +10,7 @@ static Result(ref) resize(List* self, size_t size)
 	Array* oldArray = getArray(self);
 	size_t oldCount = self->Count;
 	
-	ret (ref);
+	setup(ref);
 	run (List_Constructor1(self, size)); 
 
 	self->Count = oldCount;
@@ -35,7 +35,7 @@ Result(ref) List_Constructor1(List* self, size_t size)
 		return (Result(ref)) {InvalidArgument};
 	}
 
-	ret (ref);
+	setup(ref);
 	try (ref, array, new2(Array, sizeof(void*), size));
 
 	*self = (List)
@@ -60,7 +60,7 @@ Result(ref) List_At(List* self, size_t index)
 		return (Result(ref)) {OutOfBounds};
 	}
 
-	ret (ref);
+	setup(ref);
 	try (ref, location, Array_At(getArray(self), index));
 
 	return (Result(ref)) {OK, *(void**)location};
@@ -88,7 +88,7 @@ Result(ref) List_Back(List* self)
 // Inserts the Item at given index and returns it
 Result(ref) List_Insert(List* self, size_t index, const void* item)
 {
-	ret (ref);
+	setup(ref);
 	
 	if (index < 0 || self->Count < index)
 	{
@@ -126,7 +126,7 @@ Result(ref) List_PushBack(List* self, const void* item)
 // Removes the Item at given index and returns removed
 Result(ref) List_Remove(List* self, size_t index)
 {
-	ret (ref);
+	setup(ref);
 	run (List_At(self, index));
 
 	try (ref, removed, List_At(self, index));

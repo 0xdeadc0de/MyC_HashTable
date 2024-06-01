@@ -6,7 +6,7 @@
 // Constructs an HashTableItem with cloned key and returns the pointer
 Result(ref) HashTableItem_Constructor2(HashTableItem* self, const Array* key, void* value)
 {
-	ret (ref);
+	setup(ref);
 	try (ref, clone, Array_Clone(key));
 
 	self->Key = clone;

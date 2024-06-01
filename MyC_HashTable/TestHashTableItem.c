@@ -8,7 +8,7 @@
 static Result HashTableItem_Constructor_CreatesExactCopyOfKeys()
 {
 	// Assert
-	ret ();
+	setup();
 	try (ref, key1, new2(Array, sizeof(char), 10));
 	Array* a1 = key1;
 

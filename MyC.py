@@ -49,7 +49,7 @@ enum ResultCode
 #define CONCAT(a, b) _MyC_CONCAT(a, b)
 #define UNIQUE_NAME(base) CONCAT(base, __COUNTER__)
 
-#define ret(T) Result(T) _MyC_try_return_value
+#define setup(T) Result(T) _MyC_try_return_value
 
 #define try(T, x, statement) _MyC_try(T, statement, UNIQUE_NAME(temp_result), x)
 #define	_MyC_try(T, statement, result, x) \\
@@ -111,7 +111,7 @@ template_runAll = """\
 {signature}
 {{
     size_t i = 0;
-    ret (ref);
+    setup(ref);
 {calls}
     printf("\\n%d test cases on {structName} has successfully run.\\n\\n\\n", i);
 }}
