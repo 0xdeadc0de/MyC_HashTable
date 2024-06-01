@@ -1,10 +1,10 @@
 // Auto-generate begin. Do not modify!
 #include "TestArray.h.gen"
 #include <stdio.h>
-Result(ref) TestArray_RunAll()
+Result TestArray_RunAll()
 {
     size_t i = 0;
-    setup(ref);
+    setup();
 	printf("Executing test case `Array_SetsItem_AbleToRetrieveByAtMethod` ..."); run (Array_SetsItem_AbleToRetrieveByAtMethod()); puts("OK"); i++;
 	printf("Executing test case `Array_SetsAllItems_AbleToRetrieveAllItems` ..."); run (Array_SetsAllItems_AbleToRetrieveAllItems()); puts("OK"); i++;
 	printf("Executing test case `Array_AsStringType_WorksAsExpected` ..."); run (Array_AsStringType_WorksAsExpected()); puts("OK"); i++;
@@ -15,6 +15,7 @@ Result(ref) TestArray_RunAll()
 	printf("Executing test case `ArrayEquals_SameLengthAndSizeOfAndData_ReturnsTrue` ..."); run (ArrayEquals_SameLengthAndSizeOfAndData_ReturnsTrue()); puts("OK"); i++;
 	printf("Executing test case `Array_Clone_CreatesExactCopy` ..."); run (Array_Clone_CreatesExactCopy()); puts("OK"); i++;
     printf("\n%d test cases on TestArray has successfully run.\n\n\n", i);
+    return ok;
 }
 
 // Auto-generate end. Do not modify!

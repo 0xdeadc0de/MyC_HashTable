@@ -6,7 +6,7 @@
 
 
 // Run all tests in this module
-Result(ref) TestHashTableItem_RunAll();
+Result TestHashTableItem_RunAll();
 
 #endif
 // Auto-generate end. Do not modify!

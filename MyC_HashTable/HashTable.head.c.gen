@@ -1,3 +1,4 @@
+// Auto-generate begin. Do not modify!
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
@@ -7,3 +8,4 @@ static inline List* getList(HashTable* self) { return self->_list; }
 static inline void setList(HashTable* self, List* value) { self->_list = value; }
 
 #pragma GCC diagnostic pop
+// Auto-generate end. Do not modify!

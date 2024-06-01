@@ -1,12 +1,13 @@
 // Auto-generate begin. Do not modify!
 #include "TestHashTable.h.gen"
 #include <stdio.h>
-Result(ref) TestHashTable_RunAll()
+Result TestHashTable_RunAll()
 {
     size_t i = 0;
-    setup(ref);
+    setup();
 	printf("Executing test case `HashTable_InsertItem_AbleToGetBack` ..."); run (HashTable_InsertItem_AbleToGetBack()); puts("OK"); i++;
     printf("\n%d test cases on TestHashTable has successfully run.\n\n\n", i);
+    return ok;
 }
 
 // Auto-generate end. Do not modify!

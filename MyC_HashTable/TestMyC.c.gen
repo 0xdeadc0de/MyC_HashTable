@@ -1,0 +1,26 @@
+// Auto-generate begin. Do not modify!
+#include "TestArray.h.gen"
+#include "TestHashTable.h.gen"
+#include "TestHashTableItem.h.gen"
+#include "TestList.h.gen"
+
+int TestMyC()
+{
+	int code;
+	Result() (*runAlls[])(void) = {
+		TestArray_RunAll,
+		TestHashTable_RunAll,
+		TestHashTableItem_RunAll,
+		TestList_RunAll
+	};
+	for (size_t i = 0; i < 4; i++) 
+	{
+		if (code = runAlls[i]().code) 
+		{
+			printf("failed with Result.code = %d", code);
+			return code; 
+		}
+	}
+    return 0;
+}
+// Auto-generate end. Do not modify!

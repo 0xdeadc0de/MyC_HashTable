@@ -93,12 +93,14 @@ template_header = """\
 // Auto-generate end. Do not modify!"""
 
 template_head_c = """\
+// Auto-generate begin. Do not modify!
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
 {privateFields}
 
-#pragma GCC diagnostic pop"""
+#pragma GCC diagnostic pop
+// Auto-generate end. Do not modify!"""
 
 template_c = """\
 // Auto-generate begin. Do not modify!
@@ -106,14 +108,37 @@ template_c = """\
 {runAll}
 // Auto-generate end. Do not modify!"""
 
+template_test_MyC = """\
+// Auto-generate begin. Do not modify!
+{includes}
+
+int TestMyC()
+{{
+	int code;
+	Result() (*runAlls[])(void) = {{
+{runAlls}
+	}};
+	for (size_t i = 0; i < {count}; i++) 
+	{{
+		if (code = runAlls[i]().code) 
+		{{
+			printf("failed with Result.code = %d", code);
+			return code; 
+		}}
+	}}
+    return 0;
+}}
+// Auto-generate end. Do not modify!"""
+
 template_runAll = """\
 #include <stdio.h>
 {signature}
 {{
     size_t i = 0;
-    setup(ref);
+    setup();
 {calls}
     printf("\\n%d test cases on {structName} has successfully run.\\n\\n\\n", i);
+    return ok;
 }}
 """
 
@@ -128,7 +153,7 @@ Field = namedtuple("Field", ["fieldType", "fieldName", "structType", "getField",
 Signature = namedtuple('Signature', ['returnType', 'name', 'parameters', 'comment'])
 FilePathName = namedtuple('FilePathName', ['path', 'nameWithout_oldExtension', 'headerExists', 'testing'])
 
-signatureRunAll = Signature("Result(ref)", "RunAll", "", "// Run all tests in this module")
+signatureRunAll = Signature("Result", "RunAll", "", "// Run all tests in this module")
 
 def GenerateHeader(structName: str, signatures: list[Signature], headerExists: bool, testing: bool) -> str:
 
@@ -170,6 +195,14 @@ def GenerateHeadCFile(fields: list[Field]) -> str:
 
     return template_head_c.format(
         privateFields = "\n".join(template_field.format(**x._asdict()) for x in fields)
+    )
+
+def GenerateTestMyCFile(runAlls: list[str]) -> str:
+    
+    return template_test_MyC.format(
+        includes = "\n".join(f"#include \"{x}.h.gen\"" for x in runAlls),
+        runAlls = ",\n".join(f"\t\t{x}_{signatureRunAll.name}" for x in runAlls), 
+        count = len(runAlls)
     )
 
 def FindCFiles(directory: str) -> Generator[FilePathName, None, None]:
@@ -263,7 +296,7 @@ def MakeFunctionDefinition(matches: list[Signature], testing: bool) -> Generator
 def main():
     print("\nMyC Python Pre-Build script begin.\n")
     generatedFilesCount = 0
-
+    testAlls = []
     # Generate all the namespace headers and c files
     for path, structName, headerExists, testing in FindCFiles("."):
 
@@ -296,6 +329,14 @@ def main():
                 print(f"Generating file {cFileName}")
                 file.write(GenerateCFile(structName, signatures, headerExists))
                 generatedFilesCount += 1
+                testAlls.append(structName)
+
+    if len(testAlls) > 0:
+        # Generate TestMyC.c
+        with open("TestMyC.c.gen", "w") as file:
+            print(f"Generating file TestMyC.c.gen")
+            file.write(GenerateTestMyCFile(testAlls))
+
 
     if generatedFilesCount > 0:
         # Generate macro keywords header

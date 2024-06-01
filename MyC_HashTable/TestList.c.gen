@@ -1,10 +1,10 @@
 // Auto-generate begin. Do not modify!
 #include "TestList.h.gen"
 #include <stdio.h>
-Result(ref) TestList_RunAll()
+Result TestList_RunAll()
 {
     size_t i = 0;
-    setup(ref);
+    setup();
 	printf("Executing test case `List_Initialize_ShouldHaveZeroItems` ..."); run (List_Initialize_ShouldHaveZeroItems()); puts("OK"); i++;
 	printf("Executing test case `List_At_ShouldReturnItemAtLocation` ..."); run (List_At_ShouldReturnItemAtLocation()); puts("OK"); i++;
 	printf("Executing test case `List_Set_ShouldSetItemAtLocation` ..."); run (List_Set_ShouldSetItemAtLocation()); puts("OK"); i++;
@@ -19,6 +19,7 @@ Result(ref) TestList_RunAll()
 	printf("Executing test case `List_Remove_ShouldRemoveItemAtGivenIndex` ..."); run (List_Remove_ShouldRemoveItemAtGivenIndex()); puts("OK"); i++;
 	printf("Executing test case `List_Insert_ShouldInsertItemAtGivenIndex` ..."); run (List_Insert_ShouldInsertItemAtGivenIndex()); puts("OK"); i++;
     printf("\n%d test cases on TestList has successfully run.\n\n\n", i);
+    return ok;
 }
 
 // Auto-generate end. Do not modify!
