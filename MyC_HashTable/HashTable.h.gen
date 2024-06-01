@@ -6,6 +6,8 @@
 #include "HashTable.h"
 
 
+// Constructs a HashTable of default size and returns the pointer
+Result(ref) HashTable_Constructor(HashTable* self);
 // Constructs a HashTable and returns the pointer
 Result(ref) HashTable_Constructor1(HashTable* self, size_t size);
 // Frees the resources held, and returns reference to self

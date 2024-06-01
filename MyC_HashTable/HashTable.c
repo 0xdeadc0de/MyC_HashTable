@@ -97,12 +97,7 @@ static Result(size_t) search(HashTable* self, const Array* key, bool findInsertL
 			continue;
 		}
 
-		// There is no point to compare keys if we want to find an empty slot
-		if (findInsertLocation)
-		{
-			continue;
-		}
-		
+		// If keys are equal, for insertion, we return to upsert.
 		HashTableItem* hashTableItem = item;
 		if (Array_Equals(key, hashTableItem->Key))
 		{
@@ -152,6 +147,11 @@ static Result(ref) resize(HashTable* self, size_t newSize)
 	return (Result(ref)) {OK, self};
 }
 
+// Constructs a HashTable of default size and returns the pointer
+Result(ref) HashTable_Constructor(HashTable* self)
+{
+	return HashTable_Constructor1(self, 50);
+}
 // Constructs a HashTable and returns the pointer
 Result(ref) HashTable_Constructor1(HashTable* self, size_t size)
 {
@@ -194,14 +194,23 @@ Result(ref) HashTable_Upsert(HashTable* self, const Array* key, void* value)
 
 	// Search an empty slot location to insert the new item
 	try (size_t, index, search(self, key, true));
+	try (ref, r, List_At(getList(self), index));
+	HashTableItem* item = r;
 
-	try (ref, newPair, new2(HashTableItem, key, value));
-
-	// Set item
-	run (List_Set(getList(self), index, newPair));
-
-	// Increase the count of items in the table
-	self->Count++;
+	// If item exists, update. If not, create
+	if (NULL == item || DELETED == item)
+	{
+		#warning TODO: object pool?
+		try (ref, newPair, new2(HashTableItem, key, value));
+		run (List_Set(getList(self), index, newPair));
+	
+		// Increase the count of items in the table
+		self->Count++;
+	}
+	else
+	{
+		item->Value = value;
+	}
 
 	return (Result(ref)) {OK, self};
 }
@@ -240,6 +249,11 @@ Result(ref) HashTable_Search(HashTable* self, const Array* key)
 
 	try (ref, r, List_At(getList(self), index));
 	HashTableItem* item = r;
+
+	if (NULL == item)
+	{
+		return OK(NULL);
+	}
 
 	// Return the value of the item found
 	return (Result(ref)) {OK, item->Value};

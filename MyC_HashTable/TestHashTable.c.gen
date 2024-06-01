@@ -6,6 +6,9 @@ Result TestHashTable_RunAll()
     size_t i = 0;
     setup();
 	printf("Executing test case `HashTable_InsertItem_AbleToGetBack` ..."); run (HashTable_InsertItem_AbleToGetBack()); puts("OK"); i++;
+	printf("Executing test case `HashTable_InsertSameKeyTwice_UpsertsFirst` ..."); run (HashTable_InsertSameKeyTwice_UpsertsFirst()); puts("OK"); i++;
+	printf("Executing test case `HashTable_DeletedItem_ShouldReturnNull` ..."); run (HashTable_DeletedItem_ShouldReturnNull()); puts("OK"); i++;
+	printf("Executing test case `HashTable_InsertLargeAmountOfDataThenDelete_HopeItDoesNotCrash` ..."); run (HashTable_InsertLargeAmountOfDataThenDelete_HopeItDoesNotCrash()); puts("OK"); i++;
     printf("\n%d test cases on TestHashTable has successfully run.\n\n\n", i);
     return ok;
 }
