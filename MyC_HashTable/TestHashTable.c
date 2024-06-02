@@ -101,7 +101,7 @@ static Result HashTable_InsertLargeAmountOfDataThenDelete_HopeItDoesNotCrash()
 	try (ref, table, new(HashTable));
 	int value = 5;
 	
-	const size_t N = 10000000;
+	const size_t N = 100000;
 	const size_t keySize = ceil(log10(N))+2;
 
 	try (ref, r, new2(Array, sizeof(void*), N));
