@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <math.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "HashTable.h"
 #include "HashTableItem.h"
@@ -105,7 +106,7 @@ static Result(size_t) search(HashTable* self, const Array* key, bool returnDelet
 		}
 	}
 }
-static Result inline set(HashTable* self, size_t index, HashTableItem* value)
+inline static Result set(HashTable* self, size_t index, HashTableItem* value)
 {
 	setup();
 	run (List_Set(getList(self), index, value));
@@ -134,11 +135,17 @@ static Result resize(HashTable* self, size_t newSize)
 			continue;
 		}
 		
+		// Insert item into new table
 		try (size_t, index, search(newTable, item->Key, true));
 		run (set(newTable, index, item));
+
+		// Set list item to null so destructor does not free HashTableItem
+		// We're going to keep using same HashTableItems
+		run (List_Set(getList(self), i, NULL));
 	}
 
-	// Swap tables so we can free memory on new table pointer
+	// Swap tables so we can free memory with using newTable
+#warning What's purpose of temp size swapping? Try remove and run tests when build is clean
 	size_t tempSize = getSize(self); 
 	setSize(self, getSize(newTable));
 	setSize(newTable, tempSize);
@@ -153,13 +160,13 @@ static Result resize(HashTable* self, size_t newSize)
 
 	return ok;
 }
-static Result inline remove(HashTable* self, size_t index)
+inline static Result remove(HashTable* self, size_t index)
 {
 	setup();
 	run (List_Set(getList(self), index, DELETED));
 	return ok;
 }
-static Result(ref) inline at(HashTable* self, size_t index)
+inline static Result(ref) at(HashTable* self, size_t index)
 {
 	setup(ref);
 	try (ref, r, List_At(getList(self), index));
@@ -199,6 +206,20 @@ Result(ref) HashTable_Constructor1(HashTable* self, size_t size)
 // Frees the resources held, and returns reference to self
 HashTable* HashTable_Destructor(HashTable* self)
 {
+	for (size_t i = 0; i < getSize(self); i++)
+	{
+		Result(ref) result = List_At(getList(self), i);
+		if (result.code)
+		{
+			assert(OutOfBounds == result.code);
+			continue;
+		}
+
+		if (result.value && DELETED != result.value)
+		{
+			delete(HashTableItem, result.value);
+		}
+	}
 	delete(List, getList(self));
 	return self;
 }
