@@ -1,0 +1,15 @@
+// Auto-generate begin. Do not modify!
+#include "TestHashTable2.h.gen"
+#include <stdio.h>
+Result TestHashTable2_RunAll()
+{
+    size_t i = 0;
+    setup();
+	printf("Executing test case `HashTable2_InsertItem_AbleToGetBack` ..."); run (HashTable2_InsertItem_AbleToGetBack()); puts("OK"); i++;
+	printf("Executing test case `HashTable2_DeletedItem_ShouldReturnNull` ..."); run (HashTable2_DeletedItem_ShouldReturnNull()); puts("OK"); i++;
+	printf("Executing test case `HashTable2_InsertLargeAmountOfDataThenDelete_HopeItDoesNotCrash` ..."); run (HashTable2_InsertLargeAmountOfDataThenDelete_HopeItDoesNotCrash()); puts("OK"); i++;
+    printf("\n%d test cases on TestHashTable2 has successfully run.\n\n\n", i);
+    return ok;
+}
+
+// Auto-generate end. Do not modify!

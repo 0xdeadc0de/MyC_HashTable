@@ -1,0 +1,23 @@
+// Auto-generate begin. Do not modify!
+#ifndef H_Gen_HashTable2
+#define H_Gen_HashTable2
+
+#include "MyC.h.gen"
+#include "HashTable2.h"
+
+
+// Constructs a HashTable of default size and returns the pointer
+Result(ref) HashTable2_Constructor(HashTable2* self);
+// Constructs a HashTable and returns the pointer
+Result(ref) HashTable2_Constructor1(HashTable2* self, size_t size);
+// Frees the resources held, and returns reference to self
+HashTable2* HashTable2_Destructor(HashTable2* self);
+// Inserts key, value returns self. If key exists, updates the value
+Result HashTable2_Upsert(HashTable2* self, const Array* key, void* value);
+// Deletes the key from the hash table
+Result HashTable2_Delete(HashTable2* self, const Array* key);
+// Searches and retrieves the value from given key if exists
+Result(ref) HashTable2_Search(HashTable2* self, const Array* key);
+
+#endif
+// Auto-generate end. Do not modify!

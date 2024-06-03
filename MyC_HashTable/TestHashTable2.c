@@ -1,18 +1,18 @@
 #undef MyC_Test
 
+#include "Array.h"
 #include <assert.h>
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
 
-#include "HashTable.h"
-#include "HashTable2.h"
+#include "HashTable2.h.gen"
 
-static Result HashTable_InsertItem_AbleToGetBack()
+static Result HashTable2_InsertItem_AbleToGetBack()
 {
 	// Arrange
 	setup();
-	try (ref, table, new1(HashTable, 50));
+	try (ref, table, new(HashTable2));
 	try (ref, key, new2(Array, 4, 1));
 	try (ref, key2, new2(Array, 4, 1));
 
@@ -22,52 +22,26 @@ static Result HashTable_InsertItem_AbleToGetBack()
 	run (Array_Set(key, 0, &keyValue));
 
 	// Act
-	run (HashTable_Upsert(table, key, &value));
+	run (HashTable2_Upsert(table, key, &value));
 
 	// Assert
 	run (Array_Set(key2, 0, &keyValue));
-	try (ref, r, HashTable_Search(table, key2));
+	try (ref, r, HashTable2_Search(table, key2));
 	assert(&value == r);
 
 	// Annihilate
-	delete(HashTable, table);
+	delete(HashTable2, table);
 	delete(Array, key);
 	delete(Array, key2);
 	
 	return ok;
 }
 
-static Result HashTable_InsertSameKeyTwice_UpsertsFirst()
+static Result HashTable2_DeletedItem_ShouldReturnNull()
 {
 	// Arrange
 	setup();
-	try (ref, table, new1(HashTable, 50));
-	try (ref, key, new2(Array, 4, 1));
-	int first = 42;
-	int second = 53;
-
-	// Act
-	run (HashTable_Upsert(table, key, &first));
-	try (ref, actual1, HashTable_Search(table, key));
-	run (HashTable_Upsert(table, key, &second));
-	try (ref, actual2, HashTable_Search(table, key));
-
-	// Assert
-	assert(actual1 == &first);
-	assert(actual2 == &second);
-
-	// Annihilate
-	delete(HashTable, table);
-	delete(Array, key);
-
-	return ok;
-}
-
-static Result HashTable_DeletedItem_ShouldReturnNull()
-{
-	// Arrange
-	setup();
-	try (ref, table, new1(HashTable, 50));
+	try (ref, table, new(HashTable2));
 	try (ref, key, new2(Array, 4, 1));
 
 	int keyValue = 48;
@@ -76,21 +50,22 @@ static Result HashTable_DeletedItem_ShouldReturnNull()
 	run (Array_Set(key, 0, &keyValue));
 
 	// Act
-	run (HashTable_Upsert(table, key, &value));
-	run (HashTable_Delete(table, key));
+	run (HashTable2_Upsert(table, key, &value));
+	run (HashTable2_Delete(table, key));
 
 	// Assert
-	try (ref, r, HashTable_Search(table, key));
+	try (ref, r, HashTable2_Search(table, key));
 	assert(NULL == r);
 
 	// Annihilate
-	delete(HashTable, table);
+	delete(HashTable2, table);
 	delete(Array, key);
 
 	return ok;
 }
 
-static Result HashTable_InsertLargeAmountOfDataThenDelete_HopeItDoesNotCrash()
+
+static Result HashTable2_InsertLargeAmountOfDataThenDelete_HopeItDoesNotCrash()
 {
 	// Benchmark start
 	struct timespec start, end;
@@ -99,17 +74,16 @@ static Result HashTable_InsertLargeAmountOfDataThenDelete_HopeItDoesNotCrash()
 
 	// Arrange
 	setup();
-	try (ref, table, new(HashTable));
+	try (ref, table, new(HashTable2));
 	int value = 5;
 	
-	const size_t N = 100;//100000;
+	const size_t N = 10000000;
 	const size_t keySize = ceil(log10(N))+2;
 
 	try (ref, r, new2(Array, sizeof(void*), N));
 	Array* keys = r;
 
 	// Act & Assert
-
 	for (size_t i = 0; i < N; i++)
 	{
 		// Create a new key
@@ -121,13 +95,24 @@ static Result HashTable_InsertLargeAmountOfDataThenDelete_HopeItDoesNotCrash()
 		run (Array_Set(keys, i, &key));
 
 		// Insert it in hash table
-		run (HashTable_Upsert(table, key, &value+i));
+		run (HashTable2_Upsert(table, key, &value+i));
 		
 		// Assert: able to get value back
-		try (ref, item, HashTable_Search(table, key));
+		try (ref, item, HashTable2_Search(table, key));
 		assert(item == &value+i);
 	}
 
+    for (size_t i = 0; i < N; i++)
+    {
+		// Get the key
+		try (ref, k, Array_At(keys, i));
+		Array* key = *((void**)k);
+        
+		// Assert: still able to find the key, and it contains correct value.
+		try (ref, refValue, HashTable2_Search(table, key));
+		assert(refValue == &value+i);
+    }
+    
 	for (size_t i = 0; i < N; i++)
 	{
 		// Get the key
@@ -135,14 +120,14 @@ static Result HashTable_InsertLargeAmountOfDataThenDelete_HopeItDoesNotCrash()
 		Array* key = *((void**)k);
 
 		// Assert: still able to find the key, and it contains correct value.
-		try (ref, refValue, HashTable_Search(table, key));
+		try (ref, refValue, HashTable2_Search(table, key));
 		assert(refValue == &value+i);
 
 		// Delete the item
-		run (HashTable_Delete(table, key));
+		run (HashTable2_Delete(table, key));
 
 		// Assert: shouldn't be able to find the key.
-		try (ref, expectNull, HashTable_Search(table, key));
+		try (ref, expectNull, HashTable2_Search(table, key));
 		assert(NULL == expectNull);
 
 		// Destroy the key.
@@ -151,7 +136,7 @@ static Result HashTable_InsertLargeAmountOfDataThenDelete_HopeItDoesNotCrash()
 
 	// Annihilate
 	delete(Array, keys);
-	delete(HashTable, table);
+	delete(HashTable2, table);
 
 	
 
@@ -165,6 +150,4 @@ static Result HashTable_InsertLargeAmountOfDataThenDelete_HopeItDoesNotCrash()
 	return ok;
 }
 
-
-
-#include "TestHashTable.c.gen"
+#include "TestHashTable2.c.gen"

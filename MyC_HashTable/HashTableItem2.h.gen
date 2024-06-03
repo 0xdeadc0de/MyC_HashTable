@@ -1,0 +1,15 @@
+// Auto-generate begin. Do not modify!
+#ifndef H_Gen_HashTableItem2
+#define H_Gen_HashTableItem2
+
+#include "MyC.h.gen"
+#include "HashTableItem2.h"
+
+
+// Constructs an HashTableItem2 with cloned key and returns the pointer
+Result(ref) HashTableItem2_Constructor(HashTableItem2* self);
+// Frees the resources held, and returns reference to self
+HashTableItem2* HashTableItem2_Destructor(HashTableItem2* self);
+
+#endif
+// Auto-generate end. Do not modify!

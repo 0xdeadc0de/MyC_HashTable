@@ -1,0 +1,12 @@
+// Auto-generate begin. Do not modify!
+#ifndef H_Gen_TestHashTable2
+#define H_Gen_TestHashTable2
+
+#include "MyC.h.gen"
+
+
+// Run all tests in this module
+Result TestHashTable2_RunAll();
+
+#endif
+// Auto-generate end. Do not modify!

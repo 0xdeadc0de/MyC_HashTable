@@ -1,6 +1,7 @@
 // Auto-generate begin. Do not modify!
 #include "TestArray.h.gen"
 #include "TestHashTable.h.gen"
+#include "TestHashTable2.h.gen"
 #include "TestHashTableItem.h.gen"
 #include "TestList.h.gen"
 
@@ -10,10 +11,11 @@ int TestMyC()
 	Result() (*runAlls[])(void) = {
 		TestArray_RunAll,
 		TestHashTable_RunAll,
+		TestHashTable2_RunAll,
 		TestHashTableItem_RunAll,
 		TestList_RunAll
 	};
-	for (size_t i = 0; i < 4; i++) 
+	for (size_t i = 0; i < 5; i++) 
 	{
 		if (code = runAlls[i]().code) 
 		{
